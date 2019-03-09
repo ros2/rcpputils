@@ -54,57 +54,57 @@ see note in test acquire_ordering
 struct StdGuarded
 {
   std::mutex mu;
-  int data RCPPUTILS_GUARDED_BY(mu);
+  int data RCPPUTILS_TSA_GUARDED_BY(mu);
 
-  int incr() RCPPUTILS_REQUIRES(mu) {
+  int incr() RCPPUTILS_TSA_REQUIRES(mu) {
     return ++data;
   }
 };
 
-struct RCPPUTILS_CAPABILITY ("mutex") FakeMutex
+struct RCPPUTILS_TSA_CAPABILITY ("mutex") FakeMutex
 {
   bool locked = false;
   int readerLocks = 0;
 
-  void lock() RCPPUTILS_ACQUIRE()
+  void lock() RCPPUTILS_TSA_ACQUIRE()
   {
     locked = true;
   }
 
-  void unlock() RCPPUTILS_RELEASE()
+  void unlock() RCPPUTILS_TSA_RELEASE()
   {
     locked = false;
   }
 
-  void readerLock() RCPPUTILS_ACQUIRE_SHARED()
+  void readerLock() RCPPUTILS_TSA_ACQUIRE_SHARED()
   {
     // NOTE: This is not even trying to pretend to be correct
     readerLocks++;
   }
 
-  void readerUnlock() RCPPUTILS_RELEASE_SHARED()
+  void readerUnlock() RCPPUTILS_TSA_RELEASE_SHARED()
   {
     // NOTE: This is not even trying to pretend to be correct
     readerLocks--;
   }
 
-  void assertHeld() RCPPUTILS_ASSERT_CAPABILITY()
+  void assertHeld() RCPPUTILS_TSA_ASSERT_CAPABILITY()
   {
     assert(locked);
   }
 
-  void assertReaderHeld() RCPPUTILS_ASSERT_SHARED_CAPABILITY()
+  void assertReaderHeld() RCPPUTILS_TSA_ASSERT_SHARED_CAPABILITY()
   {
     assert(readerLocks > 0);
   }
 };
 
-struct RCPPUTILS_SCOPED_CAPABILITY FakeLockGuard
+struct RCPPUTILS_TSA_SCOPED_CAPABILITY FakeLockGuard
 {
   FakeMutex * mutex_;
 
   explicit FakeLockGuard(FakeMutex * mutex)
-  RCPPUTILS_ACQUIRE(mutex)
+  RCPPUTILS_TSA_ACQUIRE(mutex)
   : mutex_(mutex)
   {
     if (!mutex_) {return;}
@@ -112,7 +112,7 @@ struct RCPPUTILS_SCOPED_CAPABILITY FakeLockGuard
   }
 
   ~FakeLockGuard()
-  RCPPUTILS_RELEASE()
+  RCPPUTILS_TSA_RELEASE()
   {
     if (!mutex_) {return;}
     mutex_->unlock();
@@ -122,8 +122,8 @@ struct RCPPUTILS_SCOPED_CAPABILITY FakeLockGuard
 struct FakeGuarded
 {
   FakeMutex mu;
-  int data RCPPUTILS_GUARDED_BY(mu) = 0;
-  int * pData RCPPUTILS_PT_GUARDED_BY(mu);
+  int data RCPPUTILS_TSA_GUARDED_BY(mu) = 0;
+  int * pData RCPPUTILS_TSA_PT_GUARDED_BY(mu);
 
   FakeGuarded()
   {
@@ -131,18 +131,18 @@ struct FakeGuarded
     * pData = 0;
   }
 
-  int incr_HaveGuard() RCPPUTILS_REQUIRES(mu)
+  int incr_HaveGuard() RCPPUTILS_TSA_REQUIRES(mu)
   {
     return data++;
   }
 
-  int get_NoHaveGuard() RCPPUTILS_EXCLUDES(mu)
+  int get_NoHaveGuard() RCPPUTILS_TSA_EXCLUDES(mu)
   {
     std::lock_guard<FakeMutex> lock(mu);
     return data;
   }
 
-  int get_Shared() RCPPUTILS_REQUIRES_SHARED(mu)
+  int get_Shared() RCPPUTILS_TSA_REQUIRES_SHARED(mu)
   {
     return data;
   }
@@ -151,20 +151,20 @@ struct FakeGuarded
 struct PrivateFakeGuarded
 {
   FakeMutex * getMutex()
-  RCPPUTILS_RETURN_CAPABILITY(mu)
+  RCPPUTILS_TSA_RETURN_CAPABILITY(mu)
   {
     return &mu;
   }
 
   FakeMutex * abuseGetMutex()
-  RCPPUTILS_RETURN_CAPABILITY(mu)
+  RCPPUTILS_TSA_RETURN_CAPABILITY(mu)
   {
     return nullptr;
   }
 
-  int data RCPPUTILS_GUARDED_BY(mu) = 0;
+  int data RCPPUTILS_TSA_GUARDED_BY(mu) = 0;
 
-  void doSomething() RCPPUTILS_REQUIRES(getMutex())
+  void doSomething() RCPPUTILS_TSA_REQUIRES(getMutex())
   {
     data++;
   }
@@ -252,7 +252,7 @@ TEST(test_tsa, shared_capability) {
   guarded.mu.readerUnlock();
 }
 
-void doSomethingTwice(PrivateFakeGuarded & guarded) RCPPUTILS_REQUIRES(guarded.getMutex())
+void doSomethingTwice(PrivateFakeGuarded & guarded) RCPPUTILS_TSA_REQUIRES(guarded.getMutex())
 {
   guarded.doSomething();
   guarded.doSomething();
