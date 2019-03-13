@@ -36,11 +36,11 @@ Shared Capability
 [X] REQUIRES_SHARED
 [X] ACQUIRE_SHARED
 [X] RELEASE_SHARED
-[ ] ASSERT_SHARED_CAPABILITY
+[X] ASSERT_SHARED_CAPABILITY
 
 Other
 [X] RETURN_CAPABILITY
-[ ] NO_THREAD_SAFETY_ANALYSIS
+[X] NO_THREAD_SAFETY_ANALYSIS
 
 see note in test try_acquire
 [ ] TRY_ACQUIRE
@@ -58,6 +58,11 @@ struct StdGuarded
 
   int incr() RCPPUTILS_TSA_REQUIRES(mu) {
     return ++data;
+  }
+
+  int incr_Unsafe() RCPPUTILS_TSA_NO_THREAD_SAFETY_ANALYSIS
+  {
+    return data++;
   }
 };
 
@@ -189,6 +194,9 @@ TEST(test_tsa, libcxx_types) {
     guarded.incr();
     // ASSERT_EQ(guarded.data, 3);
   }
+
+  // tests NO_THREAD_SAFETY_ANALYSIS
+  guarded.incr_Unsafe();
 }
 
 TEST(test_tsa, capability) {

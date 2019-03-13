@@ -17,11 +17,17 @@
 
 #include <mutex>
 
-// Enable thread safety attributes only with clang.
-// The attributes can be safely erased when compiling with other compilers.
-// Prefixing all macros to avoid potential conflict with other projects
+// Enable thread safety attributes only with clang+libcxx.
+// Technically they would work with clang without libcxx, on manually-annotated thread safety
+// primitives, but this use case causes the error of annotating against non-annotated libstdc++
+// types. Users that wish to annotate their threading library will need to define these macros
+// separately for that case.
 
-#if defined(__clang__) && (!defined(SWIG))
+// The attributes can be safely erased when compiling with other compilers.
+
+// Prefixing all macros to avoid potential conflict with other projects.
+
+#if defined(__clang__) && defined(_LIBCPP_HAS_THREAD_SAFETY_ANNOTATIONS) && (!defined(SWIG))
 #define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))
 #else
 #define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   // no-op
@@ -79,11 +85,11 @@ inline const std::mutex & operator!(const std::mutex & a)
 #define RCPPUTILS_TSA_EXCLUDES(...) \
   RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(locks_excluded(__VA_ARGS__))
 
-#define RCPPUTILS_TSA_ASSERT_CAPABILITY(x) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(assert_capability(x))
+#define RCPPUTILS_TSA_ASSERT_CAPABILITY(...) \
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(assert_capability(__VA_ARGS__))
 
-#define RCPPUTILS_TSA_ASSERT_SHARED_CAPABILITY(x) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(assert_shared_capability(x))
+#define RCPPUTILS_TSA_ASSERT_SHARED_CAPABILITY(...) \
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(assert_shared_capability(__VA_ARGS__))
 
 #define RCPPUTILS_TSA_RETURN_CAPABILITY(x) \
   RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(lock_returned(x))
