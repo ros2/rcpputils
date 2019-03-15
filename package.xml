@@ -3,7 +3,17 @@
 <package format="2">
   <name>rcpputils</name>
   <version>0.1.0</version>
-  <description>Package containing various utility types and functions for C++</description>
+  <description>Package containing utility code for C++. Currently only Clang thread safety annotation macros</description>
   <maintainer email="eknapp@amazon.com">Emerson Knapp</maintainer>
   <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
