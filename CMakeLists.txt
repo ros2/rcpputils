@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.5)
 project(rcpputils)
 
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_ros REQUIRED)
+find_package(rcutils REQUIRED)
 
 # Default to C11
 if(NOT CMAKE_C_STANDARD)
@@ -20,6 +22,15 @@ endif()
 include_directories(include)
 
 ament_export_include_directories(include)
+
+add_library(${PROJECT_NAME}
+  src/find_library.cpp)
+target_include_directories(${PROJECT_NAME}
+  PUBLIC
+  include
+)
+ament_target_dependencies(${PROJECT_NAME} rcutils)
+ament_export_libraries(${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
@@ -42,6 +53,13 @@ if(BUILD_TESTING)
   ament_add_gtest(test_pointer_traits test/test_pointer_traits.cpp)
 
   ament_add_gtest(test_endian test/test_endian.cpp)
+
+  add_library(test_library SHARED test/test_library.cpp)
+  ament_add_gtest(test_find_library test/test_find_library.cpp)
+  target_link_libraries(test_find_library ${PROJECT_NAME} test_library)
+  set_tests_properties(test_find_library PROPERTIES
+    ENVIRONMENT
+      "_TEST_LIBRARY_DIR=$<TARGET_FILE_DIR:test_library>;_TEST_LIBRARY=$<TARGET_FILE:test_library>")
 endif()
 
 ament_package()
@@ -49,3 +67,9 @@ ament_package()
 install(
   DIRECTORY include/
   DESTINATION include)
+install(
+  TARGETS ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
