@@ -33,6 +33,8 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_basic test/test_basic.cpp)
 
+  ament_add_gtest(test_split test/test_split.cpp)
+
   ament_add_gtest(test_filesystem_helper test/test_filesystem_helper.cpp)
 
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
