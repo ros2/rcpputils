@@ -86,6 +86,11 @@ public:
     return access(path_.c_str(), 0) == 0;
   }
 
+  bool is_absolute() const
+  {
+    return path_.compare(0, 1, "/") == 0 || path_.compare(1, 2, ":\\") == 0;
+  }
+
   std::vector<std::string>::const_iterator cbegin() const
   {
     return path_as_vector_.cbegin();

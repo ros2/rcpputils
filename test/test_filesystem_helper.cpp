@@ -56,3 +56,28 @@ TEST(TestFilesystemHelper, to_native_path)
     }
   }
 }
+
+TEST(TestFilesystemHelper, is_absolute)
+{
+  {
+    auto p = path("/foo/bar/baz");
+    EXPECT_TRUE(p.is_absolute());
+  }
+  {
+    auto p = path("foo/bar/baz");
+    EXPECT_FALSE(p.is_absolute());
+  }
+  {
+    auto p = path("C:\\foo\\bar\\baz");
+    EXPECT_TRUE(p.is_absolute());
+  }
+  {
+    auto p = path("D:\\foo\\bar\\baz");
+    EXPECT_TRUE(p.is_absolute());
+  }
+  {
+    auto p = path("C:/foo/bar/baz");
+    EXPECT_FALSE(p.is_absolute());
+  }
+}
+
