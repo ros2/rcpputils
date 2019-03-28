@@ -80,4 +80,3 @@ TEST(TestFilesystemHelper, is_absolute)
     EXPECT_FALSE(p.is_absolute());
   }
 }
-
