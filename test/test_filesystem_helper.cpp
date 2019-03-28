@@ -18,39 +18,41 @@
 
 #include "rcpputils/filesystem_helper.hpp"
 
+#ifdef WIN32
+static constexpr const bool is_win32 = true;
+#else
+static constexpr const bool is_win32 = false;
+#endif
+
 using path = rcpputils::fs::path;
 
 TEST(TestFilesystemHelper, join_path)
 {
   auto p = path("foo") / path("bar");
 
-#ifdef _WIN32
-  const char * ref_str = "foo\\bar";
-#else
-  const char * ref_str = "foo/bar";
-#endif  // _WIN32
-
-  EXPECT_STREQ(ref_str, p.string().c_str());
+  if (is_win32) {
+    EXPECT_EQ("foo\\bar", p.string());
+  } else {
+    EXPECT_EQ("foo/bar", p.string());
+  }
 }
 
 TEST(TestFilesystemHelper, to_native_path)
 {
   {
     auto p = path("/foo/bar/baz");
-#ifdef _WIN32
-    const char * ref_str = "\\foo\\bar\\baz";
-#else
-    const char * ref_str = "/foo/bar/baz";
-#endif  // _WIN32
-    EXPECT_STREQ(ref_str, p.string().c_str());
+    if (is_win32) {
+      EXPECT_EQ("\\foo\\bar\\baz", p.string());
+    } else {
+      EXPECT_EQ("/foo/bar/baz", p.string());
+    }
   }
   {
     auto p = path("/foo//bar/baz");
-#ifdef _WIN32
-    const char * ref_str = "\\foo\\\\bar\\baz";
-#else
-    const char * ref_str = "/foo//bar/baz";
-#endif  // _WIN32
-    EXPECT_STREQ(ref_str, p.string().c_str());
+    if (is_win32) {
+      EXPECT_EQ("\\foo\\\\bar\\baz", p.string());
+    } else {
+      EXPECT_EQ("/foo//bar/baz", p.string());
+    }
   }
 }

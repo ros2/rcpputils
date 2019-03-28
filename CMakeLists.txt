@@ -36,19 +36,6 @@ if(BUILD_TESTING)
   ament_add_gtest(test_split test/test_split.cpp)
 
   ament_add_gtest(test_filesystem_helper test/test_filesystem_helper.cpp)
-
-  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_FLAGS MATCHES "-stdlib=libc\\+\\+")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7.0)
-      set(FILESYSTEM_LIB c++experimental)
-    else()
-      set(FILESYSTEM_LIB c++fs)
-    endif()
-  else()
-    set(FILESYSTEM_LIB stdc++fs)
-  endif()
-
-  target_link_libraries(test_filesystem_helper ${FILESYSTEM_LIB})
-
 endif()
 
 ament_package()

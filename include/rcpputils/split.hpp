@@ -63,38 +63,11 @@ split(const std::string & input, const std::string & regex, bool skip_empty = fa
 
   std::vector<std::string> ret;
   std::copy_if(first, last, std::back_inserter(ret),
-      [skip_empty](std::string val){
-        return !(skip_empty && val.empty());
-      });
+    [skip_empty](std::string val) {
+      return !(skip_empty && val.empty());
+    });
   return ret;
 }
-
-/// Split a specified input with a delimited token
-/**
- * The returned vector will contain the tokens split from the input
- *
- * \param[in] input the input string to be split
- * \param[in] delim the delimiter used to split the string into tokens
- * \param[in] skip_empty True to remove empty tokens from the output
- * \return A vector of tokens.
- */
-inline std::vector<std::string>
-split(const std::string & s, char delim, bool skip_empty = false)
-{
-  std::vector<std::string> result;
-  std::stringstream ss;
-  ss.str(s);
-  std::string item;
-  while (std::getline(ss, item, delim)) {
-    if (skip_empty && item.empty() ) {
-      continue;
-    }
-    result.push_back(item);
-  }
-  return result;
-}
-
 }  // namespace rcpputils
 
 #endif  // RCPPUTILS__SPLIT_HPP_
-

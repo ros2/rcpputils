@@ -1,4 +1,4 @@
-// Copyright (c) 2017, Open Source Robotics Foundation, Inc.
+// Copyright (c) 2019, Open Source Robotics Foundation, Inc.
 // All rights reserved.
 //
 // Software License Agreement (BSD License 2.0)
@@ -41,66 +41,28 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
-#if defined(_MSC_VER)
-# if _MSC_VER >= 1900
-#  include <experimental/filesystem>
-namespace rcpputils
-{
-namespace fs = std::experimental::filesystem;
-}  // namespace rcpputils
-
-#  define RCPPUTILS__FILESYSYEM_HELPER__HAS_STD_FILESYSTEM
-# endif
-
-#elif defined(__has_include)
-# if __has_include(< filesystem >) && __cplusplus >= 201703L
-#  include <filesystem>
-
-namespace rcpputils
-{
-namespace fs = std::filesystem;
-}  // namespace rcpputils
-
-#  define RCPPUTILS__FILESYSYEM_HELPER__HAS_STD_FILESYSTEM
-// cppcheck-suppress preprocessorErrorDirective
-# elif __has_include(< experimental / filesystem >)
-#  include <experimental/filesystem>
-
-namespace rcpputils
-{
-namespace fs = std::experimental::filesystem;
-}  // namespace rcpputils
-
-#  define RCPPUTILS__FILESYSYEM_HELPER__HAS_STD_FILESYSTEM
-# endif
-#endif
-
-// The standard library does not provide it, so emulate it.
-#ifndef RCPPUTILS__FILESYSYEM_HELPER__HAS_STD_FILESYSTEM
-
 #include <string>
 #include <vector>
 
 #ifdef _WIN32
-#define RCPPUTILS_IMPL_OS_DIRSEP '\\'
+#  define RCPPUTILS_IMPL_OS_DIRSEP '\\'
 #else
-#define RCPPUTILS_IMPL_OS_DIRSEP '/'
+#  define RCPPUTILS_IMPL_OS_DIRSEP '/'
 #endif
 
 #ifdef _WIN32
-  #include <io.h>
-  #define access _access_s
+#  include <io.h>
+#  define access _access_s
 #else
-  #include <unistd.h>
+#  include <unistd.h>
 #endif
 
-#include "./split.hpp"
+#include "rcpputils/split.hpp"
 
 namespace rcpputils
 {
 namespace fs
 {
-
 class path
 {
 public:
@@ -187,9 +149,5 @@ inline bool exists(const path & path_to_check)
 
 }  // namespace fs
 }  // namespace rcpputils
-
-#endif  // RCPPUTILS__FILESYSYEM_HELPER__HAS_STD_FILESYSTEM
-
-#undef RCPPUTILS__FILESYSYEM_HELPER__HAS_STD_FILESYSTEM
 
 #endif  // RCPPUTILS__FILESYSTEM_HELPER_HPP_
