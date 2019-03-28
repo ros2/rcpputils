@@ -14,7 +14,7 @@
 
 #include "gtest/gtest.h"
 
-#include "rcpputils/thread_safety_annotations.h"
+#include "rcpputils/thread_safety_annotations.hpp"
 
 /*
 Macros tested

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREAD_SAFETY_ANNOTATIONS_H_
-#define RCPPUTILS__THREAD_SAFETY_ANNOTATIONS_H_
+#ifndef RCPPUTILS__THREAD_SAFETY_ANNOTATIONS_HPP_
+#define RCPPUTILS__THREAD_SAFETY_ANNOTATIONS_HPP_
 
 #include <mutex>
 
@@ -97,4 +97,4 @@ inline const std::mutex & operator!(const std::mutex & a)
 #define RCPPUTILS_TSA_NO_THREAD_SAFETY_ANALYSIS \
   RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(no_thread_safety_analysis)
 
-#endif  // RCPPUTILS__THREAD_SAFETY_ANNOTATIONS_H_
+#endif  // RCPPUTILS__THREAD_SAFETY_ANNOTATIONS_HPP_
