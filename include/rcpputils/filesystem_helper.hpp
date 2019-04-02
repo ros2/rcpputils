@@ -33,9 +33,11 @@
 // This file is originally from:
 // https://github.com/ros/pluginlib/blob/1a4de29fa55173e9b897ca8ff57ebc88c047e0b3/pluginlib/include/pluginlib/impl/filesystem_helper.hpp
 
-/// Includes std::filesystem and aliases the namespace to `rcpputils::fs`.
 /**
  * If std::filesystem is not available the necessary functions are emulated.
+ *
+ * Note: Once std::filesystem is supported on all ROS2 platforms, this class
+ * can be deprecated in favor of the built-in functionality.
  */
 
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
