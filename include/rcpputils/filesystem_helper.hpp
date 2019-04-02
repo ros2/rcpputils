@@ -43,6 +43,7 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -65,20 +66,21 @@ namespace rcpputils
 {
 namespace fs
 {
+
+static constexpr const char kPreferredSeparator = RCPPUTILS_IMPL_OS_DIRSEP;
+
 class path
 {
 public:
-  static constexpr char preferred_separator = RCPPUTILS_IMPL_OS_DIRSEP;
-
   path()
   : path("")
   {}
 
   path(const std::string & p)  // NOLINT(runtime/explicit): this is a conversion constructor
-  : path_(p), path_as_vector_(split(p, preferred_separator))
+  : path_(p), path_as_vector_(split(p, kPreferredSeparator))
   {
-    std::replace(path_.begin(), path_.end(), '\\', preferred_separator);
-    std::replace(path_.begin(), path_.end(), '/', preferred_separator);
+    std::replace(path_.begin(), path_.end(), '\\', kPreferredSeparator);
+    std::replace(path_.begin(), path_.end(), '/', kPreferredSeparator);
   }
 
   std::string string() const
@@ -138,7 +140,7 @@ public:
 
   path & operator/=(const path & other)
   {
-    this->path_ += RCPPUTILS_IMPL_OS_DIRSEP + other.string();
+    this->path_ += kPreferredSeparator + other.string();
     this->path_as_vector_.insert(
       std::end(this->path_as_vector_),
       std::begin(other.path_as_vector_), std::end(other.path_as_vector_));
