@@ -48,7 +48,23 @@ TEST(TestFilesystemHelper, to_native_path)
     }
   }
   {
+    auto p = path("\\foo\\bar\\baz");
+    if (is_win32) {
+      EXPECT_EQ("\\foo\\bar\\baz", p.string());
+    } else {
+      EXPECT_EQ("/foo/bar/baz", p.string());
+    }
+  }
+  {
     auto p = path("/foo//bar/baz");
+    if (is_win32) {
+      EXPECT_EQ("\\foo\\\\bar\\baz", p.string());
+    } else {
+      EXPECT_EQ("/foo//bar/baz", p.string());
+    }
+  }
+  {
+    auto p = path("\\foo\\\\bar\\baz");
     if (is_win32) {
       EXPECT_EQ("\\foo\\\\bar\\baz", p.string());
     } else {
@@ -59,24 +75,31 @@ TEST(TestFilesystemHelper, to_native_path)
 
 TEST(TestFilesystemHelper, is_absolute)
 {
-  {
-    auto p = path("/foo/bar/baz");
-    EXPECT_TRUE(p.is_absolute());
-  }
-  {
-    auto p = path("foo/bar/baz");
-    EXPECT_FALSE(p.is_absolute());
-  }
-  {
-    auto p = path("C:\\foo\\bar\\baz");
-    EXPECT_TRUE(p.is_absolute());
-  }
-  {
-    auto p = path("D:\\foo\\bar\\baz");
-    EXPECT_TRUE(p.is_absolute());
-  }
-  {
-    auto p = path("C:/foo/bar/baz");
-    EXPECT_FALSE(p.is_absolute());
+  if (is_win32) {
+    {
+      auto p = path("C:\\foo\\bar\\baz");
+      EXPECT_TRUE(p.is_absolute());
+    }
+    {
+      auto p = path("D:\\foo\\bar\\baz");
+      EXPECT_TRUE(p.is_absolute());
+    }
+    {
+      auto p = path("C:/foo/bar/baz");
+      EXPECT_TRUE(p.is_absolute());
+    }
+    {
+      auto p = path("foo/bar/baz");
+      EXPECT_FALSE(p.is_absolute());
+    }
+  } else {
+    {
+      auto p = path("/foo/bar/baz");
+      EXPECT_TRUE(p.is_absolute());
+    }
+    {
+      auto p = path("foo/bar/baz");
+      EXPECT_FALSE(p.is_absolute());
+    }
   }
 }

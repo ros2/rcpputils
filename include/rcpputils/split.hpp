@@ -1,4 +1,4 @@
-// Copyright (c) 2017, Open Source Robotics Foundation, Inc.
+// Copyright (c) 2019, Open Source Robotics Foundation, Inc.
 // All rights reserved.
 //
 // Software License Agreement (BSD License 2.0)
@@ -36,37 +36,35 @@
 #ifndef RCPPUTILS__SPLIT_HPP_
 #define RCPPUTILS__SPLIT_HPP_
 
-#include <algorithm>
-#include <regex>
+#include <sstream>
 #include <string>
 #include <vector>
 
 namespace rcpputils
 {
 
-/// Split a specified input with a regular expression
+/// Split a specified input into tokens using a delimiter.
 /**
  * The returned vector will contain the tokens split from the input
  *
  * \param[in] input the input string to be split
- * \param[in] regex the regular expression to match to delimit tokens
+ * \param[in] delim the dlelimiter used to split the input string
  * \return A vector of tokens.
  */
 inline std::vector<std::string>
-split(const std::string & input, const std::string & regex, bool skip_empty = false)
+split(const std::string & input, char delim, bool skip_empty = false)
 {
-  std::regex re(regex);
-  // the -1 will cause this to return the stuff between the matches, see the submatch argument:
-  //   http://en.cppreference.com/w/cpp/regex/regex_token_iterator/regex_token_iterator
-  std::sregex_token_iterator first(input.begin(), input.end(), re, -1);
-  std::sregex_token_iterator last;
-
-  std::vector<std::string> ret;
-  std::copy_if(first, last, std::back_inserter(ret),
-    [skip_empty](std::string val) {
-      return !(skip_empty && val.empty());
-    });
-  return ret;
+  std::vector<std::string> result;
+  std::stringstream ss;
+  ss.str(input);
+  std::string item;
+  while (std::getline(ss, item, delim)) {
+    if (skip_empty && item == "") {
+      continue;
+    }
+    result.push_back(item);
+  }
+  return result;
 }
 }  // namespace rcpputils
 
