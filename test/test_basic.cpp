@@ -136,6 +136,11 @@ struct FakeGuarded
     * pData = 0;
   }
 
+  ~FakeGuarded()
+  {
+    delete pData;
+  }
+
   int incr_HaveGuard() RCPPUTILS_TSA_REQUIRES(mu)
   {
     return data++;
@@ -244,7 +249,6 @@ TEST(test_tsa, ptr_guard) {
   int * old = guarded.pData;
   guarded.pData = new int;  // pData itself is not protected by the mutex
   delete old;
-  delete guarded.pData;
 }
 
 TEST(test_tsa, shared_capability) {
