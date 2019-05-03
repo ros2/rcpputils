@@ -22,6 +22,7 @@
 #include <sstream>
 #include <string>
 
+#include "rcutils/filesystem.h"
 #include "rcutils/get_env.h"
 
 namespace rcpputils
@@ -68,20 +69,10 @@ std::list<std::string> split(const std::string & value, const char delimiter)
   return list;
 }
 
-bool is_file_exist(const char * filename)
-{
-  std::ifstream h(filename);
-  return h.good();
-}
-
 }  // namespace
 
 std::string find_library_path(const std::string & library_name)
 {
-  // TODO(eric.cousineau): Does Poco provide this functionality
-  // (ros2/rcpputils#7)?
-  // TODO(eric.cousineau): Have this return a library pointer instead
-  // (ros2/rcpputils#8).
   std::string search_path = get_env_var(kPathVar);
   std::list<std::string> search_paths = split(search_path, kPathSeparator);
 
@@ -90,7 +81,7 @@ std::string find_library_path(const std::string & library_name)
 
   for (const auto & search_path : search_paths) {
     std::string path = search_path + "/" + filename;
-    if (is_file_exist(path.c_str())) {
+    if (rcutils_is_file(path.c_str())) {
       return path;
     }
   }
