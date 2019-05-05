@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <stdlib.h>
+
 #include <string>
 
 #include "gtest/gtest.h"
@@ -43,8 +45,13 @@ TEST(test_find_library, find_library)
 #else
   env_var = "LD_LIBRARY_PATH";
 #endif
+
+#ifdef _WIN32
+  EXPECT_EQ(_putenv_s(env_var, test_lib_dir), 0);
+#else
   const int override = 1;
-  setenv(env_var, test_lib_dir, override);
+  EXPECT_EQ(setenv(env_var, test_lib_dir, override), 0);
+#endif
 
   // Positive test.
   const std::string test_lib_actual = find_library_path("test_library");
