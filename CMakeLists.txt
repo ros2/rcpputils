@@ -29,6 +29,10 @@ target_include_directories(${PROJECT_NAME}
   PUBLIC
   include
 )
+if(WIN32)
+  target_compile_definitions(${PROJECT_NAME}
+    PRIVATE "RCPPUTILS_BUILDING_LIBRARY")
+endif()
 ament_target_dependencies(${PROJECT_NAME} rcutils)
 ament_export_libraries(${PROJECT_NAME})
 

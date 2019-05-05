@@ -13,7 +13,8 @@
 // limitations under the License.
 
 /// @file
-/// Trivial library to ensure we have some linking present.
+/// Trivial library to ensure we have some linking present for
+/// `test_find_library`.
 
 namespace test_library
 {
