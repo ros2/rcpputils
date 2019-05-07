@@ -19,6 +19,7 @@
 namespace test_library
 {
 
+RCPPUTILS_PUBLIC
 int add_one(int x)
 {
   return x + 1;
