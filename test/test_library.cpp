@@ -16,6 +16,8 @@
 /// Trivial library to ensure we have some linking present for
 /// `test_find_library`.
 
+#include "rcpputils/visibility_control.hpp"
+
 namespace test_library
 {
 
