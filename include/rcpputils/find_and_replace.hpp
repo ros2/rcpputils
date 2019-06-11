@@ -34,6 +34,9 @@ find_and_replace(const std::string & input, const std::string & find, const std:
   std::string output = input;
   const std::size_t find_len = find.length();
   const std::size_t replace_len = replace.length();
+  if (find == replace) {
+    return output;
+  }
   if (0u == find_len) {
     return output;
   }
