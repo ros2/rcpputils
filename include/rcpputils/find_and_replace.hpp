@@ -57,11 +57,35 @@ find_and_replace(
   return output;
 }
 
-inline
-std::string
-find_and_replace(const std::string & input, const std::string & find, const std::string & replace)
+namespace detail
 {
-  return find_and_replace<char>(input, find, replace);
+template<typename CharT, std::size_t Length>
+std::basic_string<CharT>
+normalize_to_basic_string(const CharT (& char_string)[Length])
+{
+  return std::basic_string<CharT>(char_string);
+}
+
+template<typename StringLikeT>
+StringLikeT &&
+normalize_to_basic_string(StringLikeT && string_like)
+{
+  return string_like;
+}
+}  // namespace detail
+
+template<typename InputT, typename FindT, typename ReplaceT>
+auto
+find_and_replace(
+  InputT && input,
+  FindT && find,
+  ReplaceT && replace)
+{
+  auto input_str = detail::normalize_to_basic_string(input);
+  return find_and_replace<typename decltype(input_str)::value_type>(
+    input_str,
+    detail::normalize_to_basic_string(find),
+    detail::normalize_to_basic_string(replace));
 }
 
 }  // namespace rcpputils

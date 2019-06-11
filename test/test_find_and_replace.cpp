@@ -76,3 +76,15 @@ TEST(test_find_and_replace, find_and_replace_wstring) {
     std::wstring(L"bar"));
   EXPECT_EQ(std::wstring(L"barbar"), ret);
 }
+
+TEST(test_find_and_replace, find_and_replace_various_input_types) {
+  rcpputils::find_and_replace(std::string("foo"), "foo", "bar");
+  rcpputils::find_and_replace(std::string("foo"), std::string("foo"), "bar");
+  rcpputils::find_and_replace(std::string("foo"), "foo", std::string("bar"));
+  rcpputils::find_and_replace(std::string("foo"), std::string("foo"), std::string("bar"));
+
+  rcpputils::find_and_replace("foo", std::string("foo"), "bar");
+  rcpputils::find_and_replace("foo", std::string("foo"), std::string("bar"));
+
+  rcpputils::find_and_replace("foo", "foo", std::string("bar"));
+}
