@@ -15,6 +15,7 @@
 #ifndef RCPPUTILS__FIND_AND_REPLACE_HPP_
 #define RCPPUTILS__FIND_AND_REPLACE_HPP_
 
+#include <memory>
 #include <string>
 
 namespace rcpputils
@@ -28,10 +29,18 @@ namespace rcpputils
  * \return A copy of the input string with all instances of the string `find` replaced with the
  *   string `replace`.
  */
-inline std::string
-find_and_replace(const std::string & input, const std::string & find, const std::string & replace)
+template<
+  class CharT,
+  class Traits = std::char_traits<CharT>,
+  class Allocator = std::allocator<CharT>
+>
+std::basic_string<CharT, Traits, Allocator>
+find_and_replace(
+  const std::basic_string<CharT, Traits, Allocator> & input,
+  const std::basic_string<CharT, Traits, Allocator> & find,
+  const std::basic_string<CharT, Traits, Allocator> & replace)
 {
-  std::string output = input;
+  std::basic_string<CharT, Traits, Allocator> output = input;
   const std::size_t find_len = find.length();
   const std::size_t replace_len = replace.length();
   if (find == replace) {
@@ -41,11 +50,18 @@ find_and_replace(const std::string & input, const std::string & find, const std:
     return output;
   }
   std::size_t pos = output.find(find);
-  while (pos != std::string::npos) {
+  while (pos != std::basic_string<CharT, Traits, Allocator>::npos) {
     output.replace(pos, find_len, replace);
     pos = output.find(find, pos + replace_len);
   }
   return output;
+}
+
+inline
+std::string
+find_and_replace(const std::string & input, const std::string & find, const std::string & replace)
+{
+  return find_and_replace<char>(input, find, replace);
 }
 
 }  // namespace rcpputils

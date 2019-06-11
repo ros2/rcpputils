@@ -68,3 +68,11 @@ TEST(test_find_and_replace, find_and_replace) {
     EXPECT_EQ("bar", ret);
   }
 }
+
+TEST(test_find_and_replace, find_and_replace_wstring) {
+  auto ret = rcpputils::find_and_replace(
+    std::wstring(L"foobar"),
+    std::wstring(L"foo"),
+    std::wstring(L"bar"));
+  EXPECT_EQ(std::wstring(L"barbar"), ret);
+}
