@@ -33,17 +33,17 @@ TEST(test_find_and_replace, find_and_replace) {
     auto ret = rcpputils::find_and_replace("foo", "foo", "");
     EXPECT_EQ("", ret);
   }
-  // Single occurance
+  // Single occurrence
   {
     auto ret = rcpputils::find_and_replace("foo", "foo", "bar");
     EXPECT_EQ("bar", ret);
   }
-  // No occurances
+  // No occurrences
   {
     auto ret = rcpputils::find_and_replace("foo", "bar", "baz");
     EXPECT_EQ("foo", ret);
   }
-  // Multiple occurances
+  // Multiple occurrences
   {
     auto ret = rcpputils::find_and_replace("foobarfoobar", "foo", "baz");
     EXPECT_EQ("bazbarbazbar", ret);

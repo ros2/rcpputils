@@ -24,7 +24,7 @@ namespace rcpputils
 /**
  * \param[in] input The input string.
  * \param[in] find The substring to replace.
- * \param[in] replace The string to substitute for each occurance of `find`.
+ * \param[in] replace The string to substitute for each occurrence of `find`.
  * \return A copy of the input string with all instances of the string `find` replaced with the
  *   string `replace`.
  */
