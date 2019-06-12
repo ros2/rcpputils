@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <gtest/gtest.h>
-#include <iostream>
+#include <string>
 
 #include "rcpputils/find_and_replace.hpp"
 
