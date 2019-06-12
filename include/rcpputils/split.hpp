@@ -50,7 +50,7 @@ namespace rcpputils
  *
  * \param[in] input the input string to be split
  * \param[in] delim the dlelimiter used to split the input string
- * \param[in] insert iterator pointing to a storage contianer
+ * \param[in] insert iterator pointing to a storage container
  */
 template<
   class InsertIterator,
@@ -59,7 +59,7 @@ template<
       InsertIterator &,
       decltype(std::declval<InsertIterator>().operator=(std::declval<std::string>()))>::value
   >::type * = nullptr>
-inline void
+void
 split(const std::string & input, char delim, InsertIterator & it, bool skip_empty = false)
 {
   std::stringstream ss;

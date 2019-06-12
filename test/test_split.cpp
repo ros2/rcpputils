@@ -229,7 +229,7 @@ TEST(test_split, split_backslash) {
   }
 }
 
-TEST(test_split, iterator)
+TEST(test_split, vector_iterator)
 {
   std::string s = "my/hello/world";
 
@@ -239,14 +239,23 @@ TEST(test_split, iterator)
   EXPECT_EQ("my", vec[0]);
   EXPECT_EQ("hello", vec[1]);
   EXPECT_EQ("world", vec[2]);
+}
+
+TEST(test_split, list_iterator)
+{
+  std::string s = "my/hello/world";
 
   std::list<std::string> ll = {};
   auto ll_it = std::back_inserter(ll);
   rcpputils::split(s, '/', ll_it);
   EXPECT_EQ("my", ll.front());
   EXPECT_EQ("world", ll.back());
+}
 
-  s = "wonderful string with wonderful duplicates duplicates";
+TEST(test_split, set_iterator)
+{
+  std::string s = "wonderful string with wonderful duplicates duplicates";
+
   std::set<std::string> set = {};
   auto set_it = std::inserter(set, std::begin(set));
   rcpputils::split(s, ' ', set_it);
@@ -297,4 +306,11 @@ TEST(test_split, custom_iterator)
   EXPECT_STREQ("MyMessage", triple_it.message_name.c_str());
 
   EXPECT_EQ(std::make_tuple("my_pkg", "msg", "MyMessage"), triple_it.get());
+}
+
+TEST(test_split, custom_iterator_exception)
+{
+  std::string s = "my_pkg/msg/MyMessage/Wrong";
+  TripleExtractor triple_it;
+  ASSERT_THROW(rcpputils::split(s, '/', triple_it), std::out_of_range);
 }
