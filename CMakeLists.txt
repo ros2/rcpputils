@@ -38,6 +38,8 @@ if(BUILD_TESTING)
   ament_add_gtest(test_filesystem_helper test/test_filesystem_helper.cpp)
 
   ament_add_gtest(test_find_and_replace test/test_find_and_replace.cpp)
+
+  ament_add_gtest(test_endian test/test_endian.cpp)
 endif()
 
 ament_package()
