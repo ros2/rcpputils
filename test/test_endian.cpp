@@ -26,7 +26,7 @@ bool isLittleEndian()
 
 TEST(test_endian, is_defined)
 {
-  // A platform should be one or other other
+  // A platform should be one or other.
   EXPECT_TRUE((rcpputils::endian::little == rcpputils::endian::native) ||
     (rcpputils::endian::big == rcpputils::endian::native));
 }
@@ -53,11 +53,3 @@ TEST(test_endian, runtime_endianness)
     std::cout << "Runtime reports: big endian" << std::endl;
   }
 }
-
-#ifdef _WIN32
-// Windows is always little-endian
-TEST(test_endian, win32)
-{
-  EXPECT_TRUE(rcpputils::endian::little == rcpputils::endian::native);
-}
-#endif
