@@ -24,6 +24,21 @@
 #ifndef RCPPUTILS__ENDIAN_HPP_
 #define RCPPUTILS__ENDIAN_HPP_
 
+// TODO(anyone) replace this macro when the appropriate C++20 value lands.
+#if !defined(RCPPUTILS_NO_STD_ENDIAN) && (__cplusplus <= 201703L)
+#define RCPPUTILS_NO_STD_ENDIAN
+#endif
+
+#if !defined(RCPPUTILS_NO_STD_ENDIAN)
+#include <type_traits>
+namespace rcpputils
+{
+using std::endian;
+}  // namespace rcpputils
+#define RCPPUTILS_HAVE_STD_ENDIAN 1
+#endif  // __cplusplus > 201703L
+
+#ifndef RCPPUTILS_HAVE_STD_ENDIAN
 #ifdef __has_include
 #  if __has_include(<endian.h>)
 #    include <endian.h>
@@ -48,5 +63,5 @@ enum class endian
 #endif
 };
 }  // namespace rcpputils
-
+#endif  // RCPPUTILS_HAVE_STD_ENDIAN
 #endif  // RCPPUTILS__ENDIAN_HPP_

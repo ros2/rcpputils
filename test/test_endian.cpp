@@ -33,19 +33,21 @@ TEST(test_endian, is_defined)
 
 TEST(test_endian, runtime_endianness)
 {
-  // Compare the runtime evaluation to the predefined constant value.
-  EXPECT_TRUE(isLittleEndian() &&
-    rcpputils::endian::little == rcpputils::endian::native);
+  bool littleEndian = rcpputils::endian::little == rcpputils::endian::native;
+  bool bigEndian = rcpputils::endian::big == rcpputils::endian::native;
 
-  if (rcpputils::endian::little == rcpputils::endian::native) {
+  EXPECT_EQ(isLittleEndian(), littleEndian);
+  EXPECT_EQ(!isLittleEndian(), bigEndian);
+
+  if (littleEndian && !bigEndian) {
     std::cout << "Compiler reports: little endian" << std::endl;
-  } else if (rcpputils::endian::big == rcpputils::endian::native) {
+  } else if (!littleEndian && bigEndian) {
     std::cout << "Compiler reports: big endian" << std::endl;
   } else {
     std::cout << "Compiler reports: mixed/unknown endian" << std::endl;
   }
 
-  if(isLittleEndian()) {
+  if (isLittleEndian()) {
     std::cout << "Runtime reports: little endian" << std::endl;
   } else {
     std::cout << "Runtime reports: big endian" << std::endl;
