@@ -33,6 +33,8 @@
 namespace rcpputils
 {
 // Ref: https://en.cppreference.com/w/cpp/types/endian#Possible_implementation
+// From: https://en.cppreference.com/w/Cppreference:FAQ, this is licensed
+// Creative Commons Attribution-Sharealike 3.0 Unported License (CC-BY-SA)
 enum class endian
 {
 #ifdef _WIN32
