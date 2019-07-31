@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.1 (2019-07-30)
+------------------
+* Add function 'find_and_replace' (`#13 <https://github.com/ros2/rcpputils/issues/13>`_)
+* Contributors: Jacob Perron 
+
 0.1.0 (2019-04-13)
 ------------------
 * Fixed leak in test_basic.cpp. (`#9 <https://github.com/ros2/rcpputils/issues/9>`_)
