@@ -122,6 +122,13 @@ public:
     return path_.empty() ? path() : *--this->cend();
   }
 
+  std::string extension() const
+  {
+    auto fname = filename();
+    auto split_fname = split(fname.string(), std::string("."));
+    return "." + split_fname.back();
+  }
+
   path operator/(const std::string & other)
   {
     return this->operator/(path(other));
