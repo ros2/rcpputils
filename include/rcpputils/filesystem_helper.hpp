@@ -88,9 +88,30 @@ public:
     return path_;
   }
 
+  inline bool create_directories(const path & p)
+  {
+    path p_built;
+
+    for (auto it = p.cbegin(); it != p.cend(); ++it) {
+      p_built /= *it;
+
+  #ifdef _WIN32
+      _mkdir(p_built.string().c_str());
+  #else
+      mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  #endif
+    }
+    return true;
+  }
+
   bool exists() const
   {
     return access(path_.c_str(), 0) == 0;
+  }
+
+  bool empty() const
+  {
+    return path_ == "";
   }
 
   bool is_absolute() const
