@@ -146,7 +146,8 @@ public:
   std::string extension() const
   {
     auto fname = filename();
-    auto split_fname = split(fname.string(), std::string("."));
+    const char * delimiter = ".";
+    auto split_fname = split(fname.string(), *delimiter);
     return "." + split_fname.back();
   }
 
