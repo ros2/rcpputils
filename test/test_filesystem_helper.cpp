@@ -103,3 +103,53 @@ TEST(TestFilesystemHelper, is_absolute)
     }
   }
 }
+
+TEST(TestFilesystemHelper, correct_extension)
+{
+  if (is_win32) {
+    {
+      auto p = path("C:\\foo\\bar\\baz.yml");
+      auto ext = p.extension();
+      EXPECT_EQ(".yml", ext);
+    }
+    {
+      auto p = path("C:\\foo\\baz.bar.yml");
+      auto ext = p.extension();
+      EXPECT_EQ(".yml", ext);
+    }
+  } else {
+    {
+      auto p = path("/foo/bar/baz.yml");
+      auto ext = p.extension();
+      EXPECT_EQ(".yml", ext);
+    }
+    {
+      auto p = path("/foo/baz.bar.yml");
+      auto ext = p.extension();
+      EXPECT_EQ(".yml", ext);
+    }
+  }
+}
+
+TEST(TestFilesystemHelper, is_empty)
+{
+  {
+    auto p = path("");
+    EXPECT_TRUE(p.empty());
+  }
+}
+
+TEST(TestFilesystemHelper, create_directories)
+{
+  if (is_win32) {
+    {
+      auto p = path(".\\test_folder");
+      EXPECT_TRUE(rcpputils::fs::create_directories(p));
+    }
+  } else {
+    {
+      auto p = path("./test_folder");
+      EXPECT_TRUE(rcpputils::fs::create_directories(p));
+    }
+  }
+}

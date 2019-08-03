@@ -43,6 +43,9 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -86,22 +89,6 @@ public:
   std::string string() const
   {
     return path_;
-  }
-
-  inline bool create_directories(const path & p)
-  {
-    path p_built;
-
-    for (auto it = p.cbegin(); it != p.cend(); ++it) {
-      p_built /= *it;
-
-  #ifdef _WIN32
-      _mkdir(p_built.string().c_str());
-  #else
-      mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  #endif
-    }
-    return true;
   }
 
   bool exists() const
@@ -184,6 +171,22 @@ private:
 inline bool exists(const path & path_to_check)
 {
   return path_to_check.exists();
+}
+
+inline bool create_directories(const path & p)
+{
+  path p_built;
+
+  for (auto it = p.cbegin(); it != p.cend(); ++it) {
+    p_built /= *it;
+
+#ifdef _WIN32
+    _mkdir(p_built.string().c_str());
+#else
+    mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+#endif
+  }
+  return true;
 }
 
 #undef RCPPUTILS_IMPL_OS_DIRSEP

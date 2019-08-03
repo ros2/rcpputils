@@ -78,7 +78,7 @@ split(const std::string & input, char delim, InsertIterator & it, bool skip_empt
  * The returned vector will contain the tokens split from the input
  *
  * \param[in] input the input string to be split
- * \param[in] delim the dlelimiter used to split the input string
+ * \param[in] delim the delimiter used to split the input string
  * \return A vector of tokens.
  */
 inline std::vector<std::string>
