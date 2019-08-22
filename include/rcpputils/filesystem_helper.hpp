@@ -43,9 +43,6 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
-#include <sys/stat.h>
-#include <sys/types.h>
-
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -58,8 +55,11 @@
 
 #ifdef _WIN32
 #  include <io.h>
+#  include <direct.h>
 #  define access _access_s
 #else
+#  include <sys/stat.h>
+#  include <sys/types.h>
 #  include <unistd.h>
 #endif
 
@@ -98,7 +98,7 @@ public:
 
   bool empty() const
   {
-    return path_ == "";
+    return path_.empty();
   }
 
   bool is_absolute() const
@@ -130,12 +130,11 @@ public:
     return path_.empty() ? path() : *--this->cend();
   }
 
-  std::string extension() const
+  path extension() const
   {
-    auto fname = filename();
     const char * delimiter = ".";
-    auto split_fname = split(fname.string(), *delimiter);
-    return "." + split_fname.back();
+    auto split_fname = split(this->string(), *delimiter);
+    return split_fname.size() == 1 ? path("") : path("." + split_fname.back());
   }
 
   path operator/(const std::string & other)
