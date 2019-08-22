@@ -26,19 +26,23 @@ static constexpr const bool is_win32 = false;
 
 using path = rcpputils::fs::path;
 
-std::string build_extension_path() {
+std::string build_extension_path()
+{
   return is_win32 ? R"(C:\foo\bar\baz.yml)" : "/bar/foo/baz.yml";
 }
 
-std::string build_double_extension_path() {
+std::string build_double_extension_path()
+{
   return is_win32 ? R"(C:\bar\baz.bar.yml)" : "/foo/baz.bar.yml";
 }
 
-std::string build_no_extension_path() {
+std::string build_no_extension_path()
+{
   return is_win32 ? R"(C:\bar\baz)" : "/bar/baz";
 }
 
-std::string build_directory_path() {
+std::string build_directory_path()
+{
   return is_win32 ? R"(.\test_folder)" : R"(./test_folder)";
 }
 
@@ -122,30 +126,28 @@ TEST(TestFilesystemHelper, is_absolute)
 
 TEST(TestFilesystemHelper, correct_extension)
 {
-    {
-      auto p = path(build_extension_path());
-      auto ext = p.extension();
-      EXPECT_EQ(".yml", ext.string());
-    } 
-    {
-      auto p = path(build_double_extension_path());
-      auto ext = p.extension();
-      EXPECT_EQ(".yml", ext.string());
-    }
-    {
-      auto p = path(build_no_extension_path());
-      auto ext = p.extension();
-      EXPECT_EQ("", ext.string());
-    }
-
+  {
+    auto p = path(build_extension_path());
+    auto ext = p.extension();
+    EXPECT_EQ(".yml", ext.string());
+  } 
+  {
+    auto p = path(build_double_extension_path());
+    auto ext = p.extension();
+    EXPECT_EQ(".yml", ext.string());
+  }
+  {
+    auto p = path(build_no_extension_path());
+    auto ext = p.extension();
+    EXPECT_EQ("", ext.string());
+  }
 }
 
 TEST(TestFilesystemHelper, is_empty)
 {
-    auto p = path("");
-    EXPECT_TRUE(p.empty());
+  auto p = path("");
+  EXPECT_TRUE(p.empty());
 }
-
 
 /**
  * Test create directories.
@@ -155,6 +157,6 @@ TEST(TestFilesystemHelper, is_empty)
  */
 TEST(TestFilesystemHelper, create_directories)
 {
-    auto p = path(build_directory_path());
-    EXPECT_TRUE(rcpputils::fs::create_directories(p)); 
+  auto p = path(build_directory_path());
+  EXPECT_TRUE(rcpputils::fs::create_directories(p)); 
 }

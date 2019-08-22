@@ -54,8 +54,8 @@
 #endif
 
 #ifdef _WIN32
-#  include <io.h>
 #  include <direct.h>
+#  include <io.h>
 #  define access _access_s
 #else
 #  include <sys/stat.h>
