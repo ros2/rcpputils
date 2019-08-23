@@ -130,7 +130,7 @@ TEST(TestFilesystemHelper, correct_extension)
     auto p = path(build_extension_path());
     auto ext = p.extension();
     EXPECT_EQ(".yml", ext.string());
-  } 
+  }
   {
     auto p = path(build_double_extension_path());
     auto ext = p.extension();
@@ -158,5 +158,5 @@ TEST(TestFilesystemHelper, is_empty)
 TEST(TestFilesystemHelper, create_directories)
 {
   auto p = path(build_directory_path());
-  EXPECT_TRUE(rcpputils::fs::create_directories(p)); 
+  EXPECT_TRUE(rcpputils::fs::create_directories(p));
 }
