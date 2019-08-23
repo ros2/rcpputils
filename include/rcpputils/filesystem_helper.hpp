@@ -54,9 +54,12 @@
 #endif
 
 #ifdef _WIN32
+#  include <direct.h>
 #  include <io.h>
 #  define access _access_s
 #else
+#  include <sys/stat.h>
+#  include <sys/types.h>
 #  include <unistd.h>
 #endif
 
@@ -93,6 +96,11 @@ public:
     return access(path_.c_str(), 0) == 0;
   }
 
+  bool empty() const
+  {
+    return path_.empty();
+  }
+
   bool is_absolute() const
   {
     return path_.compare(0, 1, "/") == 0 || path_.compare(1, 2, ":\\") == 0;
@@ -120,6 +128,13 @@ public:
   path filename() const
   {
     return path_.empty() ? path() : *--this->cend();
+  }
+
+  path extension() const
+  {
+    const char * delimiter = ".";
+    auto split_fname = split(this->string(), *delimiter);
+    return split_fname.size() == 1 ? path("") : path("." + split_fname.back());
   }
 
   path operator/(const std::string & other)
@@ -155,6 +170,22 @@ private:
 inline bool exists(const path & path_to_check)
 {
   return path_to_check.exists();
+}
+
+inline bool create_directories(const path & p)
+{
+  path p_built;
+
+  for (auto it = p.cbegin(); it != p.cend(); ++it) {
+    p_built /= *it;
+
+#ifdef _WIN32
+    _mkdir(p_built.string().c_str());
+#else
+    mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+#endif
+  }
+  return true;
 }
 
 #undef RCPPUTILS_IMPL_OS_DIRSEP
