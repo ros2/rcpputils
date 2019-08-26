@@ -25,7 +25,7 @@ TEST(TestPointerTraits, is_pointer) {
   auto sptr = std::make_shared<int>(13);
   const auto csptr = std::make_shared<int>(13);
   const volatile auto cvsptr = std::make_shared<int>(13);
-  const volatile auto cvsptrc = std::shared_ptr<int const>(cptrc);
+  const volatile auto cvsptrc = std::make_shared<int const>(13);
   auto uptr = std::make_unique<int>(13);
   const auto cuptr = std::make_unique<int>(13);
   const volatile auto cvuptr = std::make_unique<int>(13);
@@ -52,6 +52,10 @@ TEST(TestPointerTraits, is_pointer) {
   EXPECT_TRUE(b_cuptr);
   EXPECT_TRUE(b_cvuptr);
   EXPECT_TRUE(b_cvuptrc);
+
+  // cleanup raw pointers
+  delete ptr;
+  delete cptrc;
 }
 
 struct POD
