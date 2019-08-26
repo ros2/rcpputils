@@ -39,6 +39,8 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_find_and_replace test/test_find_and_replace.cpp)
 
+  ament_add_gtest(test_pointer_traits test/test_pointer_traits.cpp)
+
   ament_add_gtest(test_endian test/test_endian.cpp)
 endif()
 
