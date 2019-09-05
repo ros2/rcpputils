@@ -3,7 +3,10 @@
 `rcpputils` is a C++ API consisting of macros, functions, and data structures intended for use throughout the ROS 2 codebase
 
 This package currently contains:
-*   Clang thread safety annotation macros
+* Clang thread safety annotation macros
+* String helpers
+* File system helpers
+* Type traits helpers
 
 ## Clang Thread Safety Annotation Macros
 the `rcpputils/thread_safety_annotations.hpp` header provides macros for Clang's [Thread Safety Analysis](https://clang.llvm.org/docs/ThreadSafetyAnalysis.html) feature.
