@@ -29,9 +29,14 @@ namespace
 TEST(test_find_library, find_library)
 {
   // Get ground-truth values from CTest properties.
-  const char * test_lib_expected{};
-  EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY", &test_lib_expected), nullptr);
-  EXPECT_NE(test_lib_expected, nullptr);
+  std::string expected_library_path;
+  {
+    const char * _expected_library_path{};
+    EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY", &_expected_library_path), nullptr);
+    EXPECT_NE(_expected_library_path, nullptr);
+    expected_library_path = _expected_library_path;
+  }
+
   const char * test_lib_dir{};
   EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY_DIR", &test_lib_dir), nullptr);
   EXPECT_NE(test_lib_dir, nullptr);
@@ -55,7 +60,7 @@ TEST(test_find_library, find_library)
 
   // Positive test.
   const std::string test_lib_actual = find_library_path("test_library");
-  EXPECT_EQ(test_lib_actual, test_lib_expected);
+  EXPECT_EQ(test_lib_actual, expected_library_path);
 
   // (Hopefully) Negative test.
   const std::string bad_path = find_library_path(
