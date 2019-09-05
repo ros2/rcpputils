@@ -18,7 +18,7 @@
 
 #include "rcpputils/filesystem_helper.hpp"
 
-#ifdef WIN32
+#ifdef _WIN32
 static constexpr const bool is_win32 = true;
 #else
 static constexpr const bool is_win32 = false;
