@@ -49,7 +49,7 @@ namespace rcpputils
  * The returned vector will contain the tokens split from the input
  *
  * \param[in] input the input string to be split
- * \param[in] delim the dlelimiter used to split the input string
+ * \param[in] delim the delimiter used to split the input string
  * \param[in] insert iterator pointing to a storage container
  */
 template<
