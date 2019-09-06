@@ -31,7 +31,7 @@ if(BUILD_TESTING)
 
   ament_lint_auto_find_test_dependencies()
 
-  ament_add_gtest(test_basic test/test_basic.cpp)
+  ament_add_gtest(test_thread_safety_annotations test/test_thread_safety_annotations.cpp)
 
   ament_add_gtest(test_split test/test_split.cpp)
 
