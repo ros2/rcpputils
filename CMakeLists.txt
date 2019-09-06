@@ -33,6 +33,8 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_thread_safety_annotations test/test_thread_safety_annotations.cpp)
 
+  ament_add_gtest(test_join test/test_join.cpp)
+
   ament_add_gtest(test_split test/test_split.cpp)
 
   ament_add_gtest(test_filesystem_helper test/test_filesystem_helper.cpp)
