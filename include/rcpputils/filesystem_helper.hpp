@@ -137,15 +137,23 @@ public:
     return split_fname.size() == 1 ? path("") : path("." + split_fname.back());
   }
 
-  path remove_extension(int n_times = 1)
+  /**
+   * Remove extension(s) from a path. An extension is defined as text starting from the end of a 
+   * path to the first period (.) character.
+   *
+   * \param n_times The number of extensions to remove if there are multiple extensions.
+   * \return The path object.
+   */
+  path & remove_extension(int n_times = 1)
   {
     for (int i = 0; i < n_times; i++) {
       size_t last_dot = path_.find_last_of('.');
       if (last_dot == std::string::npos) {
-        return path(path_);
+        return *this;
       }
-      return path(path_.erase(last_dot, path_.size() - 1));
+      path_.erase(last_dot, path_.size() - 1);
     }
+    return *this;
   }
 
   path operator/(const std::string & other)
