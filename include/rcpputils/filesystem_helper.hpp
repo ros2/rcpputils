@@ -74,7 +74,7 @@ static constexpr const char kPreferredSeparator = RCPPUTILS_IMPL_OS_DIRSEP;
 
 /**
  * path is meant to be a drop-in replacement of https://en.cppreference.com/w/cpp/filesystem/path.
- * It must conform to the same standard described and cannot include methods that are not 
+ * It must conform to the same standard described and cannot include methods that are not
  * incorporated there.
  */
 class path
@@ -196,7 +196,7 @@ inline bool create_directories(const path & p)
 #undef RCPPUTILS_IMPL_OS_DIRSEP
 
 /**
- * Remove extension(s) from a path. An extension is defined as text starting from the end of a 
+ * Remove extension(s) from a path. An extension is defined as text starting from the end of a
  * path to the first period (.) character.
  *
  * \param file_path The file path string.
