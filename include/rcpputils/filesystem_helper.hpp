@@ -195,8 +195,6 @@ inline bool create_directories(const path & p)
   return true;
 }
 
-#undef RCPPUTILS_IMPL_OS_DIRSEP
-
 /**
  * Remove extension(s) from a path. An extension is defined as text starting from the end of a
  * path to the first period (.) character.
@@ -205,7 +203,7 @@ inline bool create_directories(const path & p)
  * \param n_times The number of extensions to remove if there are multiple extensions.
  * \return The path object.
  */
-path remove_extension(const path & file_path, int n_times = 1)
+inline path remove_extension(const path & file_path, int n_times = 1)
 {
   path new_path(file_path);
   for (int i = 0; i < n_times; i++) {
@@ -218,6 +216,8 @@ path remove_extension(const path & file_path, int n_times = 1)
   }
   return new_path;
 }
+
+#undef RCPPUTILS_IMPL_OS_DIRSEP
 
 }  // namespace fs
 }  // namespace rcpputils
