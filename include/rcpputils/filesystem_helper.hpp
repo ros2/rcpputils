@@ -72,6 +72,11 @@ namespace fs
 
 static constexpr const char kPreferredSeparator = RCPPUTILS_IMPL_OS_DIRSEP;
 
+/**
+ * path is meant to be a drop-in replacement of https://en.cppreference.com/w/cpp/filesystem/path.
+ * It must conform to the same standard described and cannot include methods that are not 
+ * incorporated there.
+ */
 class path
 {
 public:
@@ -137,25 +142,6 @@ public:
     return split_fname.size() == 1 ? path("") : path("." + split_fname.back());
   }
 
-  /**
-   * Remove extension(s) from a path. An extension is defined as text starting from the end of a 
-   * path to the first period (.) character.
-   *
-   * \param n_times The number of extensions to remove if there are multiple extensions.
-   * \return The path object.
-   */
-  path & remove_extension(int n_times = 1)
-  {
-    for (int i = 0; i < n_times; i++) {
-      size_t last_dot = path_.find_last_of('.');
-      if (last_dot == std::string::npos) {
-        return *this;
-      }
-      path_.erase(last_dot, path_.size() - 1);
-    }
-    return *this;
-  }
-
   path operator/(const std::string & other)
   {
     return this->operator/(path(other));
@@ -208,6 +194,27 @@ inline bool create_directories(const path & p)
 }
 
 #undef RCPPUTILS_IMPL_OS_DIRSEP
+
+/**
+ * Remove extension(s) from a path. An extension is defined as text starting from the end of a 
+ * path to the first period (.) character.
+ *
+ * \param file_path The file path string.
+ * \param n_times The number of extensions to remove if there are multiple extensions.
+ * \return The path object.
+ */
+path remove_extension(const path & file_path, int n_times = 1)
+{
+  path new_path = path(file_path);
+  for (int i = 0; i < n_times; i++) {
+    size_t last_dot = new_path.string().find_last_of('.');
+    if (last_dot == std::string::npos) {
+      return new_path;
+    }
+    new_path = path(new_path.string().substr(0, last_dot));
+  }
+  return new_path;
+}
 
 }  // namespace fs
 }  // namespace rcpputils

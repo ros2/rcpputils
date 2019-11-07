@@ -164,27 +164,27 @@ TEST(TestFilesystemHelper, create_directories)
 TEST(TestFilesystemHelper, remove_extension)
 {
   auto p = path("foo.txt");
-  p.remove_extension();
+  p = rcpputils::fs::remove_extension(p.string());
   EXPECT_EQ("foo", p.string());
 }
 
 TEST(TestFilesystemHelper, remove_extensions)
 {
   auto p = path("foo.txt.compress");
-  p.remove_extension(2);
+  p = rcpputils::fs::remove_extension(p, 2);
   EXPECT_EQ("foo", p.string());
 }
 
 TEST(TestFilesystemHelper, remove_extensions_overcount)
 {
   auto p = path("foo.txt.compress");
-  p.remove_extension(4);
+  p = rcpputils::fs::remove_extension(p, 4);
   EXPECT_EQ("foo", p.string());
 }
 
 TEST(TestFilesystemHelper, remove_extension_no_extension)
 {
   auto p = path("foo");
-  p.remove_extension();
+  p = rcpputils::fs::remove_extension(p);
   EXPECT_EQ("foo", p.string());
 }
