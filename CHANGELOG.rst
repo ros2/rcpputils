@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add new function to remove the extension of a file (`#27 <https://github.com/ros2/rcpputils/pull/27>`_)
+* Contributors: Anas Abou Allaban
+
 0.2.0 (2019-09-24)
 ------------------
 * find_library: Centralize functionality here (`#25 <https://github.com/ros2/rcpputils/issues/25>`_)
