@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.1 (2019-11-12)
+------------------
 * add new function to remove the extension of a file (`#27 <https://github.com/ros2/rcpputils/pull/27>`_)
 * Contributors: Anas Abou Allaban
 
