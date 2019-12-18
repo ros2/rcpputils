@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__TEMPORARY_DIRECTORY_FIXTURE_HPP_
-#define RCPPUTILS__TEMPORARY_DIRECTORY_FIXTURE_HPP_
+#ifndef TEMPORARY_DIRECTORY_FIXTURE_HPP_
+#define TEMPORARY_DIRECTORY_FIXTURE_HPP_
 
 #include <gmock/gmock.h>
 
@@ -97,4 +97,4 @@ public:
   std::string temporary_dir_path_;
 };
 
-#endif  // RCPPUTILS__TEMPORARY_DIRECTORY_FIXTURE_HPP_
+#endif  // TEMPORARY_DIRECTORY_FIXTURE_HPP_

@@ -228,9 +228,8 @@ inline path remove_extension(const path & file_path, int n_times = 1)
  */
 inline std::uintmax_t file_size(const path & file_path)
 {
-  if (!file_path.exists())
-  {
-    std::error_code ec (ENOENT, std::system_category());
+  if (!file_path.exists()) {
+    std::error_code ec(ENOENT, std::system_category());
     throw std::system_error(ec, "Path does not exist");
   }
   struct stat stat_buffer {};

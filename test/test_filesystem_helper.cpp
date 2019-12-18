@@ -225,6 +225,16 @@ TEST_F(FilesystemHelperFixture, get_file_size)
   create_file(uri.string(), expected_file_size_mib);
 
   const auto file_size = rcpputils::fs::file_size(uri);
-  const auto expected_file_size_bytes = expected_file_size_mib * 1024 * 1024;
+  const std::uintmax_t expected_file_size_bytes = expected_file_size_mib * 1024 * 1024;
   EXPECT_EQ(file_size, expected_file_size_bytes);
+}
+
+TEST_F(FilesystemHelperFixture, get_file_size_file_does_not_exist)
+{
+  rcpputils::fs::path file_name("file1.txt");
+  const auto uri = path(temporary_dir_path_) / file_name;
+  EXPECT_THROW(
+    {rcpputils::fs::file_size(uri);},
+    std::system_error
+  );
 }
