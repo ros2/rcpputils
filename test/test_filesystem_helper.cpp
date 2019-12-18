@@ -40,7 +40,7 @@ void create_file(const std::string & uri, int size)
   if (!out) {
     throw std::runtime_error("Unable to write file.");
   }
-  const auto file_text = "test";
+  constexpr const char file_text[] = "test";
   const auto file_size = size * 1024 * 1024;
   const auto num_iterations = file_size / static_cast<int>(strlen(file_text));
 
@@ -219,9 +219,9 @@ class FilesystemHelperFixture : public TemporaryDirectoryFixture {};
 
 TEST_F(FilesystemHelperFixture, get_file_size)
 {
-  const auto expected_file_size_mib = 1;
-  rcpputils::fs::path file_name("file1.txt");
-  const auto uri = path(temporary_dir_path_) / file_name;
+  constexpr const std::uintmax_t expected_file_size_mib = 1;
+  const rcpputils::fs::path file_name{"file1.txt"};
+  const auto uri = path{temporary_dir_path_} / file_name;
   create_file(uri.string(), expected_file_size_mib);
 
   const auto file_size = rcpputils::fs::file_size(uri);
@@ -231,8 +231,8 @@ TEST_F(FilesystemHelperFixture, get_file_size)
 
 TEST_F(FilesystemHelperFixture, get_file_size_file_does_not_exist)
 {
-  rcpputils::fs::path file_name("file1.txt");
-  const auto uri = path(temporary_dir_path_) / file_name;
+  const rcpputils::fs::path file_name{"file1.txt"};
+  const auto uri = path{temporary_dir_path_} / file_name;
   EXPECT_THROW(
     {rcpputils::fs::file_size(uri);},
     std::system_error
