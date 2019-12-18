@@ -37,9 +37,7 @@ namespace
 void create_file(const std::string & uri, int size)
 {
   std::ofstream out{uri};
-  if (!out) {
-    throw std::runtime_error("Unable to write file.");
-  }
+  out.exceptions(std::ifstream::failbit | std::ifstream::badbit);
   constexpr const char file_text[] = "test";
   const auto file_size = size * 1024 * 1024;
   const auto num_iterations = file_size / static_cast<int>(strlen(file_text));
