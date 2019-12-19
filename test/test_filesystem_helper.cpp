@@ -32,17 +32,17 @@ namespace
  * Create a file with a specific size specified in MiB.
  *
  * @param uri Path to the file to create.
- * @param size File size in MiB
+ * @param size_in_mib File size in MiB
  */
-void create_file(const std::string & uri, int size)
+void create_file(const std::string & uri, int size_in_mib)
 {
   std::ofstream out{uri};
   out.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-  constexpr const char file_text[] = "test";
-  const auto file_size = size * 1024 * 1024;
-  const auto num_iterations = file_size / static_cast<int>(strlen(file_text));
+  const std::string file_text{"test"};
+  const auto size_in_bytes = size_in_mib * 1024 * 1024;
+  const auto num_iterations = size_in_bytes / static_cast<int>(file_text.size());
 
-  for (int i = 0; i < num_iterations; i++) {
+  for (auto i = 0; i < num_iterations; ++i) {
     out << file_text;
   }
 }

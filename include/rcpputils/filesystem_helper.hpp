@@ -226,17 +226,7 @@ inline path remove_extension(const path & file_path, int n_times = 1)
  * \param file_path Path to examine.
  * \return The size of the file, in bytes.
  */
-inline std::uintmax_t file_size(const path & file_path)
-{
-  if (!file_path.exists()) {
-    std::error_code ec{ENOENT, std::system_category()};
-    const std::string error_msg{"Path " + file_path.string() + " does not exist"};
-    throw std::system_error(ec, error_msg);
-  }
-  struct stat stat_buffer {};
-  int rc = stat(file_path.string().c_str(), &stat_buffer);
-  return rc == 0 ? static_cast<size_t>(stat_buffer.st_size) : 0;
-}
+std::uintmax_t file_size(const path & file_path);
 
 #undef RCPPUTILS_IMPL_OS_DIRSEP
 

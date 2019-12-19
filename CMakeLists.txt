@@ -24,7 +24,8 @@ include_directories(include)
 ament_export_include_directories(include)
 
 add_library(${PROJECT_NAME}
-  src/find_library.cpp)
+  src/find_library.cpp
+  src/filesystem_helper.cpp)
 target_include_directories(${PROJECT_NAME}
   PUBLIC
   include
