@@ -17,17 +17,16 @@
 
 #include <gmock/gmock.h>
 
+#include <memory>
 #include <string>
 
 #ifdef _WIN32
-# include <direct.h>
-# include <Windows.h>
-#include <Shellapi.h>
-#include <shlobj.h>
+#include <direct.h>
+#include <Windows.h>
 #else
-# include <unistd.h>
-# include <sys/types.h>
-# include <dirent.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <dirent.h>
 #endif
 
 namespace
@@ -102,14 +101,14 @@ public:
     const auto null_terminated_directory = create_double_null_terminated_tchar(directory_path);
 
     SHFILEOPSTRUCT file_options{
-      .hwnd = nullptr;
-      .wFunc = FO_DELETE;  // Delete (recursively)
-      .pFrom = temp_dir;
-      .pTo = nullptr;
-      .fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // Do not prompt user
-      .fAnyOperationsAborted = FALSE;
-      .lpszProgressTitle = nullptr;
-      .hNameMappings = nullptr;
+      .hwnd = nullptr,
+      .wFunc = FO_DELETE,  // Delete (recursively)
+      .pFrom = temp_dir,
+      .pTo = nullptr,
+      .fFlags = FOF_NOCONFIRMATION | FOF_SILENT,  // Do not prompt user
+      .fAnyOperationsAborted = FALSE,
+      .lpszProgressTitle = nullptr,
+      .hNameMappings = nullptr
     };
 
     const auto operation_result = SHFileOperation(&file_options);
@@ -123,7 +122,7 @@ public:
 
     // Iterate through all elements in the directory.
     // If the element is a directory, remove all sub-elements recursively.
-    try{
+    try {
       do {
         if (directory_entry_is_clean(directory_entry)) {
           const auto full_file_path{directory_path + "/" + directory_entry->d_name};

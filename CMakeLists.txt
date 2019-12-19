@@ -54,6 +54,7 @@ if(BUILD_TESTING)
   ament_add_gtest(test_split test/test_split.cpp)
 
   ament_add_gmock(test_filesystem_helper test/test_filesystem_helper.cpp)
+  target_link_libraries(test_filesystem_helper ${PROJECT_NAME})
 
   ament_add_gtest(test_find_and_replace test/test_find_and_replace.cpp)
 
