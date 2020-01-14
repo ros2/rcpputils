@@ -14,6 +14,7 @@
 
 #include <gtest/gtest.h>
 
+#include <fstream>
 #include <string>
 
 #include "rcpputils/filesystem_helper.hpp"
@@ -150,20 +151,26 @@ TEST(TestFilesystemHelper, is_empty)
 }
 
 /**
- * Test directory manipulation API.
+ * Test filesystem manipulation API.
  *
  * NOTE: expects the current directory to be write-only, else test will fail.
  *
  */
-TEST(TestFilesystemHelper, directory_manipulation)
+TEST(TestFilesystemHelper, filesystem_manipulation)
 {
-  auto p = path(build_directory_path());
-  (void)rcpputils::fs::remove(p);
-  EXPECT_FALSE(rcpputils::fs::exists(p));
-  EXPECT_TRUE(rcpputils::fs::create_directories(p));
-  EXPECT_TRUE(rcpputils::fs::exists(p));
-  EXPECT_TRUE(rcpputils::fs::remove(p));
-  EXPECT_FALSE(rcpputils::fs::exists(p));
+  auto dir = path(build_directory_path());
+  (void)rcpputils::fs::remove(dir);
+  EXPECT_FALSE(rcpputils::fs::exists(dir));
+  EXPECT_TRUE(rcpputils::fs::create_directories(dir));
+  EXPECT_TRUE(rcpputils::fs::exists(dir));
+  auto file = dir / "test_file.txt";
+  std::ofstream(file.string()) << "test";
+  EXPECT_TRUE(rcpputils::fs::exists(file));
+  EXPECT_FALSE(rcpputils::fs::remove(dir));
+  EXPECT_TRUE(rcpputils::fs::remove(file));
+  EXPECT_TRUE(rcpputils::fs::remove(dir));
+  EXPECT_FALSE(rcpputils::fs::exists(file));
+  EXPECT_FALSE(rcpputils::fs::exists(dir));
 }
 
 TEST(TestFilesystemHelper, remove_extension)

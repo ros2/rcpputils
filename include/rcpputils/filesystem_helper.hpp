@@ -194,7 +194,7 @@ inline bool create_directories(const path & p)
 #ifdef _WIN32
       status = _mkdir(p_built.string().c_str());
 #else
-      status = mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+      status = mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
 #endif
     }
   }
@@ -204,9 +204,18 @@ inline bool create_directories(const path & p)
 inline bool remove(const path & p)
 {
 #ifdef _WIN32
-  return _rmdir(p.string().c_str()) == 0;
+  struct _stat s;
+  if (_stat(p.string().c_str(), &s) == 0) {
+    if (s.st_mode & S_IFDIR) {
+      return _rmdir(p.string().c_str()) == 0;
+    }
+    if (s.st_mode & S_IFREG) {
+      return ::remove(p.string().c_str()) == 0;
+    }
+  }
+  return false;
 #else
-  return rmdir(p.string().c_str()) == 0;
+  return ::remove(p.string().c_str()) == 0;
 #endif
 }
 
