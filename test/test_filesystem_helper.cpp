@@ -150,15 +150,20 @@ TEST(TestFilesystemHelper, is_empty)
 }
 
 /**
- * Test create directories.
+ * Test directory manipulation API.
  *
  * NOTE: expects the current directory to be write-only, else test will fail.
  *
  */
-TEST(TestFilesystemHelper, create_directories)
+TEST(TestFilesystemHelper, directory_manipulation)
 {
   auto p = path(build_directory_path());
+  (void)rcpputils::fs::remove(p);
+  EXPECT_FALSE(rcpputils::fs::exists(p));
   EXPECT_TRUE(rcpputils::fs::create_directories(p));
+  EXPECT_TRUE(rcpputils::fs::exists(p));
+  EXPECT_TRUE(rcpputils::fs::remove(p));
+  EXPECT_FALSE(rcpputils::fs::exists(p));
 }
 
 TEST(TestFilesystemHelper, remove_extension)
