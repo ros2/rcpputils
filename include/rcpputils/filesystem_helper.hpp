@@ -182,17 +182,41 @@ inline bool exists(const path & path_to_check)
 inline bool create_directories(const path & p)
 {
   path p_built;
+  int status = 0;
 
-  for (auto it = p.cbegin(); it != p.cend(); ++it) {
-    p_built /= *it;
-
+  for (auto it = p.cbegin(); it != p.cend() && status == 0; ++it) {
+    if (p_built.empty()) {
+      p_built = *it;
+    } else {
+      p_built /= *it;
+    }
+    if (!p_built.exists()) {
 #ifdef _WIN32
-    _mkdir(p_built.string().c_str());
+      status = _mkdir(p_built.string().c_str());
 #else
-    mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+      status = mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
 #endif
+    }
   }
-  return true;
+  return status == 0;
+}
+
+inline bool remove(const path & p)
+{
+#ifdef _WIN32
+  struct _stat s;
+  if (_stat(p.string().c_str(), &s) == 0) {
+    if (s.st_mode & S_IFDIR) {
+      return _rmdir(p.string().c_str()) == 0;
+    }
+    if (s.st_mode & S_IFREG) {
+      return ::remove(p.string().c_str()) == 0;
+    }
+  }
+  return false;
+#else
+  return ::remove(p.string().c_str()) == 0;
+#endif
 }
 
 /**
