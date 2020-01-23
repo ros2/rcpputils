@@ -48,9 +48,7 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_asserts_ndebug test/test_asserts.cpp)
 
-  if(TARGET test_asserts_ndebug)
-    add_definitions(-DNDEBUG)
-  endif()
+  target_compile_definitions(test_asserts_ndebug PUBLIC NDEBUG)
 
   ament_add_gtest(test_asserts_debug test/test_asserts.cpp)
 
