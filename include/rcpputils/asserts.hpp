@@ -19,10 +19,12 @@
 #include <stdexcept>
 #include <string>
 
+#include "rcpputils/visibility_control.hpp"
+
 namespace rcpputils
 {
 
-class AssertionException : public std::exception
+class RCPPUTILS_PUBLIC AssertionException : public std::exception
 {
   std::string msg_;
 
@@ -33,7 +35,7 @@ public:
   virtual const char * what() const throw();
 };
 
-class IllegalStateException : public std::exception
+class RCPPUTILS_PUBLIC IllegalStateException : public std::exception
 {
   std::string msg_;
 
