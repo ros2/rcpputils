@@ -25,7 +25,7 @@ namespace rcpputils
  * \param condition
  * \throw std::runtime_error if the condition is not met.
  */
-inline void check(bool condition)
+inline void check_true(bool condition)
 {
   if (!condition) {
     throw std::runtime_error{"Check reported invalid state!"};
@@ -39,7 +39,7 @@ inline void check(bool condition)
  * \param condition
  * \throw std::runtime_error if the macro NDEBUG is not set and the condition is not met.
  */
-inline void ros_assert(bool condition)
+inline void assert_true(bool condition)
 {
 // Same macro definition used by cassert
 #ifndef NDEBUG
