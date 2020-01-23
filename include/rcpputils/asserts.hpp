@@ -21,6 +21,14 @@
 
 #include "rcpputils/visibility_control.hpp"
 
+// Needed to disable compiler warning for exporting a class that extends a
+// non-DLL-interface class.
+// This should be fine since its extending an STL class.
+#ifdef _WIN32
+# pragma warning(push)
+# pragma warning(disable:4275)
+#endif
+
 namespace rcpputils
 {
 
