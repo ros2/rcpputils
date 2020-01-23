@@ -16,6 +16,7 @@
 #define RCPPUTILS__ASSERTS_HPP_
 
 #include <exception>
+#include <stdexcept>
 #include <string>
 
 namespace rcpputils
@@ -42,6 +43,19 @@ public:
 
   virtual const char * what() const throw();
 };
+
+/**
+ * Checks that an argument condition passes.
+ *
+ * \param condition
+ * \throw std::invalid_argument if the condition is not met.
+ */
+inline void require_true(bool condition)
+{
+  if (!condition) {
+    throw std::invalid_argument{"Invalid argument passed!"};
+  }
+}
 
 /**
  * Checks that a state condition passes.

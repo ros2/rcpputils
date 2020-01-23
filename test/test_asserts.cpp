@@ -18,6 +18,14 @@
 
 #include "rcpputils/asserts.hpp"
 
+TEST(test_asserts, require_throws_if_condition_is_false) {
+  EXPECT_THROW(rcpputils::require_true(false), std::invalid_argument);
+}
+
+TEST(test_asserts, require_does_not_throw_if_condition_is_true) {
+  EXPECT_NO_THROW(rcpputils::require_true(true));
+}
+
 TEST(test_asserts, check_throws_if_condition_is_false) {
   EXPECT_THROW(rcpputils::check_true(false), rcpputils::IllegalStateException);
 }
