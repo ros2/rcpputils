@@ -26,6 +26,7 @@
 // This should be fine since its extending an STL class.
 #ifdef _WIN32
 # pragma warning(push)
+# pragma warning(disable:4251)
 # pragma warning(disable:4275)
 #endif
 
@@ -37,8 +38,7 @@ class RCPPUTILS_PUBLIC AssertionException : public std::exception
   std::string msg_;
 
 public:
-  explicit AssertionException(const std::string & msg)
-  : msg_{msg} {}
+  explicit AssertionException(const char * msg);
 
   virtual const char * what() const throw();
 };
@@ -48,8 +48,7 @@ class RCPPUTILS_PUBLIC IllegalStateException : public std::exception
   std::string msg_;
 
 public:
-  explicit IllegalStateException(const std::string & msg)
-  : msg_{msg} {}
+  explicit IllegalStateException(const char * msg);
 
   virtual const char * what() const throw();
 };
@@ -99,5 +98,9 @@ inline void assert_true(bool condition)
 #endif
 }
 }  // namespace rcpputils
+
+#ifdef _WIN32
+# pragma warning(pop)
+#endif
 
 #endif  // RCPPUTILS__ASSERTS_HPP_

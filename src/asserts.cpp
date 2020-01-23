@@ -16,9 +16,19 @@
 
 namespace rcpputils
 {
+AssertionException::AssertionException(const char * msg)
+{
+  msg_ = msg;
+}
+
 const char * AssertionException::what() const throw()
 {
   return msg_.c_str();
+}
+
+IllegalStateException::IllegalStateException(const char * msg)
+{
+  msg_ = msg;
 }
 
 const char * IllegalStateException::what() const throw()
