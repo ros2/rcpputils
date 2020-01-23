@@ -50,7 +50,9 @@ if(BUILD_TESTING)
   ament_add_gtest(test_asserts_ndebug test/test_asserts.cpp)
   target_link_libraries(test_asserts_ndebug ${PROJECT_NAME})
 
-  target_compile_definitions(test_asserts_ndebug PUBLIC NDEBUG)
+  if(TARGET test_asserts_ndebug)
+    target_compile_definitions(test_asserts_ndebug PUBLIC NDEBUG)
+  endif()
 
   ament_add_gtest(test_asserts_debug test/test_asserts.cpp)
   target_link_libraries(test_asserts_debug ${PROJECT_NAME})
