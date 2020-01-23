@@ -19,7 +19,7 @@
 #include "rcpputils/asserts.hpp"
 
 TEST(test_asserts, check_throws_if_condition_is_false) {
-  EXPECT_THROW(rcpputils::check_true(false), std::runtime_error);
+  EXPECT_THROW(rcpputils::check_true(false), rcpputils::IllegalStateException);
 }
 
 TEST(test_asserts, check_does_not_throw_if_condition_is_true) {
@@ -28,7 +28,7 @@ TEST(test_asserts, check_does_not_throw_if_condition_is_true) {
 
 #ifndef NDEBUG
 TEST(test_asserts, ros_assert_throws_if_condition_is_false_and_ndebug_not_set) {
-  EXPECT_THROW(rcpputils::assert_true(false), std::runtime_error);
+  EXPECT_THROW(rcpputils::assert_true(false), rcpputils::AssertionException);
 }
 
 TEST(test_asserts, ros_assert_does_not_throw_if_condition_is_true_and_ndebug_not_set)

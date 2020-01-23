@@ -15,20 +15,44 @@
 #ifndef RCPPUTILS__ASSERTS_HPP_
 #define RCPPUTILS__ASSERTS_HPP_
 
-#include <stdexcept>
+#include <exception>
+#include <string>
 
 namespace rcpputils
 {
+
+class AssertionException : public std::exception
+{
+  std::string msg_;
+
+public:
+  explicit AssertionException(const std::string & msg)
+  : msg_{msg} {}
+
+  virtual const char * what() const throw();
+};
+
+class IllegalStateException : public std::exception
+{
+  std::string msg_;
+
+public:
+  explicit IllegalStateException(const std::string & msg)
+  : msg_{msg} {}
+
+  virtual const char * what() const throw();
+};
+
 /**
  * Checks that a state condition passes.
  *
  * \param condition
- * \throw std::runtime_error if the condition is not met.
+ * \throw rcpputils::IllegalStateException if the condition is not met.
  */
 inline void check_true(bool condition)
 {
   if (!condition) {
-    throw std::runtime_error{"Check reported invalid state!"};
+    throw rcpputils::IllegalStateException{"Check reported invalid state!"};
   }
 }
 
@@ -37,14 +61,14 @@ inline void check_true(bool condition)
  *
  * This function behaves similar to assert, except that it throws instead of invoking abort().
  * \param condition
- * \throw std::runtime_error if the macro NDEBUG is not set and the condition is not met.
+ * \throw rcpputils::AssertionException if the macro NDEBUG is not set and the condition is not met.
  */
 inline void assert_true(bool condition)
 {
 // Same macro definition used by cassert
 #ifndef NDEBUG
   if (!condition) {
-    throw std::runtime_error{"Assertion failed!"};
+    throw rcpputils::AssertionException{"Assertion failed!"};
   }
 #else
   (void) condition;
