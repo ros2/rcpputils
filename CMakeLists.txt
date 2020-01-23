@@ -46,6 +46,14 @@ if(BUILD_TESTING)
 
   ament_lint_auto_find_test_dependencies()
 
+  ament_add_gtest(test_asserts_ndebug test/test_asserts.cpp)
+
+  if(TARGET test_asserts_ndebug)
+    add_definitions(-DNDEBUG)
+  endif()
+
+  ament_add_gtest(test_asserts_debug test/test_asserts.cpp)
+
   ament_add_gtest(test_thread_safety_annotations test/test_thread_safety_annotations.cpp)
 
   ament_add_gtest(test_join test/test_join.cpp)
