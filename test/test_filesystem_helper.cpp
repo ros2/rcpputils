@@ -171,6 +171,13 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   EXPECT_TRUE(rcpputils::fs::remove(dir));
   EXPECT_FALSE(rcpputils::fs::exists(file));
   EXPECT_FALSE(rcpputils::fs::exists(dir));
+  auto temp_dir = rcpputils::fs::temp_directory_path();
+  temp_dir = temp_dir / "rcpputils" / "test_folder";
+  EXPECT_FALSE(rcpputils::fs::exists(temp_dir));
+  EXPECT_TRUE(rcpputils::fs::create_directories(temp_dir));
+  EXPECT_TRUE(rcpputils::fs::exists(temp_dir));
+  EXPECT_TRUE(rcpputils::fs::remove(temp_dir));
+  EXPECT_TRUE(rcpputils::fs::remove(temp_dir.parent_path()));
 }
 
 TEST(TestFilesystemHelper, remove_extension)
