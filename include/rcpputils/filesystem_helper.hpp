@@ -54,6 +54,7 @@
 #endif
 
 #ifdef _WIN32
+#  include <windows.h>
 #  include <direct.h>
 #  include <fileapi.h>
 #  include <io.h>
