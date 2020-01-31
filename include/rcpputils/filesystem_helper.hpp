@@ -187,8 +187,8 @@ inline path temp_directory_path()
 #ifdef UNICODE
 #error "rcpputils::fs does not support Unicode paths"
 #endif
-  char temp_path[MAX_PATH];
-  int size = GetTempPathA(MAX_PATH, &temp_path);
+  TCHAR temp_path[MAX_PATH];
+  DWORD size = GetTempPathA(MAX_PATH, temp_path);
   if (size > MAX_PATH || size == 0) {
     throw std::system_error("cannot get temporary directory path");
   }
