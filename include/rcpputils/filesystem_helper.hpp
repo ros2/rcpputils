@@ -190,7 +190,8 @@ inline path temp_directory_path()
   TCHAR temp_path[MAX_PATH];
   DWORD size = GetTempPathA(MAX_PATH, temp_path);
   if (size > MAX_PATH || size == 0) {
-    throw std::system_error("cannot get temporary directory path");
+    std::error_code ec(static_cast<int>(GetLastError()), std::system_category());
+    throw std::system_error(ec, "cannot get temporary directory path");
   }
   temp_path[size] = '\0';
 #else
