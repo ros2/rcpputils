@@ -58,6 +58,13 @@ TEST(TestFilesystemHelper, join_path)
   }
 }
 
+TEST(TestFilesystemHelper, parent_path)
+{
+  auto p = path("my") / path("path");
+
+  EXPECT_EQ(p.parent_path().string(), path("my").string());
+}
+
 TEST(TestFilesystemHelper, to_native_path)
 {
   {

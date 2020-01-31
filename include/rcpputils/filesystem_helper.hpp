@@ -127,9 +127,13 @@ public:
 
   path parent_path() const
   {
-    path parent("");
+    path parent;
     for (auto it = this->cbegin(); it != --this->cend(); ++it) {
-      parent /= *it;
+      if (!parent.empty() || it->empty()) {
+        parent /= *it;
+      } else {
+        parent = *it;
+      }
     }
     return parent;
   }
