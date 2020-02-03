@@ -21,6 +21,7 @@
 
 TEST(TestPointerTraits, is_pointer) {
   auto ptr = new int(13);
+  auto ptr_ptr = &ptr;
   const auto * const cptrc = new int(13);
   auto sptr = std::make_shared<int>(13);
   const auto csptr = std::make_shared<int>(13);
@@ -32,6 +33,8 @@ TEST(TestPointerTraits, is_pointer) {
   const volatile auto cvuptrc = std::make_unique<const int>(13);
 
   auto b_ptr = rcpputils::is_pointer<decltype(ptr)>::value;
+  auto b_ptr_ptr = rcpputils::is_pointer<decltype(ptr_ptr)>::value;
+  auto b_ptr2 = rcpputils::is_pointer<decltype(*ptr_ptr)>::value;
   auto b_cptrc = rcpputils::is_pointer<decltype(cptrc)>::value;
   auto b_sptr = rcpputils::is_pointer<decltype(sptr)>::value;
   auto b_csptr = rcpputils::is_pointer<decltype(csptr)>::value;
@@ -43,6 +46,8 @@ TEST(TestPointerTraits, is_pointer) {
   auto b_cvuptrc = rcpputils::is_pointer<decltype(cvuptrc)>::value;
 
   EXPECT_TRUE(b_ptr);
+  EXPECT_TRUE(b_ptr_ptr);
+  EXPECT_TRUE(b_ptr2);
   EXPECT_TRUE(b_cptrc);
   EXPECT_TRUE(b_sptr);
   EXPECT_TRUE(b_csptr);

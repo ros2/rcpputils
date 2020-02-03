@@ -68,7 +68,8 @@ struct is_smart_pointer : is_smart_pointer_helper<typename std::remove_cv<T>::ty
 template<class T>
 struct is_pointer
 {
-  static constexpr bool value = std::is_pointer<T>::value || details::is_smart_pointer<T>::value;
+  static constexpr bool value = std::is_pointer<typename std::remove_reference<T>::type>::value ||
+    details::is_smart_pointer<typename std::remove_reference<T>::type>::value;
 };
 
 }  // namespace rcpputils
