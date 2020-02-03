@@ -27,7 +27,8 @@ bool isLittleEndian()
 TEST(test_endian, is_defined)
 {
   // A platform should be one or other.
-  EXPECT_TRUE((rcpputils::endian::little == rcpputils::endian::native) ||
+  EXPECT_TRUE(
+    (rcpputils::endian::little == rcpputils::endian::native) ||
     (rcpputils::endian::big == rcpputils::endian::native));
 }
 
