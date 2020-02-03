@@ -58,6 +58,13 @@ TEST(TestFilesystemHelper, join_path)
   }
 }
 
+TEST(TestFilesystemHelper, parent_path)
+{
+  auto p = path("my") / path("path");
+
+  EXPECT_EQ(p.parent_path().string(), path("my").string());
+}
+
 TEST(TestFilesystemHelper, to_native_path)
 {
   {
@@ -171,6 +178,13 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   EXPECT_TRUE(rcpputils::fs::remove(dir));
   EXPECT_FALSE(rcpputils::fs::exists(file));
   EXPECT_FALSE(rcpputils::fs::exists(dir));
+  auto temp_dir = rcpputils::fs::temp_directory_path();
+  temp_dir = temp_dir / "rcpputils" / "test_folder";
+  EXPECT_FALSE(rcpputils::fs::exists(temp_dir));
+  EXPECT_TRUE(rcpputils::fs::create_directories(temp_dir));
+  EXPECT_TRUE(rcpputils::fs::exists(temp_dir));
+  EXPECT_TRUE(rcpputils::fs::remove(temp_dir));
+  EXPECT_TRUE(rcpputils::fs::remove(temp_dir.parent_path()));
 }
 
 TEST(TestFilesystemHelper, remove_extension)

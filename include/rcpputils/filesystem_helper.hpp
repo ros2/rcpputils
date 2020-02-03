@@ -54,7 +54,9 @@
 #endif
 
 #ifdef _WIN32
+#  include <windows.h>
 #  include <direct.h>
+#  include <fileapi.h>
 #  include <io.h>
 #  define access _access_s
 #else
@@ -125,9 +127,13 @@ public:
 
   path parent_path() const
   {
-    path parent("");
+    path parent;
     for (auto it = this->cbegin(); it != --this->cend(); ++it) {
-      parent /= *it;
+      if (!parent.empty() || it->empty()) {
+        parent /= *it;
+      } else {
+        parent = *it;
+      }
     }
     return parent;
   }
@@ -179,16 +185,38 @@ inline bool exists(const path & path_to_check)
   return path_to_check.exists();
 }
 
+inline path temp_directory_path()
+{
+#ifdef _WIN32
+#ifdef UNICODE
+#error "rcpputils::fs does not support Unicode paths"
+#endif
+  TCHAR temp_path[MAX_PATH];
+  DWORD size = GetTempPathA(MAX_PATH, temp_path);
+  if (size > MAX_PATH || size == 0) {
+    std::error_code ec(static_cast<int>(GetLastError()), std::system_category());
+    throw std::system_error(ec, "cannot get temporary directory path");
+  }
+  temp_path[size] = '\0';
+#else
+  const char * temp_path = getenv("TMPDIR");
+  if (!temp_path) {
+    temp_path = "/tmp";
+  }
+#endif
+  return path(temp_path);
+}
+
 inline bool create_directories(const path & p)
 {
   path p_built;
   int status = 0;
 
   for (auto it = p.cbegin(); it != p.cend() && status == 0; ++it) {
-    if (p_built.empty()) {
-      p_built = *it;
-    } else {
+    if (!p_built.empty() || it->empty()) {
       p_built /= *it;
+    } else {
+      p_built = *it;
     }
     if (!p_built.exists()) {
 #ifdef _WIN32
