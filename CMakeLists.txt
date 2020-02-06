@@ -24,6 +24,7 @@ include_directories(include)
 ament_export_include_directories(include)
 
 add_library(${PROJECT_NAME}
+  src/asserts.cpp
   src/find_library.cpp)
 target_include_directories(${PROJECT_NAME}
   PUBLIC
@@ -45,6 +46,16 @@ if(BUILD_TESTING)
   endif()
 
   ament_lint_auto_find_test_dependencies()
+
+  ament_add_gtest(test_asserts_ndebug test/test_asserts.cpp)
+  target_link_libraries(test_asserts_ndebug ${PROJECT_NAME})
+
+  if(TARGET test_asserts_ndebug)
+    target_compile_definitions(test_asserts_ndebug PUBLIC NDEBUG)
+  endif()
+
+  ament_add_gtest(test_asserts_debug test/test_asserts.cpp)
+  target_link_libraries(test_asserts_debug ${PROJECT_NAME})
 
   ament_add_gtest(test_thread_safety_annotations test/test_thread_safety_annotations.cpp)
 
