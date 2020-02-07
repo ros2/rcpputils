@@ -60,7 +60,7 @@ public:
  * \param msg
  * \throw std::invalid_argument if the condition is not met.
  */
-inline void require_true(bool condition, const std::string & msg = "Invalid argument passed!")
+inline void require_true(bool condition, const std::string & msg = "invalid argument passed")
 {
   if (!condition) {
     throw std::invalid_argument{msg};
@@ -74,7 +74,7 @@ inline void require_true(bool condition, const std::string & msg = "Invalid argu
  * \param msg
  * \throw rcpputils::IllegalStateException if the condition is not met.
  */
-inline void check_true(bool condition, const std::string & msg = "Check reported invalid state!")
+inline void check_true(bool condition, const std::string & msg = "check reported invalid state")
 {
   if (!condition) {
     throw rcpputils::IllegalStateException{msg.c_str()};
@@ -89,7 +89,7 @@ inline void check_true(bool condition, const std::string & msg = "Check reported
  * \param msg
  * \throw rcpputils::AssertionException if the macro NDEBUG is not set and the condition is not met.
  */
-inline void assert_true(bool condition, const std::string & msg = "Assertion failed!")
+inline void assert_true(bool condition, const std::string & msg = "assertion failed")
 {
 // Same macro definition used by cassert
 #ifndef NDEBUG
