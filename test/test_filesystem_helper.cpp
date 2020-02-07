@@ -170,11 +170,26 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   EXPECT_FALSE(rcpputils::fs::exists(dir));
   EXPECT_TRUE(rcpputils::fs::create_directories(dir));
   EXPECT_TRUE(rcpputils::fs::exists(dir));
+  EXPECT_TRUE(rcpputils::fs::is_directory(dir));
+  EXPECT_FALSE(rcpputils::fs::is_regular_file(dir));
+
   auto file = dir / "test_file.txt";
-  std::ofstream(file.string()) << "test";
+  uint64_t expected_file_size = 0;
+  {
+    std::ofstream output_buffer{file.string()};
+    output_buffer << "test";
+    expected_file_size = static_cast<uint64_t>(output_buffer.tellp());
+  }
+
   EXPECT_TRUE(rcpputils::fs::exists(file));
+  EXPECT_TRUE(rcpputils::fs::is_regular_file(file));
+  EXPECT_FALSE(rcpputils::fs::is_directory(file));
+  EXPECT_GE(rcpputils::fs::file_size(file), expected_file_size);
+  EXPECT_THROW(rcpputils::fs::file_size(dir), std::system_error) <<
+    "file_size is only applicable for files!";
   EXPECT_FALSE(rcpputils::fs::remove(dir));
   EXPECT_TRUE(rcpputils::fs::remove(file));
+  EXPECT_THROW(rcpputils::fs::file_size(file), std::system_error);
   EXPECT_TRUE(rcpputils::fs::remove(dir));
   EXPECT_FALSE(rcpputils::fs::exists(file));
   EXPECT_FALSE(rcpputils::fs::exists(dir));

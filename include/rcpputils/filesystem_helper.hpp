@@ -43,6 +43,8 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
+#include <sys/stat.h>
+
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -60,7 +62,6 @@
 #  include <io.h>
 #  define access _access_s
 #else
-#  include <sys/stat.h>
 #  include <sys/types.h>
 #  include <unistd.h>
 #endif
@@ -103,6 +104,68 @@ public:
   bool exists() const
   {
     return access(path_.c_str(), 0) == 0;
+  }
+
+  /**
+   * Checks if the path is a directory.
+   */
+  bool is_directory() const noexcept
+  {
+    struct stat stat_buffer;
+    const auto rc = stat(path_.c_str(), &stat_buffer);
+
+    if (rc != 0) {
+      return false;
+    }
+
+#ifdef _WIN32
+    return (stat_buffer.st_mode & S_IFDIR) == S_IFDIR;
+#else
+    return S_ISDIR(stat_buffer.st_mode);
+#endif
+  }
+
+  /**
+   * Checks if the path is a regular file.
+   */
+  bool is_regular_file() const noexcept
+  {
+    struct stat stat_buffer;
+    const auto rc = stat(path_.c_str(), &stat_buffer);
+
+    if (rc != 0) {
+      return false;
+    }
+
+#ifdef _WIN32
+    return (stat_buffer.st_mode & S_IFREG) == S_IFREG;
+#else
+    return S_ISREG(stat_buffer.st_mode);
+#endif
+  }
+
+  /**
+  * Returns the size of the file.
+  *
+  * \throws std::system_error
+  */
+  uint64_t file_size() const
+  {
+    if (is_directory()) {
+      auto ec = std::make_error_code(std::errc::is_a_directory);
+      throw std::system_error{ec, "cannot get file size"};
+    }
+
+    struct stat stat_buffer;
+    const auto rc = stat(path_.c_str(), &stat_buffer);
+
+    if (rc != 0) {
+      std::error_code ec{errno, std::system_category()};
+      errno = 0;
+      throw std::system_error{ec, "cannot get file size"};
+    } else {
+      return static_cast<uint64_t>(stat_buffer.st_size);
+    }
   }
 
   bool empty() const
@@ -179,6 +242,32 @@ private:
   std::string path_;
   std::vector<std::string> path_as_vector_;
 };
+
+/**
+ * Checks if the path is a regular file.
+ */
+inline bool is_regular_file(const path & p) noexcept
+{
+  return p.is_regular_file();
+}
+
+/**
+ * Checks if the path is a directory.
+ */
+inline bool is_directory(const path & p) noexcept
+{
+  return p.is_directory();
+}
+
+/**
+ * Returns the file size of the path.
+ *
+ * \throws std::sytem_error
+ */
+inline uint64_t file_size(const path & p)
+{
+  return p.file_size();
+}
 
 inline bool exists(const path & path_to_check)
 {
