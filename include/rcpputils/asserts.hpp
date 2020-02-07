@@ -63,7 +63,7 @@ public:
 inline void require_true(bool condition, const std::string & msg = "Invalid argument passed!")
 {
   if (!condition) {
-    throw std::invalid_argument{msg.c_str()};
+    throw std::invalid_argument{msg};
   }
 }
 
