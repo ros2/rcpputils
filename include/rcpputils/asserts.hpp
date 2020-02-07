@@ -57,12 +57,13 @@ public:
  * Checks that an argument condition passes.
  *
  * \param condition
+ * \param msg
  * \throw std::invalid_argument if the condition is not met.
  */
-inline void require_true(bool condition)
+inline void require_true(bool condition, const std::string & msg = "invalid argument passed")
 {
   if (!condition) {
-    throw std::invalid_argument{"Invalid argument passed!"};
+    throw std::invalid_argument{msg};
   }
 }
 
@@ -70,12 +71,13 @@ inline void require_true(bool condition)
  * Checks that a state condition passes.
  *
  * \param condition
+ * \param msg
  * \throw rcpputils::IllegalStateException if the condition is not met.
  */
-inline void check_true(bool condition)
+inline void check_true(bool condition, const std::string & msg = "check reported invalid state")
 {
   if (!condition) {
-    throw rcpputils::IllegalStateException{"Check reported invalid state!"};
+    throw rcpputils::IllegalStateException{msg.c_str()};
   }
 }
 
@@ -84,17 +86,19 @@ inline void check_true(bool condition)
  *
  * This function behaves similar to assert, except that it throws instead of invoking abort().
  * \param condition
+ * \param msg
  * \throw rcpputils::AssertionException if the macro NDEBUG is not set and the condition is not met.
  */
-inline void assert_true(bool condition)
+inline void assert_true(bool condition, const std::string & msg = "assertion failed")
 {
 // Same macro definition used by cassert
 #ifndef NDEBUG
   if (!condition) {
-    throw rcpputils::AssertionException{"Assertion failed!"};
+    throw rcpputils::AssertionException{msg.c_str()};
   }
 #else
   (void) condition;
+  (void) msg;
 #endif
 }
 }  // namespace rcpputils
