@@ -34,6 +34,10 @@ if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
     PRIVATE "RCPPUTILS_BUILDING_LIBRARY")
 endif()
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  BUILD_RPATH ${CMAKE_CURRENT_BINARY_DIR}
+  INSTALL_RPATH_USE_LINK_PATH TRUE
+)
 ament_target_dependencies(${PROJECT_NAME} rcutils)
 ament_export_libraries(${PROJECT_NAME})
 
