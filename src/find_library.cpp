@@ -81,9 +81,9 @@ std::string find_library_path(const std::string & library_name)
 #if !defined(_WIN32) && !defined(__APPLE__)
   std::string search_path_runpath;
 
-  const ElfW(Dyn) *dyn = _DYNAMIC;
-  const ElfW(Dyn) *runpath = NULL;
-  const char *strtab = NULL;
+  const ElfW(Dyn) * dyn = _DYNAMIC;
+  const ElfW(Dyn) * runpath = NULL;
+  const char * strtab = NULL;
 
   for (; dyn->d_tag != DT_NULL; ++dyn) {
     if (dyn->d_tag == DT_RUNPATH) {
