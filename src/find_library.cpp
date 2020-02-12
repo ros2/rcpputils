@@ -21,6 +21,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <link.h>
 
 #include "rcutils/filesystem.h"
 #include "rcutils/get_env.h"
@@ -75,6 +76,27 @@ std::string find_library_path(const std::string & library_name)
 {
   std::string search_path = get_env_var(kPathVar);
   std::list<std::string> search_paths = split(search_path, kPathSeparator);
+
+#if !defined(_WIN32) && !defined(__APPLE__)
+  std::string search_path_runpath;
+
+  const ElfW(Dyn) *dyn = _DYNAMIC;
+  const ElfW(Dyn) *runpath = NULL;
+  const char *strtab = NULL;
+
+  for (; dyn->d_tag != DT_NULL; ++dyn) {
+    if (dyn->d_tag == DT_RUNPATH) {
+      runpath = dyn;
+    } else if (dyn->d_tag == DT_STRTAB) {
+      strtab = (const char *)dyn->d_un.d_val;
+    }
+  }
+
+  if (strtab != NULL && runpath != NULL) {
+    search_path_runpath = std::string(strtab + runpath->d_un.d_val);
+    search_paths.splice(search_paths.cend(), split(search_path_runpath, kPathSeparator));
+  }
+#endif
 
   std::string filename = kSolibPrefix;
   filename += library_name + kSolibExtension;
