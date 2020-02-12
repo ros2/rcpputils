@@ -59,8 +59,17 @@ TEST(test_find_library, find_library)
 #endif
 
   // Positive test.
-  const std::string test_lib_actual = find_library_path("test_library");
+  std::string test_lib_actual = find_library_path("test_library");
   EXPECT_EQ(test_lib_actual, expected_library_path);
+
+#if !defined(_WIN32) && !defined(__APPLE__)
+  EXPECT_EQ(setenv(env_var, "", override), 0);
+
+  // Test with empty LD_LIBRARY_PATH to emulate setcap / setuid executable.
+  // Using RUNPATH to find library instead.
+  test_lib_actual = find_library_path("test_library");
+  EXPECT_EQ(test_lib_actual, expected_library_path);
+#endif
 
   // (Hopefully) Negative test.
   const std::string bad_path = find_library_path(
