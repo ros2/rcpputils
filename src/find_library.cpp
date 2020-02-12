@@ -14,6 +14,8 @@
 
 #include "rcpputils/find_library.hpp"
 
+#include <link.h>
+
 #include <cassert>
 #include <cstddef>
 
@@ -21,7 +23,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <link.h>
 
 #include "rcutils/filesystem.h"
 #include "rcutils/get_env.h"
