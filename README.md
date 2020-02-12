@@ -1,4 +1,7 @@
 # rcpputils: ROS 2 C++ Utilities
+![License](https://img.shields.io/github/license/ros2/rcpputils)
+![Test rcpputils](https://github.com/ros2/rcpputils/workflows/Test%20rcpputils/badge.svg)
+
 
 `rcpputils` is a C++ API consisting of macros, functions, and data structures intended for use throughout the ROS 2 codebase
 
