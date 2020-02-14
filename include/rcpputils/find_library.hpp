@@ -23,8 +23,8 @@ namespace rcpputils
 {
 
 /// Finds a library located in the OS's specified environment variable for
-/// library paths and returns the absolute filesystem path, including the
-/// appropriate prefix and extension.
+/// library paths or in RUNPATH on Linux and returns the absolute filesystem
+/// path, including the appropriate prefix and extension.
 /**
  * The environment variable and file format per platform:
  *  * Linux: `${LD_LIBRARY_PATH}`, `lib{}.so`
