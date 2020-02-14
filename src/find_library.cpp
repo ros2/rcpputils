@@ -14,7 +14,10 @@
 
 #include "rcpputils/find_library.hpp"
 
+
+#if !defined(_WIN32) && !defined(__APPLE__)
 #include <link.h>
+#endif
 
 #include <cassert>
 #include <cstddef>
