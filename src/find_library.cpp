@@ -14,7 +14,6 @@
 
 #include "rcpputils/find_library.hpp"
 
-
 #if !defined(_WIN32) && !defined(__APPLE__)
 #include <link.h>
 #endif
@@ -74,11 +73,14 @@ std::list<std::string> split(const std::string & value, const char delimiter)
   return list;
 }
 
-#if !defined(_WIN32) && !defined(__APPLE__)
 // Retrieves a list of paths from the RUNPATH header on Linux.
 // Useful when LD_LIBRARY_PATH is ignored for setcap / setuid executables.
 std::list<std::string> retrieve_runpath_paths()
 {
+#if defined(_WIN32) || defined(__APPLE__)
+  // Return empty list for win / macos
+  return std::list<std::string>();
+#else
   const ElfW(Dyn) * dyn = _DYNAMIC;
   const ElfW(Dyn) * runpath = NULL;
   const char * strtab = NULL;
@@ -97,20 +99,18 @@ std::list<std::string> retrieve_runpath_paths()
   }
 
   return split(search_path, kPathSeparator);
-}
 #endif
+}
 
 }  // namespace
 
 std::string find_library_path(const std::string & library_name)
 {
-  std::string search_path = get_env_var(kPathVar);
-  std::list<std::string> search_paths = split(search_path, kPathSeparator);
+  std::string search_path_env = get_env_var(kPathVar);
+  std::list<std::string> search_paths = split(search_path_env, kPathSeparator);
 
-#if !defined(_WIN32) && !defined(__APPLE__)
   std::list<std::string> search_paths_runpath = retrieve_runpath_paths();
   search_paths.splice(search_paths.cend(), search_paths_runpath);
-#endif
 
   std::string filename = kSolibPrefix;
   filename += library_name + kSolibExtension;
