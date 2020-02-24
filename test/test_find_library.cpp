@@ -37,39 +37,9 @@ TEST(test_find_library, find_library)
     expected_library_path = _expected_library_path;
   }
 
-  const char * test_lib_dir{};
-  EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY_DIR", &test_lib_dir), nullptr);
-  EXPECT_NE(test_lib_dir, nullptr);
-
-  // Set our relevant path variable.
-  const char * env_var{};
-#ifdef _WIN32
-  env_var = "PATH";
-#elif __APPLE__
-  env_var = "DYLD_LIBRARY_PATH";
-#else
-  env_var = "LD_LIBRARY_PATH";
-#endif
-
-#ifdef _WIN32
-  EXPECT_EQ(_putenv_s(env_var, test_lib_dir), 0);
-#else
-  const int override = 1;
-  EXPECT_EQ(setenv(env_var, test_lib_dir, override), 0);
-#endif
-
   // Positive test.
   std::string test_lib_actual = find_library_path("test_library");
   EXPECT_EQ(test_lib_actual, expected_library_path);
-
-#if !defined(_WIN32) && !defined(__APPLE__)
-  EXPECT_EQ(setenv(env_var, "", override), 0);
-
-  // Test with empty LD_LIBRARY_PATH to emulate setcap / setuid executable.
-  // Using RUNPATH to find library instead.
-  test_lib_actual = find_library_path("test_library");
-  EXPECT_EQ(test_lib_actual, expected_library_path);
-#endif
 
   // (Hopefully) Negative test.
   const std::string bad_path = find_library_path(

@@ -75,12 +75,31 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_endian test/test_endian.cpp)
 
+  if(WIN32)
+    set(LIBRARY_PATH_VAR "PATH")
+  elseif(APPLE)
+    set(LIBRARY_PATH_VAR "DYLD_LIBRARY_PATH")
+  else()
+    set(LIBRARY_PATH_VAR "LD_LIBRARY_PATH")
+  endif()
+
   add_library(test_library SHARED test/test_library.cpp)
+
   ament_add_gtest(test_find_library test/test_find_library.cpp)
   target_link_libraries(test_find_library ${PROJECT_NAME} test_library)
   set_tests_properties(test_find_library PROPERTIES
     ENVIRONMENT
-      "_TEST_LIBRARY_DIR=$<TARGET_FILE_DIR:test_library>;_TEST_LIBRARY=$<TARGET_FILE:test_library>")
+      "${LIBRARY_PATH_VAR}=$<TARGET_FILE_DIR:test_library>;_TEST_LIBRARY=$<TARGET_FILE:test_library>")
+
+  # Test with empty LD_LIBRARY_PATH to emulate setcap / setuid executable.
+  # Using RUNPATH to find library instead.
+  if(NOT (WIN32 OR APPLE))
+    ament_add_gtest(test_find_library_runpath test/test_find_library.cpp)
+    target_link_libraries(test_find_library_runpath ${PROJECT_NAME} test_library)
+    set_tests_properties(test_find_library_runpath PROPERTIES
+      ENVIRONMENT
+        "${LIBRARY_PATH_VAR}=;_TEST_LIBRARY=$<TARGET_FILE:test_library>")
+  endif()
 endif()
 
 ament_package()
