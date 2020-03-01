@@ -33,6 +33,10 @@
 // This file is originally from:
 // https://github.com/ros/pluginlib/blob/1a4de29fa55173e9b897ca8ff57ebc88c047e0b3/pluginlib/include/pluginlib/impl/split.hpp
 
+/*! \file split.hpp
+ * \brief Split string by provided delimiter.
+ */
+
 #ifndef RCPPUTILS__SPLIT_HPP_
 #define RCPPUTILS__SPLIT_HPP_
 

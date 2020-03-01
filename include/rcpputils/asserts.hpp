@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*! \file asserts.hpp
+ * \brief Assertion-like exceptions for halting tests.
+ */
+
 #ifndef RCPPUTILS__ASSERTS_HPP_
 #define RCPPUTILS__ASSERTS_HPP_
 
@@ -33,31 +37,59 @@
 namespace rcpputils
 {
 
+/**
+ * \brief An assertion-like exception for halting tests if conditions are not met.
+ */
 class RCPPUTILS_PUBLIC AssertionException : public std::exception
 {
   std::string msg_;
 
 public:
+  /**
+   * \brief Constructor for AssertionException
+   *
+   * \param msg The message to display when this exception is thrown.
+   */
   explicit AssertionException(const char * msg);
 
+  /**
+   * \brief Get the message description of why this exception was thrown.
+   *
+   * \return The string message
+   */
   virtual const char * what() const throw();
 };
+
+/**
+ * \brief An exception to be thrown when a state check fails.
+ */
 
 class RCPPUTILS_PUBLIC IllegalStateException : public std::exception
 {
   std::string msg_;
 
 public:
+  /**
+   * \brief Constructor for IllegalStateException
+   *
+   * \param msg The message to display when this exception is thrown.
+   */
+
   explicit IllegalStateException(const char * msg);
 
+  /**
+   * \brief Get the message description of why this exception was thrown.
+   *
+   * \return The string message
+   */
   virtual const char * what() const throw();
 };
 
 /**
- * Checks that an argument condition passes.
+ * \brief Checks that an argument condition passes.
  *
- * \param condition
- * \param msg
+ * \param condition condition that is asserted to be true
+ * \param msg message to pass to exception when condition is false
  * \throw std::invalid_argument if the condition is not met.
  */
 inline void require_true(bool condition, const std::string & msg = "invalid argument passed")
@@ -68,10 +100,10 @@ inline void require_true(bool condition, const std::string & msg = "invalid argu
 }
 
 /**
- * Checks that a state condition passes.
+ * \brief Checks that a state condition passes.
  *
- * \param condition
- * \param msg
+ * \param condition condition to check whether it is true or not
+ * \param msg message to pass to exception when condition is false
  * \throw rcpputils::IllegalStateException if the condition is not met.
  */
 inline void check_true(bool condition, const std::string & msg = "check reported invalid state")
@@ -82,11 +114,13 @@ inline void check_true(bool condition, const std::string & msg = "check reported
 }
 
 /**
- * Asserts that a condition passes.
+ * \brief Asserts that a condition passes.
  *
  * This function behaves similar to assert, except that it throws instead of invoking abort().
- * \param condition
- * \param msg
+ * It is only enabled when NDEBUG is not defined
+ *
+ * \param condition condition to check whether it's true or not
+ * \param msg message to pass to exception when condition is not met.
  * \throw rcpputils::AssertionException if the macro NDEBUG is not set and the condition is not met.
  */
 inline void assert_true(bool condition, const std::string & msg = "assertion failed")

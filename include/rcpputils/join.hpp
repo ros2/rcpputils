@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*! \file join.hpp
+ * \brief Join container of objects into single string
+ */
+
 #ifndef RCPPUTILS__JOIN_HPP_
 #define RCPPUTILS__JOIN_HPP_
 

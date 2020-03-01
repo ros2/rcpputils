@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * If std::endian is not available, the necessary functions are emulated.
+/*! \file endian.hpp
+ * \brief If std::endian is not available, the necessary functions are emulated.
  *
  * Note: Once std::endian is supported on all ROS2 platforms, this class
  * can be deprecated in favor of the built-in functionality.
@@ -47,9 +47,14 @@ using std::endian;
 
 namespace rcpputils
 {
-// Ref: https://en.cppreference.com/w/cpp/types/endian#Possible_implementation
-// From: https://en.cppreference.com/w/Cppreference:FAQ, this is licensed
-// Creative Commons Attribution-Sharealike 3.0 Unported License (CC-BY-SA)
+/*! \enum endian
+ * \brief Type traits for defining the endianness at compile-time.
+ *
+ * [cppreference.com documentation](https://en.cppreference.com/w/cpp/types/endian#Possible_implementation)
+ *
+ *  From: https://en.cppreference.com/w/Cppreference:FAQ, this is licensed Creative Commons
+ * Attribution-Sharealike 3.0 Unported License (CC-BY-SA)
+ */
 enum class endian
 {
 #ifdef _WIN32
