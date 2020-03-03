@@ -72,7 +72,7 @@ struct is_smart_pointer : is_smart_pointer_helper<typename std::remove_cv<T>::ty
 template<class T>
 struct is_pointer
 {
-  /// Indicates if this object is a pointer or smart pointer.
+  /// Indicates whether this object is a pointer or smart pointer.
   static constexpr bool value = std::is_pointer<typename std::remove_reference<T>::type>::value ||
     details::is_smart_pointer<typename std::remove_reference<T>::type>::value;
 };

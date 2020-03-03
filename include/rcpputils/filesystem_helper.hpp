@@ -34,7 +34,7 @@
 // https://github.com/ros/pluginlib/blob/1a4de29fa55173e9b897ca8ff57ebc88c047e0b3/pluginlib/include/pluginlib/impl/filesystem_helper.hpp
 
 /*! \file filesystem_helper.hpp
- * \brief Cross-platform filesystem helper functions and additional emulation of [std::filesystem](https://en.cppreference.com/w/cpp/filesystem). 
+ * \brief Cross-platform filesystem helper functions and additional emulation of [std::filesystem](https://en.cppreference.com/w/cpp/filesystem).
  *
  * If std::filesystem is not available the necessary functions are emulated.
  * Note: Once std::filesystem is supported on all ROS2 platforms, this class
@@ -136,7 +136,7 @@ public:
   }
 
   /**
-   * \brief Checks if the path exists and it is a directory.
+   * \brief Check if the path exists and it is a directory.
    *
    * \return True if the path is an existing directory, false otherwise.
    */
@@ -157,7 +157,7 @@ public:
   }
 
   /**
-   * \brief Checks if the path is a regular file.
+   * \brief Check if the path is a regular file.
    *
    * \return True if the file is an existing regular file, false otherwise.
    */
@@ -178,7 +178,7 @@ public:
   }
 
   /**
-  * \brief Returns the size of the file in bytes.
+  * \brief Return the size of the file in bytes.
   *
   * \return size of file in bytes
   * \throws std::system_error
@@ -339,7 +339,7 @@ private:
 };
 
 /**
- * \brief Checks if the path is a regular file.
+ * \brief Check if the path is a regular file.
  *
  * \param The path to check
  * \return True if the path exists, false otherwise.
@@ -350,7 +350,7 @@ inline bool is_regular_file(const path & p) noexcept
 }
 
 /**
- * \brief Checks if the path is a directory.
+ * \brief Check if the path is a directory.
  *
  * \param path The path to check
  * \return True if the path is an existing directory, false otherwise.
@@ -361,7 +361,7 @@ inline bool is_directory(const path & p) noexcept
 }
 
 /**
- * \brief Returns the file size of the path.
+ * \brief Get the file size of the path.
  *
  * \param The path to get the file size of.
  * \return The file size in bytes.

@@ -27,19 +27,17 @@
 *
 * The attributes can be safely erased when compiling with other compilers.
 *
-* Prefixing all macros to avoid potential conflict with other projects.
 *
 * Macro descriptions were obtained from llvm's thread safety annotation documentation, see
 * [their documentation](https://clang.llvm.org/docs/ThreadSafetyAnalysis.html) for more info
-*
-* ```c++
-* #if defined(__clang__) && defined(_LIBCPP_HAS_THREAD_SAFETY_ANNOTATIONS) && (!defined(SWIG))
-* #define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))
-* #else
-* #define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   // no-op
-* #endif
-* ```
 */
+
+// Prefixing all macros to avoid potential conflict with other projects.
+#if defined(__clang__) && defined(_LIBCPP_HAS_THREAD_SAFETY_ANNOTATIONS) && (!defined(SWIG))
+#define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))
+#else
+#define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   // no-op
+#endif
 
 /**
   * \brief Defined for negation functionality
@@ -111,15 +109,15 @@ inline const std::mutex & operator!(const std::mutex & a)
 #define RCPPUTILS_TSA_ACQUIRED_BEFORE(...) \
   RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(acquired_before(__VA_ARGS__))
 
-  /**
-    * \def RCPPUTILS_TSA_ACQUIRED_AFTER
-    * \brief Attribute on member declarations, specifically declarations of mutexes or other
-    * capabilities.
-    *
-    * These declarations enforce a particular order in which the mutexes must be acquired, in order
-    * to prevent deadlock.
-    * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#acquired-before-acquired-after
-    */
+/**
+  * \def RCPPUTILS_TSA_ACQUIRED_AFTER
+  * \brief Attribute on member declarations, specifically declarations of mutexes or other
+  * capabilities.
+  *
+  * These declarations enforce a particular order in which the mutexes must be acquired, in order
+  * to prevent deadlock.
+  * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#acquired-before-acquired-after
+  */
 #define RCPPUTILS_TSA_ACQUIRED_AFTER(...) \
   RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(acquired_after(__VA_ARGS__))
 

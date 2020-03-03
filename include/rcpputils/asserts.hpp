@@ -86,7 +86,7 @@ public:
 };
 
 /**
- * \brief Checks that an argument condition passes.
+ * \brief Check that an argument condition passes.
  *
  * \param condition condition that is asserted to be true
  * \param msg message to pass to exception when condition is false
@@ -100,7 +100,7 @@ inline void require_true(bool condition, const std::string & msg = "invalid argu
 }
 
 /**
- * \brief Checks that a state condition passes.
+ * \brief Check that a state condition passes.
  *
  * \param condition condition to check whether it is true or not
  * \param msg message to pass to exception when condition is false
@@ -114,7 +114,7 @@ inline void check_true(bool condition, const std::string & msg = "check reported
 }
 
 /**
- * \brief Asserts that a condition passes.
+ * \brief Assert that a condition passes.
  *
  * This function behaves similar to assert, except that it throws instead of invoking abort().
  * It is only enabled when NDEBUG is not defined
