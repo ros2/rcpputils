@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*! \file find_and_replace.hpp
+ * \brief Find and replace functionality for std::strings
+ */
+
 #ifndef RCPPUTILS__FIND_AND_REPLACE_HPP_
 #define RCPPUTILS__FIND_AND_REPLACE_HPP_
 
@@ -74,6 +78,14 @@ normalize_to_basic_string(StringLikeT && string_like)
 }
 }  // namespace detail
 
+/// Find and replace all instances of a string with another string.
+/**
+ * \param[in] input The input string.
+ * \param[in] find The substring to replace.
+ * \param[in] replace The string to substitute for each occurrence of `find`.
+ * \return A copy of the input string with all instances of the string `find` replaced with the
+ *   string `replace`.
+ */
 template<typename InputT, typename FindT, typename ReplaceT>
 auto
 find_and_replace(

@@ -33,8 +33,32 @@
 #ifndef RCPPUTILS__VISIBILITY_CONTROL_HPP_
 #define RCPPUTILS__VISIBILITY_CONTROL_HPP_
 
-// This logic was borrowed (then namespaced) from the examples on the gcc wiki:
-//     https://gcc.gnu.org/wiki/Visibility
+/*! \file visibility_control.hpp
+  * \brief Macros for controlling visibilty of exported iterfaces.
+  *
+  * This logic was borrowed (then namespaced) from the examples on the gcc wiki:
+  *     https://gcc.gnu.org/wiki/Visibility
+  */
+/**
+  * \def RCPPUTILS_EXPORT
+  * \brief Exposes the function with its decorated name in the compiled library object.
+  */
+/**
+  * \def RCPPUTILS_IMPORT
+  * \brief On Windows declares a function will be imported from a dll, otherwise it is empty
+  */
+/**
+  * \def RCPPUTILS_PUBLIC
+  * \brief Declares symbols and functions will be visible for export.
+  */
+/**
+  * \def RCPPUTILS_PUBLIC_TYPE
+  * \brief On Windows, this is a replica of RCPPUTILS_PUBLIC, otherwise it is empty.
+  */
+/**
+  * \def RCPPUTILS_LOCAL
+  * \brief Declares symbols cannot be exported from the dll.
+  */
 
 #if defined _WIN32 || defined __CYGWIN__
   #ifdef __GNUC__
