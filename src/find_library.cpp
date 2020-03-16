@@ -106,7 +106,7 @@ std::list<std::string> retrieve_runpath_paths()
 
 std::string find_library_path(const std::string & library_name)
 {
-  std::string search_path_env = get_env_var(kPathVar);
+  const std::string search_path_env = get_env_var(kPathVar);
   std::list<std::string> search_paths = split(search_path_env, kPathSeparator);
 
   std::list<std::string> search_paths_runpath = retrieve_runpath_paths();

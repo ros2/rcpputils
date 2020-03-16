@@ -38,7 +38,7 @@ TEST(test_find_library, find_library)
   }
 
   // Positive test.
-  std::string test_lib_actual = find_library_path("test_library");
+  const std::string test_lib_actual = find_library_path("test_library");
   EXPECT_EQ(test_lib_actual, expected_library_path);
 
   // (Hopefully) Negative test.
