@@ -25,6 +25,7 @@ ament_export_include_directories(include)
 
 add_library(${PROJECT_NAME}
   src/asserts.cpp
+  src/shared_library.cpp
   src/find_library.cpp)
 target_include_directories(${PROJECT_NAME}
   PUBLIC
