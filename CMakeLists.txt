@@ -44,6 +44,7 @@ if(WIN32)
 endif()
 ament_target_dependencies(${PROJECT_NAME} rcutils)
 ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(rcutils)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
