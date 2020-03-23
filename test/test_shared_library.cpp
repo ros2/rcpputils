@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <memory>
-
 #include <gtest/gtest.h>
+
+#include <memory>
+#include <string>
 
 #include "rcpputils/shared_library.hpp"
 
@@ -32,5 +33,4 @@ TEST(test_shared_library, valid_load) {
 
   EXPECT_TRUE(library->get_symbol("print_name") != NULL);
   EXPECT_ANY_THROW(library->get_symbol("symbol"));
-
 }
