@@ -19,7 +19,7 @@ if(NOT WIN32)
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-option(DISABLE_SANITIZERS "disables the use of gcc sanitizers")
+option(DISABLE_SANITIZERS "disables the use of gcc sanitizers" OFF)
 # Only enable sanitizers on x64 architectures
 # https://github.com/google/sanitizers/issues/794
 if(NOT ${CMAKE_SIZEOF_VOID_P} EQUAL 8)
