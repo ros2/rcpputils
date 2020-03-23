@@ -61,4 +61,12 @@ bool SharedLibrary::has_symbol(const std::string & symbol_name)
 {
   return rcutils_has_symbol(&lib, symbol_name.c_str());
 }
+
+std::string SharedLibrary::get_library_path()
+{
+  if (lib.library_path != nullptr) {
+    return std::string(lib.library_path);
+  }
+  return nullptr;
+}
 }  // namespace rcpputils

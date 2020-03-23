@@ -60,6 +60,14 @@ public:
   void *
   get_symbol(const std::string & symbol_name);
 
+  /// Return shared library path
+  /**
+   * \return shared library path
+   */
+  RCPPUTILS_PUBLIC
+  std::string
+  get_library_path();
+
 private:
   rcutils_shared_library_t lib;
 };
