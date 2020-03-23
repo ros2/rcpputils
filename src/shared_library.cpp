@@ -28,7 +28,7 @@ SharedLibrary::SharedLibrary(const std::string & library_path)
     rcutils_get_default_allocator());
   if (ret != RCUTILS_RET_OK) {
     if (ret == RCUTILS_RET_BAD_ALLOC) {
-      throw std::runtime_error{"rcutils shared_library exception: failed to allocate memory"};
+      throw std::bad_alloc();
     } else if (ret == RCUTILS_RET_INVALID_ARGUMENT) {
       throw std::runtime_error{"rcutils shared_library exception: invalid arguments"};
     } else {
