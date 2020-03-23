@@ -19,7 +19,7 @@
 
 namespace rcpputils
 {
-SharedLibrary::SharedLibrary(std::string library_path)
+SharedLibrary::SharedLibrary(const std::string & library_path)
 {
   lib = rcutils_get_zero_initialized_shared_library();
   rcutils_ret_t ret = rcutils_load_shared_library(&lib, library_path.c_str());
@@ -43,18 +43,18 @@ SharedLibrary::~SharedLibrary()
   }
 }
 
-void * SharedLibrary::get_symbol(std::string symbol_name)
+void * SharedLibrary::get_symbol(const std::string & symbol_name)
 {
   void * lib_symbol = rcutils_get_symbol(&lib, symbol_name.c_str());
 
   if (!lib_symbol) {
     throw std::runtime_error{"rcpputils SharedLiibrary exception: symbol_name could not be found:" +
-            symbol_name + "in " + lib.library_path};
+            symbol_name + " in " + lib.library_path};
   }
   return lib_symbol;
 }
 
-bool SharedLibrary::has_symbol(std::string symbol_name)
+bool SharedLibrary::has_symbol(const std::string & symbol_name)
 {
   return rcutils_has_symbol(&lib, symbol_name.c_str());
 }

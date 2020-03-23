@@ -19,39 +19,46 @@
 #include <stdexcept>
 
 #include "rcutils/shared_library.h"
+#include "rcpputils/visibility_control.hpp"
 
 namespace rcpputils
 {
 
 /**
  * This class is an abstraction of rcutils shared library to be able to used it
- *  with modern C++
+ *  with modern C++.
  **/
-class SharedLibrary
+class RCPPUTILS_PUBLIC SharedLibrary
 {
 public:
-  /// The library is loaded in the constructor
+  /// The library is loaded in the constructor.
   /**
    * \param[in] input The library string path.
    */
-  explicit SharedLibrary(std::string library_path);
+  RCPPUTILS_PUBLIC
+  explicit SharedLibrary(const std::string & library_path);
 
   /// The library is unloaded in the deconstructor
-  ~SharedLibrary();
+  RCPPUTILS_PUBLIC
+  virtual ~SharedLibrary();
 
   /// Return true if the shared library contains a specific symbol name otherwise returns false.
   /**
    * \param[in] symbol_name name of the symbol inside the shared library
    * \return if symbols exists returns true, otherwise returns false.
    */
-  bool has_symbol(std::string symbol_name);
+  RCPPUTILS_PUBLIC
+  bool
+  has_symbol(const std::string & symbol_name);
 
   /// Return shared library symbol pointer.
   /**
    * \param[in] symbol_name name of the symbol inside the shared library
    * \return shared library symbol pointer, if the symbol doesn't exist then returns NULL.
    */
-  void * get_symbol(std::string symbol_name);
+  RCPPUTILS_PUBLIC
+  void *
+  get_symbol(const std::string & symbol_name);
 
 private:
   rcutils_shared_library_t lib;
