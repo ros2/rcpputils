@@ -19,7 +19,7 @@ if(NOT WIN32)
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-option(DISABLE_SANITIZERS "disables the use of gcc saniztizers")
+option(DISABLE_SANITIZERS "disables the use of gcc sanitizers")
 # Only enable sanitizers on x64 architectures
 # https://github.com/google/sanitizers/issues/794
 if(NOT ${CMAKE_SIZEOF_VOID_P} EQUAL 8)
@@ -32,8 +32,8 @@ ament_export_include_directories(include)
 
 add_library(${PROJECT_NAME}
   src/asserts.cpp
-  src/shared_library.cpp
-  src/find_library.cpp)
+  src/find_library.cpp
+  src/shared_library.cpp)
 target_include_directories(${PROJECT_NAME}
   PUBLIC
   include
@@ -78,11 +78,7 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_pointer_traits test/test_pointer_traits.cpp)
 
-  if(WIN32)
-    set(append_library_dirs "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
-  else()
-    set(append_library_dirs "${CMAKE_CURRENT_BINARY_DIR}")
-  endif()
+  set(append_library_dirs "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
 
   ament_add_gtest(test_shared_library test/test_shared_library.cpp
     APPEND_LIBRARY_DIRS "${append_library_dirs}"
