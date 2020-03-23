@@ -22,7 +22,10 @@ namespace rcpputils
 SharedLibrary::SharedLibrary(const std::string & library_path)
 {
   lib = rcutils_get_zero_initialized_shared_library();
-  rcutils_ret_t ret = rcutils_load_shared_library(&lib, library_path.c_str());
+  rcutils_ret_t ret = rcutils_load_shared_library(
+    &lib,
+    library_path.c_str(),
+    rcutils_get_default_allocator());
   if (ret != RCUTILS_RET_OK) {
     if (ret == RCUTILS_RET_BAD_ALLOC) {
       throw std::runtime_error{"rcutils shared_library exception: failed to allocate memory"};
