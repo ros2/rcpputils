@@ -34,6 +34,9 @@ public:
   /// The library is loaded in the constructor.
   /**
    * \param[in] input The library string path.
+   * \throws std::bad_alloc if allocating storage for the callback fails
+   * \throws std::runtime_error if there are some invalid arguments or the library
+   * was not load properly
    */
   RCPPUTILS_PUBLIC
   explicit SharedLibrary(const std::string & library_path);
@@ -54,7 +57,9 @@ public:
   /// Return shared library symbol pointer.
   /**
    * \param[in] symbol_name name of the symbol inside the shared library
-   * \return shared library symbol pointer, if the symbol doesn't exist then returns NULL.
+   * \return shared library symbol pointer, if the symbol doesn't exist then throws a
+   * \runtime_error exception
+   * \throws std::runtime_error if the symbol doesn't exist in the shared library
    */
   RCPPUTILS_PUBLIC
   void *
