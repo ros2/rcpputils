@@ -19,6 +19,13 @@ if(NOT WIN32)
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+option(DISABLE_SANITIZERS "disables the use of gcc saniztizers")
+# Only enable sanitizers on x64 architectures
+# https://github.com/google/sanitizers/issues/794
+if(NOT ${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+  set(DISABLE_SANITIZERS ON)
+endif()
+
 include_directories(include)
 
 ament_export_include_directories(include)
@@ -69,6 +76,25 @@ if(BUILD_TESTING)
   ament_add_gtest(test_find_and_replace test/test_find_and_replace.cpp)
 
   ament_add_gtest(test_pointer_traits test/test_pointer_traits.cpp)
+
+  if(WIN32)
+    set(append_library_dirs "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+  else()
+    set(append_library_dirs "${CMAKE_CURRENT_BINARY_DIR}")
+  endif()
+
+  ament_add_gtest(test_shared_library test/test_shared_library.cpp
+    APPEND_LIBRARY_DIRS "${append_library_dirs}"
+  )
+
+  if(TARGET test_shared_library)
+    add_library(dummy_shared_library test/dummy_shared_library/dummy_shared_library.c)
+    target_link_libraries(test_shared_library ${PROJECT_NAME})
+    if(NOT DISABLE_SANITIZERS)
+      target_compile_options(test_shared_library PUBLIC $<$<CXX_COMPILER_ID:GNU>:-fsanitize=leak>)
+      target_link_libraries(test_shared_library $<$<CXX_COMPILER_ID:GNU>:-fsanitize=leak>)
+    endif()
+  endif()
 
   ament_add_gtest(test_endian test/test_endian.cpp)
 
