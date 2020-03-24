@@ -24,13 +24,33 @@ TEST(test_shared_library, valid_load) {
   const std::string library_path = std::string("libdummy_shared_library.so");
 
   EXPECT_NO_THROW(std::make_shared<rcpputils::SharedLibrary>(library_path));
-  EXPECT_ANY_THROW(std::make_shared<rcpputils::SharedLibrary>("library_path"));
 
   auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
+  EXPECT_STREQ(library->get_library_path().c_str(), library_path.c_str());
 
   EXPECT_TRUE(library->has_symbol("print_name"));
-  EXPECT_FALSE(library->has_symbol("symbol"));
 
   EXPECT_TRUE(library->get_symbol("print_name") != NULL);
-  EXPECT_ANY_THROW(library->get_symbol("symbol"));
+}
+
+TEST(test_shared_library, failed_test) {
+  // Trying to reset the object two times
+  try {
+    std::shared_ptr<rcpputils::SharedLibrary> library;
+    library.reset();
+    library.reset();
+  } catch (...) {
+    FAIL();
+  }
+  // loading a library that doesn't exists
+  std::string library_path = std::string("error_library.so");
+  EXPECT_THROW(std::make_shared<rcpputils::SharedLibrary>(library_path), std::runtime_error);
+
+  // Loading a valid library
+  library_path = std::string("libdummy_shared_library.so");
+  auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
+
+  // getting and asking for an unvalid symbol
+  EXPECT_THROW(library->get_symbol("symbol"), std::runtime_error);
+  EXPECT_FALSE(library->has_symbol("symbol"));
 }
