@@ -15,6 +15,8 @@
 #include <iostream>
 #include <string>
 
+#include "rcutils/error_handling.h"
+
 #include "rcpputils/shared_library.hpp"
 
 namespace rcpputils
@@ -29,11 +31,10 @@ SharedLibrary::SharedLibrary(const std::string & library_path)
   if (ret != RCUTILS_RET_OK) {
     if (ret == RCUTILS_RET_BAD_ALLOC) {
       throw std::bad_alloc();
-    } else if (ret == RCUTILS_RET_INVALID_ARGUMENT) {
-      throw std::runtime_error{"rcutils shared_library exception: invalid arguments"};
     } else {
-      throw std::runtime_error{"rcutils shared_library exception: library could not be found:" +
-              library_path};
+      std::string rcutils_error_str(rcutils_get_error_string().str);
+      rcutils_reset_error();
+      throw std::runtime_error{rcutils_error_str};
     }
   }
 }
@@ -42,7 +43,8 @@ SharedLibrary::~SharedLibrary()
 {
   rcutils_ret_t ret = rcutils_unload_shared_library(&lib);
   if (ret != RCUTILS_RET_OK) {
-    std::cerr << "rcutils shared_library exception: failed destroying object" << std::endl;
+    std::cerr << rcutils_get_error_string().str << std::endl;
+    rcutils_reset_error();
   }
 }
 
@@ -51,8 +53,9 @@ void * SharedLibrary::get_symbol(const std::string & symbol_name)
   void * lib_symbol = rcutils_get_symbol(&lib, symbol_name.c_str());
 
   if (!lib_symbol) {
-    throw std::runtime_error{"rcpputils SharedLiibrary exception: symbol_name could not be found:" +
-            symbol_name + " in " + lib.library_path};
+    std::string rcutils_error_str(rcutils_get_error_string().str);
+    rcutils_reset_error();
+    throw std::runtime_error{rcutils_error_str};
   }
   return lib_symbol;
 }
@@ -67,6 +70,6 @@ std::string SharedLibrary::get_library_path()
   if (lib.library_path != nullptr) {
     return std::string(lib.library_path);
   }
-  return nullptr;
+  return std::string("");
 }
 }  // namespace rcpputils
