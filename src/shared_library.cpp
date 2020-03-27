@@ -70,6 +70,6 @@ std::string SharedLibrary::get_library_path()
   if (lib.library_path != nullptr) {
     return std::string(lib.library_path);
   }
-  return std::string("");
+  throw std::runtime_error{"Library path is not defined"};
 }
 }  // namespace rcpputils

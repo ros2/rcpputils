@@ -67,7 +67,8 @@ public:
 
   /// Return shared library path
   /**
-   * \return shared library path
+   * \return shared library path or it throws an std::runtime_error if it's not defined
+   * \throws std::runtime_error if the path is NULL
    */
   RCPPUTILS_PUBLIC
   std::string
