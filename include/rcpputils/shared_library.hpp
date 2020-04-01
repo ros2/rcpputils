@@ -28,7 +28,7 @@ namespace rcpputils
  * This class is an abstraction of rcutils shared library to be able to used it
  *  with modern C++.
  **/
-class RCPPUTILS_PUBLIC SharedLibrary
+class SharedLibrary
 {
 public:
   /// The library is loaded in the constructor.
