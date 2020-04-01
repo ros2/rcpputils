@@ -37,7 +37,11 @@ TEST(test_shared_library, valid_load) {
 TEST(test_shared_library, failed_test) {
   // loading a library that doesn't exists
   std::string library_path = rcpputils::get_platform_library_name("error_library");
-  EXPECT_THROW(std::make_shared<rcpputils::SharedLibrary>(library_path), std::runtime_error);
+  try {
+    auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
+    FAIL();
+  } catch (...) {
+  }
 
   // Loading a valid library
   library_path = rcpputils::get_platform_library_name("dummy_shared_library");
