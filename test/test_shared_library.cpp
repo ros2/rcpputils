@@ -22,14 +22,16 @@
 TEST(test_shared_library, valid_load) {
   const std::string library_path = rcpputils::get_platform_library_name("dummy_shared_library");
 
-  EXPECT_NO_THROW(std::make_shared<rcpputils::SharedLibrary>(library_path));
+  try {
+    auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
+    EXPECT_STREQ(library->get_library_path().c_str(), library_path.c_str());
 
-  auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
-  EXPECT_STREQ(library->get_library_path().c_str(), library_path.c_str());
+    EXPECT_TRUE(library->has_symbol("print_name"));
 
-  EXPECT_TRUE(library->has_symbol("print_name"));
-
-  EXPECT_TRUE(library->get_symbol("print_name") != NULL);
+    EXPECT_TRUE(library->get_symbol("print_name") != NULL);
+  } catch (...) {
+    FAIL();
+  }
 }
 
 TEST(test_shared_library, failed_test) {
@@ -39,9 +41,13 @@ TEST(test_shared_library, failed_test) {
 
   // Loading a valid library
   library_path = rcpputils::get_platform_library_name("dummy_shared_library");
-  auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
+  try {
+    auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
 
-  // getting and asking for an unvalid symbol
-  EXPECT_THROW(library->get_symbol("symbol"), std::runtime_error);
-  EXPECT_FALSE(library->has_symbol("symbol"));
+    // getting and asking for an unvalid symbol
+    EXPECT_THROW(library->get_symbol("symbol"), std::runtime_error);
+    EXPECT_FALSE(library->has_symbol("symbol"));
+  } catch (...) {
+    FAIL();
+  }
 }
