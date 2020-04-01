@@ -58,7 +58,7 @@ public:
   /**
    * \param[in] symbol_name name of the symbol inside the shared library
    * \return shared library symbol pointer, if the symbol doesn't exist then throws a
-   * \runtime_error exception
+   * runtime_error exception
    * \throws std::runtime_error if the symbol doesn't exist in the shared library
    */
   RCPPUTILS_PUBLIC
