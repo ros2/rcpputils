@@ -78,6 +78,16 @@ private:
   rcutils_shared_library_t lib;
 };
 
+/// Get the platform specific library name
+/**
+ * \param[in] symbol_name library base name (without prefix and extension)
+ * \return platform specific library name
+ * \throws std::runtime_error if it's not able to create the library name
+ */
+RCPPUTILS_PUBLIC
+std::string get_platform_library_name(std::string library_name);
+
+
 }  // namespace rcpputils
 
 #endif  // RCPPUTILS__SHARED_LIBRARY_HPP_

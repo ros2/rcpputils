@@ -72,4 +72,20 @@ std::string SharedLibrary::get_library_path()
   }
   throw std::runtime_error{"Library path is not defined"};
 }
+
+std::string get_platform_library_name(std::string library_name)
+{
+  char library_name_platform[1024];
+  rcutils_ret_t ret = rcutils_get_platform_library_name(
+    library_name.c_str(),
+    library_name_platform,
+    1024);
+  if (ret != RCUTILS_RET_OK) {
+    std::string rcutils_error_str(rcutils_get_error_string().str);
+    rcutils_reset_error();
+    throw std::runtime_error{rcutils_error_str};
+  }
+  return std::string(library_name_platform);
+}
+
 }  // namespace rcpputils

@@ -20,7 +20,7 @@
 #include "rcpputils/shared_library.hpp"
 
 TEST(test_shared_library, valid_load) {
-  const std::string library_path = std::string("libdummy_shared_library.so");
+  const std::string library_path = rcpputils::get_platform_library_name("dummy_shared_library");
 
   EXPECT_NO_THROW(std::make_shared<rcpputils::SharedLibrary>(library_path));
 
@@ -34,11 +34,11 @@ TEST(test_shared_library, valid_load) {
 
 TEST(test_shared_library, failed_test) {
   // loading a library that doesn't exists
-  std::string library_path = std::string("error_library.so");
+  std::string library_path = rcpputils::get_platform_library_name("error_library");
   EXPECT_THROW(std::make_shared<rcpputils::SharedLibrary>(library_path), std::runtime_error);
 
   // Loading a valid library
-  library_path = std::string("libdummy_shared_library.so");
+  library_path = rcpputils::get_platform_library_name("dummy_shared_library");
   auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
 
   // getting and asking for an unvalid symbol
