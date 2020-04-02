@@ -25,7 +25,8 @@ ament_export_include_directories(include)
 
 add_library(${PROJECT_NAME}
   src/asserts.cpp
-  src/find_library.cpp)
+  src/find_library.cpp
+  src/shared_library.cpp)
 target_include_directories(${PROJECT_NAME}
   PUBLIC
   include
@@ -36,6 +37,7 @@ if(WIN32)
 endif()
 ament_target_dependencies(${PROJECT_NAME} rcutils)
 ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(rcutils)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
@@ -68,6 +70,22 @@ if(BUILD_TESTING)
   ament_add_gtest(test_find_and_replace test/test_find_and_replace.cpp)
 
   ament_add_gtest(test_pointer_traits test/test_pointer_traits.cpp)
+
+  set(append_library_dirs "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+
+  ament_add_gtest(test_shared_library test/test_shared_library.cpp
+    APPEND_LIBRARY_DIRS "${append_library_dirs}"
+  )
+
+  if(TARGET test_shared_library)
+    add_library(dummy_shared_library test/dummy_shared_library/dummy_shared_library.c)
+    if(WIN32)
+      # Causes the visibility macros to use dllexport rather than dllimport
+      # which is appropriate when building the dll but not consuming it.
+      target_compile_definitions(dummy_shared_library PRIVATE "DUMMY_SHARED_LIBRARY_BUILDING_DLL")
+    endif()
+    target_link_libraries(test_shared_library ${PROJECT_NAME})
+  endif()
 
   ament_add_gtest(test_endian test/test_endian.cpp)
 
