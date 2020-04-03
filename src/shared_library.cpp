@@ -23,6 +23,7 @@ namespace rcpputils
 {
 SharedLibrary::SharedLibrary(const std::string & library_path)
 {
+  is_loaded = false;
   lib = rcutils_get_zero_initialized_shared_library();
   rcutils_ret_t ret = rcutils_load_shared_library(
     &lib,
@@ -37,19 +38,23 @@ SharedLibrary::SharedLibrary(const std::string & library_path)
       throw std::runtime_error{rcutils_error_str};
     }
   }
+  is_loaded = true;
 }
 
 SharedLibrary::~SharedLibrary()
 {
-  rcutils_ret_t ret = rcutils_unload_shared_library(&lib);
-  if (ret != RCUTILS_RET_OK) {
-    std::cerr << rcutils_get_error_string().str << std::endl;
-    rcutils_reset_error();
+  if (is_loaded) {
+    rcutils_ret_t ret = rcutils_unload_shared_library(&lib);
+    if (ret != RCUTILS_RET_OK) {
+      std::cerr << rcutils_get_error_string().str << std::endl;
+      rcutils_reset_error();
+    }
   }
 }
 
 void SharedLibrary::unload_library()
 {
+  is_loaded = false;
   rcutils_ret_t ret = rcutils_unload_shared_library(&lib);
   if (ret != RCUTILS_RET_OK) {
     std::string rcutils_error_str(rcutils_get_error_string().str);
