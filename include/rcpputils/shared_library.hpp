@@ -84,8 +84,6 @@ public:
 
 private:
   rcutils_shared_library_t lib;
-  /// variable to know if the library is loaded
-  bool is_loaded;
 };
 
 /// Get the platform specific library name
