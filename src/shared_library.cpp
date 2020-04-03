@@ -48,6 +48,16 @@ SharedLibrary::~SharedLibrary()
   }
 }
 
+void SharedLibrary::unload_library()
+{
+  rcutils_ret_t ret = rcutils_unload_shared_library(&lib);
+  if (ret != RCUTILS_RET_OK) {
+    std::string rcutils_error_str(rcutils_get_error_string().str);
+    rcutils_reset_error();
+    throw std::runtime_error{rcutils_error_str};
+  }
+}
+
 void * SharedLibrary::get_symbol(const std::string & symbol_name)
 {
   void * lib_symbol = rcutils_get_symbol(&lib, symbol_name.c_str());

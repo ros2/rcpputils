@@ -45,6 +45,14 @@ public:
   RCPPUTILS_PUBLIC
   virtual ~SharedLibrary();
 
+  /// Unload library
+  /**
+  * \throws std::runtime_error if the library is not unloaded properly
+   */
+  RCPPUTILS_PUBLIC
+  void
+  unload_library();
+
   /// Return true if the shared library contains a specific symbol name otherwise returns false.
   /**
    * \param[in] symbol_name name of the symbol inside the shared library
