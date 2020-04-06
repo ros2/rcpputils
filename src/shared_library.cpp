@@ -41,20 +41,11 @@ SharedLibrary::SharedLibrary(const std::string & library_path)
 
 SharedLibrary::~SharedLibrary()
 {
-  if (lib.lib_pointer != NULL) {
+  if (rcutils_is_shared_library_loaded(&lib)) {
     rcutils_ret_t ret = rcutils_unload_shared_library(&lib);
     if (ret != RCUTILS_RET_OK) {
       std::cerr << rcutils_get_error_string().str << std::endl;
       rcutils_reset_error();
-    }
-  } else {
-    if (lib.library_path != NULL) {
-      if (rcutils_allocator_is_valid(&lib.allocator)) {
-        lib.allocator.deallocate(lib.library_path, lib.allocator.state);
-        lib.allocator = rcutils_get_zero_initialized_allocator();
-      } else {
-        std::cerr << "ShareLibrary not able to deallocate memory on constructor" << std::endl;
-      }
     }
   }
 }
