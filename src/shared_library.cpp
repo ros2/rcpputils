@@ -41,10 +41,22 @@ SharedLibrary::SharedLibrary(const std::string & library_path)
 
 SharedLibrary::~SharedLibrary()
 {
+  if (rcutils_is_shared_library_loaded(&lib)) {
+    rcutils_ret_t ret = rcutils_unload_shared_library(&lib);
+    if (ret != RCUTILS_RET_OK) {
+      std::cerr << rcutils_get_error_string().str << std::endl;
+      rcutils_reset_error();
+    }
+  }
+}
+
+void SharedLibrary::unload_library()
+{
   rcutils_ret_t ret = rcutils_unload_shared_library(&lib);
   if (ret != RCUTILS_RET_OK) {
-    std::cerr << rcutils_get_error_string().str << std::endl;
+    std::string rcutils_error_str(rcutils_get_error_string().str);
     rcutils_reset_error();
+    throw std::runtime_error{rcutils_error_str};
   }
 }
 
