@@ -76,6 +76,7 @@ std::string SharedLibrary::get_library_path()
 std::string get_platform_library_name(std::string library_name)
 {
   char library_name_platform[1024];
+  memset(library_name_platform, 0, 1024);
   rcutils_ret_t ret = rcutils_get_platform_library_name(
     library_name.c_str(),
     library_name_platform,

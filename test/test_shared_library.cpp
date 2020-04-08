@@ -55,3 +55,14 @@ TEST(test_shared_library, failed_test) {
     FAIL();
   }
 }
+
+TEST(test_get_platform_library_name, failed_test) {
+  // create a string bigger than the internal buffer
+  int length = 2000;
+  std::string str;
+  for (int i = 0; i < length; i++) {
+    str.push_back('A');
+  }
+  std::string library_path = rcpputils::get_platform_library_name(str);
+  EXPECT_TRUE(library_path.empty());
+}
