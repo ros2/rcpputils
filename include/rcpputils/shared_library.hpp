@@ -88,13 +88,14 @@ private:
 
 /// Get the platform specific library name
 /**
- * \param[in] symbol_name library base name (without prefix and extension)
+* \param[in] symbol_name library base name (without prefix and extension)
+* \param[in] debug if true the library will return a debug library name, otherwise
+ * it returns a normal library path
  * \return platform specific library name
  * \throws std::runtime_error if it's not able to create the library name
  */
 RCPPUTILS_PUBLIC
-std::string get_platform_library_name(std::string library_name);
-
+std::string get_platform_library_name(std::string library_name, bool debug = false);
 
 }  // namespace rcpputils
 
