@@ -80,13 +80,15 @@ private:
 
 /// Get the platform specific library name
 /**
+ * The maximun file name size is 1024 characters, if the input library_name is bigger than
+ * this value then the method returns an empty string
+ *
  * \param[in] symbol_name library base name (without prefix and extension)
  * \return platform specific library name
  * \throws std::runtime_error if it's not able to create the library name
  */
 RCPPUTILS_PUBLIC
 std::string get_platform_library_name(std::string library_name);
-
 
 }  // namespace rcpputils
 
