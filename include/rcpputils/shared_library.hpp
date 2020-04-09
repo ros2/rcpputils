@@ -45,6 +45,14 @@ public:
   RCPPUTILS_PUBLIC
   virtual ~SharedLibrary();
 
+  /// Unload library
+  /**
+  * \throws std::runtime_error if the library is not unloaded properly
+   */
+  RCPPUTILS_PUBLIC
+  void
+  unload_library();
+
   /// Return true if the shared library contains a specific symbol name otherwise returns false.
   /**
    * \param[in] symbol_name name of the symbol inside the shared library
@@ -84,11 +92,13 @@ private:
  * this value then the method returns an empty string
  *
  * \param[in] symbol_name library base name (without prefix and extension)
+ * \param[in] debug if true the library will return a debug library name, otherwise
+ * it returns a normal library path
  * \return platform specific library name
  * \throws std::runtime_error if it's not able to create the library name
  */
 RCPPUTILS_PUBLIC
-std::string get_platform_library_name(std::string library_name);
+std::string get_platform_library_name(std::string library_name, bool debug = false);
 
 }  // namespace rcpputils
 

@@ -54,6 +54,15 @@ TEST(test_shared_library, failed_test) {
   } catch (...) {
     FAIL();
   }
+
+  try {
+    auto library = std::make_shared<rcpputils::SharedLibrary>(library_path);
+
+    EXPECT_NO_THROW(library->unload_library());
+    EXPECT_THROW(library->unload_library(), std::runtime_error);
+  } catch (...) {
+    FAIL();
+  }
 }
 
 TEST(test_get_platform_library_name, failed_test) {
