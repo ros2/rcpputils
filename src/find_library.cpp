@@ -51,8 +51,6 @@ static constexpr char kSolibPrefix[] = "lib";
 static constexpr char kSolibExtension[] = ".so";
 #endif
 
-}
-
 }  // namespace
 
 std::string find_library_path(const std::string & library_name)
