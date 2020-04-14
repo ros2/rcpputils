@@ -26,6 +26,7 @@
 #include "rcutils/get_env.h"
 
 #include "rcpputils/split.hpp"
+#include "rcpputils/get_env.hpp"
 
 namespace rcpputils
 {
@@ -50,14 +51,6 @@ static constexpr char kSolibPrefix[] = "lib";
 static constexpr char kSolibExtension[] = ".so";
 #endif
 
-std::string get_env_var(const char * env_var)
-{
-  const char * value{};
-  const char * err = rcutils_get_env(env_var, &value);
-  if (err) {
-    throw std::runtime_error(err);
-  }
-  return value ? value : "";
 }
 
 }  // namespace
