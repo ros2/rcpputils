@@ -17,7 +17,6 @@
 #include <cassert>
 #include <cstddef>
 
-#include <list>
 #include <fstream>
 #include <sstream>
 #include <string>
