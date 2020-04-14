@@ -33,7 +33,11 @@
 #ifndef RCPPUTILS__GET_ENV_HPP_
 #define RCPPUTILS__GET_ENV_HPP_
 
+#include "rcutils/get_env.h"
+
 #include <string>
+
+#include "rcpputils/visibility_control.hpp"
 
 namespace rcpputils
 {
