@@ -21,9 +21,12 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "rcutils/filesystem.h"
 #include "rcutils/get_env.h"
+
+#include "rcpputils/split.hpp"
 
 namespace rcpputils
 {
@@ -58,23 +61,12 @@ std::string get_env_var(const char * env_var)
   return value ? value : "";
 }
 
-std::list<std::string> split(const std::string & value, const char delimiter)
-{
-  std::list<std::string> list;
-  std::istringstream ss(value);
-  std::string s;
-  while (std::getline(ss, s, delimiter)) {
-    list.push_back(s);
-  }
-  return list;
-}
-
 }  // namespace
 
 std::string find_library_path(const std::string & library_name)
 {
   std::string search_path = get_env_var(kPathVar);
-  std::list<std::string> search_paths = split(search_path, kPathSeparator);
+  std::vector<std::string> search_paths = rcpputils::split(search_path, kPathSeparator);
 
   std::string filename = kSolibPrefix;
   filename += library_name + kSolibExtension;
