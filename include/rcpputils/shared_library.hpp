@@ -88,7 +88,7 @@ private:
 
 /// Get the platform specific library name
 /**
- * The maximun file name size is 1024 characters, if the input library_name is bigger than
+ * The maximum file name size is 1024 characters, if the input library_name is bigger than
  * this value then the method throws an exception.
  *
  * \param[in] symbol_name library base name (without prefix and extension)
