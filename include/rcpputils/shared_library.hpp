@@ -89,7 +89,7 @@ private:
 /// Get the platform specific library name
 /**
  * The maximun file name size is 1024 characters, if the input library_name is bigger than
- * this value then the method returns an empty string
+ * this value then the method throws an exception.
  *
  * \param[in] symbol_name library base name (without prefix and extension)
  * \param[in] debug if true the library will return a debug library name, otherwise
