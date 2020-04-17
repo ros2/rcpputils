@@ -13,6 +13,6 @@ This package currently contains:
 * String helpers
 * File system helpers
 * Type traits helpers
-* Class that dynamically loadsm, unloads and get symbols from shared libraries at run-time.
+* Class that dynamically loads, unloads and get symbols from shared libraries at run-time.
 
 Features are described in more detail at [docs/FEATURES.md](docs/FEATURES.md)
