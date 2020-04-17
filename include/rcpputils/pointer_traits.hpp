@@ -44,6 +44,21 @@ template<class T>
 struct is_smart_pointer : is_smart_pointer_helper<typename std::remove_cv<T>::type>
 {};
 
+template<
+  class T,
+  bool is_smart_pointer
+>
+struct remove_pointer
+{
+  using type = typename std::remove_pointer<T>::type;
+};
+
+template<class T>
+struct remove_pointer<T, true>
+{
+  using type = typename std::remove_pointer<
+    decltype(std::declval<typename std::remove_volatile<T>::type>().get())>::type;
+};
 }  // namespace details
 
 /// Type traits for validating if T is of type pointer or smart pointer
@@ -75,6 +90,21 @@ struct is_pointer
   /// Indicates whether this object is a pointer or smart pointer.
   static constexpr bool value = std::is_pointer<typename std::remove_reference<T>::type>::value ||
     details::is_smart_pointer<typename std::remove_reference<T>::type>::value;
+};
+
+/// Type traits for deducing the data type of T from a pointer or smart pointer.
+/**
+ * In comparison to the existing type trait for pointer in the stdlib `std::remove_pointer<T>`
+ * https://en.cppreference.com/w/cpp/types/remove_pointer this trait is enhancing it for
+ * checking of smart pointer types as well.
+ * The valid pointer types are T*, std::shared_pointer<T> and std::unique_ptr<T>
+ *
+ */
+template<class T>
+struct remove_pointer
+{
+  using type = typename details::remove_pointer<
+    typename std::remove_reference<T>::type, details::is_smart_pointer<T>::value>::type;
 };
 
 }  // namespace rcpputils
