@@ -16,7 +16,6 @@ Below are the rationales, notes, and caveats for this claim, organized by each r
 
 `rcpputils` is not yet at a stable version, i.e. `>= 1.0.0`.
 
-
 ### Public API Declaration [1.iii]
 
 All symbols in the installed headers are considered part of the public API.
@@ -37,10 +36,11 @@ All installed headers are in the `include` directory of the package, headers in 
 
 ### Change Requests [2.i]
 
-This package requires that all changes occur through a pull request, and all pull requests must resolve related documentation changes before merging.
+This package requires that all changes occur through a pull request.
 
 ### Contributor Origin [2.ii]
- This package has a confirmation of contributor origin policy, which can be found in [CONTRIBUTING](../CONTRIBUTING.md)
+
+ This package uses DCO as its confirmation of contributor origin policy. More information can be found in [CONTRIBUTING](../CONTRIBUTING.md).
 
 ### Peer Review Policy [2.iii]
 
@@ -49,6 +49,10 @@ This package requires that all changes occur through a pull request, and all pul
 ### Continuous Integration [2.iv]
 
 All pull request must pass CI on all [tier 1 platforms](https://www.ros.org/reps/rep-2000.html#support-tiers)
+
+### Documentation Policy [2.v]
+
+All pull requests must resolve related documentation changes before merging.
 
 ## Documentation [3]
 
