@@ -9,6 +9,7 @@ This package includes the following convenience functions for generally cross-pl
 * [File system helpers](#file-system-helpers)
 * [Type traits helpers](#type-traits-helpers)
 * [Visibility macros](#visibility-macros)
+* [Shared Libraries](#shared-libraries)
 
 ## Assertion Functions {#assertion-functions}
 The [rcpputils/asserts.hpp](rcpputils/include/rcpputils/asserts.hpp) header provides the helper functions:
@@ -75,3 +76,6 @@ These headers include simple functions for joining a container into a single str
 
 ## Visibility definitions and macros {#visibility-definitions-and-macros}
 `rcpputils/visibility_control.hpp` provides macros and definitions for controlling the visibility of class members. The logic was borrowed and then namespaced from [https://gcc.gnu.org/wiki/Visibility](https://gcc.gnu.org/wiki/Visibility).
+
+## Shared Libraries
+`rcpputils/shared_library.hpp` provides dynamically loads, unloads and get symbols from shared libraries at run-time.
