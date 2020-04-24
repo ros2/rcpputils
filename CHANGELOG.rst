@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2020-04-24)
+------------------
 * Added shared library to feature list (`#58 <https://github.com/ros2/rcpputils/issues/58>`_)
 * export targets in a addition to include directories / libraries (`#57 <https://github.com/ros2/rcpputils/issues/57>`_)
 * remove pointer for smart pointer (`#56 <https://github.com/ros2/rcpputils/issues/56>`_)
