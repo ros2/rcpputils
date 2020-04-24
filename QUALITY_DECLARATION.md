@@ -40,7 +40,7 @@ This package requires that all changes occur through a pull request.
 
 ### Contributor Origin [2.ii]
 
- This package uses DCO as its confirmation of contributor origin policy. More information can be found in [CONTRIBUTING](../CONTRIBUTING.md).
+ This package uses DCO as its confirmation of contributor origin policy. More information can be found in [CONTRIBUTING](CONTRIBUTING.md).
 
 ### Peer Review Policy [2.iii]
 
@@ -79,6 +79,8 @@ The copyright holders each provide a statement of copyright in each source code 
 
 There is an automated test which runs a linter that ensures each file has at least one copyright statement.
 
+The results of the test can be found [here](http://build.ros2.org/view/Epr/job/Epr__rcpputils__ubuntu_bionic_amd64/lastBuild/testReport/rcpputils/copyright/).
+
 ## Testing [4]
 
 ### Feature Testing [4.i]
@@ -102,6 +104,8 @@ The tests aim to cover both typical usage and corner cases, but are quantified b
 ### Linters and Static Analysis [4.v]
 
 `rcpputils` uses and passes all the standard linters and static analysis tools for a C++ package as described in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#linters).
+
+Results of the nightly linter tests can be found [here](http://build.ros2.org/view/Epr/job/Epr__rcpputils__ubuntu_bionic_amd64/lastBuild/testReport/rcpputils/).
 
 ## Dependencies [5]
 
