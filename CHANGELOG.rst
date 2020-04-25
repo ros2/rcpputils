@@ -2,6 +2,35 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.0 (2020-04-24)
+------------------
+* Added shared library to feature list (`#58 <https://github.com/ros2/rcpputils/issues/58>`_)
+* export targets in a addition to include directories / libraries (`#57 <https://github.com/ros2/rcpputils/issues/57>`_)
+* remove pointer for smart pointer (`#56 <https://github.com/ros2/rcpputils/issues/56>`_)
+* Added shared library class description to readme (`#53 <https://github.com/ros2/rcpputils/issues/53>`_)
+* Increased shared library tests (`#51 <https://github.com/ros2/rcpputils/issues/51>`_)
+* Removed duplicated split function (`#54 <https://github.com/ros2/rcpputils/issues/54>`_)
+* Exposed get_env_var (`#55 <https://github.com/ros2/rcpputils/issues/55>`_)
+* Added debug version for library names (`#52 <https://github.com/ros2/rcpputils/issues/52>`_)
+* Added unload_library method to shared_library (`#50 <https://github.com/ros2/rcpputils/issues/50>`_)
+* Included abstraction for rcutils::shared_library (`#49 <https://github.com/ros2/rcpputils/issues/49>`_)
+* Add more documentation and include doxyfile (`#46 <https://github.com/ros2/rcpputils/issues/46>`_)
+* Update README.md with license and build badges. (`#45 <https://github.com/ros2/rcpputils/issues/45>`_)
+* Update README to mention assertion helper functions (`#43 <https://github.com/ros2/rcpputils/issues/43>`_)
+* Add rcpputils::fs::file_size and rcpputils::fs::is_directory (`#41 <https://github.com/ros2/rcpputils/issues/41>`_)
+* Make assert functions accept an optional string. (`#42 <https://github.com/ros2/rcpputils/issues/42>`_)
+* Add functions for C++ assertions (`#31 <https://github.com/ros2/rcpputils/issues/31>`_)
+* remove reference for pointer traits (`#38 <https://github.com/ros2/rcpputils/issues/38>`_)
+* code style only: wrap after open parenthesis if not in one line (`#36 <https://github.com/ros2/rcpputils/issues/36>`_)
+* Bug fixes for rcpputils::fs API (`#35 <https://github.com/ros2/rcpputils/issues/35>`_)
+  * Ensure rcpputils::fs::create_directories works with absolute paths.
+  * Implement temp_directory_path() for testing purposes.
+  * Fix rcpputils::fs::path::parent_path() method.
+* Add build and test workflow (`#33 <https://github.com/ros2/rcpputils/issues/33>`_)
+* Add linting workflow (`#32 <https://github.com/ros2/rcpputils/issues/32>`_)
+* Fix filesystem helpers for directory manipulation. (`#30 <https://github.com/ros2/rcpputils/issues/30>`_)
+* Contributors: Alejandro Hernández Cordero, Dirk Thomas, Emerson Knapp, Karsten Knese, Michel Hidalgo, Zachary Michaels
+
 0.2.1 (2019-11-12)
 ------------------
 * add new function to remove the extension of a file (`#27 <https://github.com/ros2/rcpputils/pull/27>`_)
