@@ -44,7 +44,7 @@ This package requires that all changes occur through a pull request.
 
 ### Peer Review Policy [2.iii]
 
- Following the recommended guidelines for ROS Core packages, all pull requests must have at least 1 peer review.
+Following the recommended guidelines for ROS Core packages, all pull requests must have at least 1 peer review.
 
 ### Continuous Integration [2.iv]
 
