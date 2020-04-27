@@ -5,6 +5,10 @@
 
 `rcpputils` is a C++ API consisting of macros, functions, and data structures intended for use throughout the ROS 2 codebase
 
+## Quality Declaration
+
+This package claims to be in the **Quality Level 4** category, see the [Quality Declaration](QUALITY_DECLARATION.md) for more details.
+
 ## API
 This package currently contains:
 * Assertion functions
