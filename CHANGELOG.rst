@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix Action CI by using released upload-artifact instead of master (`#61 <https://github.com/ros2/rcpputils/issues/61>`_)
+* Quality declaration (`#47 <https://github.com/ros2/rcpputils/issues/47>`_)
+* Contributors: Emerson Knapp, brawner
+
 0.3.0 (2020-04-24)
 ------------------
 * Added shared library to feature list (`#58 <https://github.com/ros2/rcpputils/issues/58>`_)
