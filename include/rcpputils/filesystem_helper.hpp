@@ -413,6 +413,35 @@ inline path temp_directory_path()
 }
 
 /**
+ * \brief Return current working directory.
+ *
+ * \return The current working directory.
+ *
+ * \throws std::system_error
+ */
+inline path current_path()
+{
+  char * cwd;
+#ifdef _WIN32
+#ifdef UNICODE
+#error "rcpputils::fs does not support Unicode paths"
+#endif
+  cwd = _getcwd(NULL, 0);
+#else
+  cwd = getcwd(NULL, 0);
+#endif
+  if (nullptr == cwd) {
+    std::error_code ec{errno, std::system_category()};
+    errno = 0;
+    throw std::system_error{ec, "cannot get current working directory"};
+  }
+
+  std::string ret(cwd);
+  free(cwd);
+  return path(ret);
+}
+
+/**
  * \brief Create a directory with the given path p.
  *
  * This builds directories recursively and will skip directories if they are already created.

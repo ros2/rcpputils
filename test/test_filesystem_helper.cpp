@@ -229,3 +229,9 @@ TEST(TestFilesystemHelper, remove_extension_no_extension)
   p = rcpputils::fs::remove_extension(p);
   EXPECT_EQ("foo", p.string());
 }
+
+TEST(TestFilesystemHelper, get_cwd)
+{
+  auto p = rcpputils::fs::current_path();
+  EXPECT_FALSE(p.empty());
+}
