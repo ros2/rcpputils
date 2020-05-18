@@ -388,7 +388,7 @@ inline bool exists(const path & path_to_check)
 /**
  * \brief Get a path to a location in the temporary directory, if it's available.
  *
- * \return A path to a randomly generated file location in the temporary directory.
+ * \return A path to a directory for storing temporary files and directories.
  */
 inline path temp_directory_path()
 {
