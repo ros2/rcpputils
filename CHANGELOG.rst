@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2020-05-26)
+------------------
 * Remove mention of random file from temporary_directory_path doc (`#64 <https://github.com/ros2/rcpputils/issues/64>`_)
 * Contributors: Scott K Logan
 
