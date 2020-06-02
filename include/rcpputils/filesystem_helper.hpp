@@ -219,7 +219,8 @@ public:
   */
   bool is_absolute() const
   {
-    return path_.compare(0, 1, "/") == 0 || path_.compare(1, 2, ":\\") == 0;
+    return path_.size() > 0 &&
+           (path_.compare(0, 1, "/") == 0 || path_.compare(1, 2, ":\\") == 0);
   }
 
   /**

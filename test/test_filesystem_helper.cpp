@@ -120,6 +120,18 @@ TEST(TestFilesystemHelper, is_absolute)
       auto p = path("foo/bar/baz");
       EXPECT_FALSE(p.is_absolute());
     }
+    {
+      auto p = path("C:");
+      EXPECT_FALSE(p.is_absolute());
+    }
+    {
+      auto p = path("C");
+      EXPECT_FALSE(p.is_absolute());
+    }
+    {
+      auto p = path("");
+      EXPECT_FALSE(p.is_absolute());
+    }
   } else {
     {
       auto p = path("/foo/bar/baz");
@@ -127,6 +139,14 @@ TEST(TestFilesystemHelper, is_absolute)
     }
     {
       auto p = path("foo/bar/baz");
+      EXPECT_FALSE(p.is_absolute());
+    }
+    {
+      auto p = path("f");
+      EXPECT_FALSE(p.is_absolute());
+    }
+    {
+      auto p = path("");
       EXPECT_FALSE(p.is_absolute());
     }
   }
