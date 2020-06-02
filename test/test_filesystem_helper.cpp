@@ -49,12 +49,21 @@ std::string build_directory_path()
 
 TEST(TestFilesystemHelper, join_path)
 {
-  auto p = path("foo") / path("bar");
+  {
+    auto p = path("foo") / path("bar");
+    if (is_win32) {
+      EXPECT_EQ("foo\\bar", p.string());
+    } else {
+      EXPECT_EQ("foo/bar", p.string());
+    }
+  }
 
   if (is_win32) {
-    EXPECT_EQ("foo\\bar", p.string());
+    auto p = path("foo") / path("C:\\bar");
+    EXPECT_EQ("C:\\bar", p.string());
   } else {
-    EXPECT_EQ("foo/bar", p.string());
+    auto p = path("foo") / path("/bar");
+    EXPECT_EQ("/bar", p.string());
   }
 }
 
