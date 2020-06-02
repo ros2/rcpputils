@@ -35,6 +35,7 @@
 
 #include "rcutils/get_env.h"
 
+#include <stdexcept>
 #include <string>
 
 #include "rcpputils/visibility_control.hpp"
