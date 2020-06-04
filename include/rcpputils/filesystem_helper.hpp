@@ -44,6 +44,7 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
+#include <limits.h>
 #include <sys/stat.h>
 
 #include <algorithm>
@@ -421,24 +422,22 @@ inline path temp_directory_path()
  */
 inline path current_path()
 {
-  char * cwd;
 #ifdef _WIN32
 #ifdef UNICODE
 #error "rcpputils::fs does not support Unicode paths"
 #endif
-  cwd = _getcwd(NULL, 0);
+  char cwd[MAX_PATH];
+  if (nullptr == _getcwd(cwd, MAX_PATH)) {
 #else
-  cwd = getcwd(NULL, 0);
+  char cwd[PATH_MAX];
+  if (nullptr == getcwd(cwd, PATH_MAX)) {
 #endif
-  if (nullptr == cwd) {
     std::error_code ec{errno, std::system_category()};
     errno = 0;
     throw std::system_error{ec, "cannot get current working directory"};
   }
 
-  std::string ret(cwd);
-  free(cwd);
-  return path(ret);
+  return path(cwd);
 }
 
 /**
