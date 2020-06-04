@@ -2,6 +2,14 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.1 (2020-06-03)
+------------------
+* Include stdexcept in get_env.hpp (`#69 <https://github.com/ros2/rcpputils/issues/69>`_)
+* Update quality declaration for version stability (`#66 <https://github.com/ros2/rcpputils/issues/66>`_)
+* Handle empty paths in is_absolute (`#67 <https://github.com/ros2/rcpputils/issues/67>`_)
+* Add Security Vulnerability Policy pointing to REP-2006 (`#65 <https://github.com/ros2/rcpputils/issues/65>`_)
+* Contributors: Chris Lalancette, Scott K Logan, Steven! Ragnarök
+
 1.0.0 (2020-05-26)
 ------------------
 * Remove mention of random file from temporary_directory_path doc (`#64 <https://github.com/ros2/rcpputils/issues/64>`_)
