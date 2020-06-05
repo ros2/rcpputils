@@ -26,7 +26,6 @@ namespace rcpputils
 /**
  * This function portably retrieves the current program name and returns
  * a copy of it.
- * It is up to the caller to free the memory.
  *
  * This function is thread-safe.
  *
