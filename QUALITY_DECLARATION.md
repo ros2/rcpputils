@@ -2,9 +2,9 @@ This document is a declaration of software quality for the `rcpputils` package, 
 
 # `rcpputils` Quality Declaration
 
-The package `rcpputils` claims to be in the **Quality Level 4** category.
+The package `rcpputils` claims to be in the **Quality Level 2** category.
 
-Below are the rationales, notes, and caveats for this claim, organized by each requirement listed in the [Package Requirements for Quality Level 4 in REP-2004](https://www.ros.org/reps/rep-2004.html).
+Below are the rationales, notes, and caveats for this claim, organized by each requirement listed in the [Package Requirements for Quality Level 2 in REP-2004](https://www.ros.org/reps/rep-2004.html).
 
 ## Version Policy [1]
 
@@ -91,12 +91,23 @@ New features are required to have tests before being added.
 
 ### Public API Testing [4.ii]
 
-Each part of the public API have tests, and new additions or changes to the public API require tests before being added.
+Each part of the public API has tests, and new additions or changes to the public API require tests before being added.
 The tests aim to cover both typical usage and corner cases, but are quantified by contributing to code coverage.
 
 ### Coverage [4.iii]
 
-`rcpputils` does not currently track test coverage.
+`rcpputils` follows the recommendations for ROS Core packages in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#code-coverage), and opts to use line coverage instead of branch coverage.
+
+This includes:
+
+- tracking and reporting line coverage statistics
+- achieving and maintaining a reasonable branch line coverage (90-100%)
+- no lines are manually skipped in coverage calculations
+
+Changes are required to make a best effort to keep or increase coverage before being accepted, but decreases are allowed if properly justified and accepted by reviewers.
+
+Current coverage statistics can be viewed [here](https://ci.ros2.org/job/ci_linux_coverage/lastSuccessfulBuild/cobertura/).
+A description of how coverage statistics are summarized from this page, can be found in the ["ROS 2 Onboarding Guide"](https://index.ros.org/doc/ros2/Contributing/ROS-2-On-boarding-Guide/#note-on-coverage-runs).
 
 ### Performance [4.iv]
 
