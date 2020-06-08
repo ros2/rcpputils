@@ -327,10 +327,15 @@ public:
   */
   path & operator/=(const path & other)
   {
-    this->path_ += kPreferredSeparator + other.string();
-    this->path_as_vector_.insert(
-      std::end(this->path_as_vector_),
-      std::begin(other.path_as_vector_), std::end(other.path_as_vector_));
+    if (other.is_absolute()) {
+      this->path_ = other.path_;
+      this->path_as_vector_ = other.path_as_vector_;
+    } else {
+      this->path_ += kPreferredSeparator + other.string();
+      this->path_as_vector_.insert(
+        std::end(this->path_as_vector_),
+        std::begin(other.path_as_vector_), std::end(other.path_as_vector_));
+    }
     return *this;
   }
 
