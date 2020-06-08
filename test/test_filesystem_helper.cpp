@@ -18,6 +18,7 @@
 #include <string>
 
 #include "rcpputils/filesystem_helper.hpp"
+#include "rcpputils/get_env.hpp"
 
 #ifdef _WIN32
 static constexpr const bool is_win32 = true;
@@ -257,4 +258,11 @@ TEST(TestFilesystemHelper, remove_extension_no_extension)
   auto p = path("foo");
   p = rcpputils::fs::remove_extension(p);
   EXPECT_EQ("foo", p.string());
+}
+
+TEST(TestFilesystemHelper, get_cwd)
+{
+  std::string expected_dir = rcpputils::get_env_var("EXPECTED_WORKING_DIRECTORY");
+  auto p = rcpputils::fs::current_path();
+  EXPECT_EQ(expected_dir, p.string());
 }

@@ -72,7 +72,11 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_split test/test_split.cpp)
 
-  ament_add_gtest(test_filesystem_helper test/test_filesystem_helper.cpp)
+  ament_add_gtest(test_filesystem_helper test/test_filesystem_helper.cpp
+    ENV
+      EXPECTED_WORKING_DIRECTORY=$<SHELL_PATH:${CMAKE_CURRENT_BINARY_DIR}>
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  ament_target_dependencies(test_filesystem_helper rcutils)
 
   ament_add_gtest(test_find_and_replace test/test_find_and_replace.cpp)
 
