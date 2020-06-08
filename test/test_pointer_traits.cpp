@@ -126,4 +126,7 @@ TEST(TestPointerTraits, remove_pointer) {
   EXPECT_TRUE(b_cuptr);
   EXPECT_TRUE(b_cvuptr);
   EXPECT_TRUE(b_cvuptrc);
+
+  delete ptr;
+  delete cptrc;
 }
