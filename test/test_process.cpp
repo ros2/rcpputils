@@ -19,5 +19,5 @@
 #include "rcpputils/process.hpp"
 
 TEST(TestProcess, test_get_executable_name) {
-  EXPECT_STREQ("test_process", rcpputils::get_executable_name().c_str());
+  EXPECT_EQ("test_process", rcpputils::get_executable_name());
 }
