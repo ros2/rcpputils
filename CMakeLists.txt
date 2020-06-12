@@ -82,6 +82,9 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_pointer_traits test/test_pointer_traits.cpp)
 
+  ament_add_gtest(test_process test/test_process.cpp)
+  ament_target_dependencies(test_process rcutils)
+
   set(append_library_dirs "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
 
   ament_add_gtest(test_shared_library test/test_shared_library.cpp
