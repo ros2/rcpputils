@@ -81,7 +81,7 @@ TEST(TestFilesystemHelper, parent_path)
   {
     if (is_win32) {
       auto p = path("C:\\foo");
-      EXPECT_EQ(p.parent_path().string(), "C:\\");
+      EXPECT_EQ(p.parent_path().string(), "C:");
     } else {
       auto p = path("/foo");
       EXPECT_EQ(p.parent_path().string(), "/");
@@ -90,7 +90,7 @@ TEST(TestFilesystemHelper, parent_path)
   {
     if (is_win32) {
       auto p = path("C:\\");
-      EXPECT_EQ(p.parent_path().string(), "C:\\");
+      EXPECT_EQ(p.parent_path().string(), "C:");
     } else {
       auto p = path("/");
       EXPECT_EQ(p.parent_path().string(), "/");
