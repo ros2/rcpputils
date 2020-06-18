@@ -70,9 +70,23 @@ TEST(TestFilesystemHelper, join_path)
 
 TEST(TestFilesystemHelper, parent_path)
 {
-  auto p = path("my") / path("path");
-
-  EXPECT_EQ(p.parent_path().string(), path("my").string());
+  {
+    auto p = path("my") / path("path");
+    EXPECT_EQ(p.parent_path().string(), path("my").string());
+  }
+  {
+    auto p = path("foo");
+    EXPECT_EQ(p.parent_path().string(), ".");
+  }
+  {
+    if (is_win32) {
+      auto p = path("\\foo");
+      EXPECT_EQ(p.parent_path().string(), "\\");
+    } else {
+      auto p = path("/foo");
+      EXPECT_EQ(p.parent_path().string(), "/");
+    }
+  }
 }
 
 TEST(TestFilesystemHelper, to_native_path)

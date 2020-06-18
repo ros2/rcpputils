@@ -251,6 +251,15 @@ public:
   */
   path parent_path() const
   {
+    // Edge case: if path only consists of one part, then return '.' or '/'
+    //            depending if the path is absolute or not
+    if (1u == path_as_vector_.size()) {
+      if (this->is_absolute()) {
+        return path(std::string(1, kPreferredSeparator));
+      }
+      return path(".");
+    }
+
     path parent;
     for (auto it = this->cbegin(); it != --this->cend(); ++it) {
       if (!parent.empty() || it->empty()) {
