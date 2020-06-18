@@ -221,7 +221,8 @@ public:
   bool is_absolute() const
   {
     return path_.size() > 0 &&
-           (path_.compare(0, 1, "/") == 0 || path_.compare(1, 2, ":\\") == 0);
+           (path_.compare(0, 1, std::string(1, kPreferredSeparator)) == 0 ||
+           this->is_absolute_with_drive_letter());
   }
 
   /**
@@ -260,9 +261,19 @@ public:
     //            depending if the path is absolute or not
     if (1u == path_as_vector_.size()) {
       if (this->is_absolute()) {
+        // Windows is tricky, since an absolute path may start with 'C:\\' or '\\'
+        if (this->is_absolute_with_drive_letter()) {
+          return path(path_as_vector_[0] + kPreferredSeparator);
+        }
         return path(std::string(1, kPreferredSeparator));
       }
       return path(".");
+    }
+
+    // Edge case: with a path 'C:\\foo' we want to return 'C:\\' not 'C:'
+    // Don't drop the root directory from an absolute path on Windows starting with a letter drive
+    if (2u == path_as_vector_.size() && this->is_absolute_with_drive_letter()) {
+      return path(path_as_vector_[0] + kPreferredSeparator);
     }
 
     path parent;
@@ -355,6 +366,19 @@ public:
   }
 
 private:
+  /// Returns true if the path is an absolute path with a drive letter on Windows
+  bool is_absolute_with_drive_letter() const
+  {
+#ifdef _WIN32
+    if (path_.empty()) {
+      return false;
+    }
+    return 0 == path_.compare(1, 2, ":\\");
+#else
+    return false;  // only Windows contains absolute paths starting with drive letters
+#endif
+  }
+
   std::string path_;
   std::vector<std::string> path_as_vector_;
 };
