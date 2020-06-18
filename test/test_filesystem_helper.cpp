@@ -70,9 +70,48 @@ TEST(TestFilesystemHelper, join_path)
 
 TEST(TestFilesystemHelper, parent_path)
 {
-  auto p = path("my") / path("path");
-
-  EXPECT_EQ(p.parent_path().string(), path("my").string());
+  {
+    auto p = path("my") / path("path");
+    EXPECT_EQ(p.parent_path().string(), path("my").string());
+  }
+  {
+    auto p = path("foo");
+    EXPECT_EQ(p.parent_path().string(), ".");
+  }
+  {
+    if (is_win32) {
+      {
+        auto p = path("C:\\foo");
+        EXPECT_EQ(p.parent_path().string(), "C:\\");
+      }
+      {
+        auto p = path("\\foo");
+        EXPECT_EQ(p.parent_path().string(), "\\");
+      }
+    } else {
+      auto p = path("/foo");
+      EXPECT_EQ(p.parent_path().string(), "/");
+    }
+  }
+  {
+    if (is_win32) {
+      {
+        auto p = path("C:\\");
+        EXPECT_EQ(p.parent_path().string(), "C:\\");
+      }
+      {
+        auto p = path("\\");
+        EXPECT_EQ(p.parent_path().string(), "\\");
+      }
+    } else {
+      auto p = path("/");
+      EXPECT_EQ(p.parent_path().string(), "/");
+    }
+  }
+  {
+    auto p = path("");
+    EXPECT_EQ(p.parent_path().string(), "");
+  }
 }
 
 TEST(TestFilesystemHelper, to_native_path)
@@ -124,6 +163,14 @@ TEST(TestFilesystemHelper, is_absolute)
     }
     {
       auto p = path("C:/foo/bar/baz");
+      EXPECT_TRUE(p.is_absolute());
+    }
+    {
+      auto p = path("\\foo\\bar\\baz");
+      EXPECT_TRUE(p.is_absolute());
+    }
+    {
+      auto p = path("/foo/bar/baz");
       EXPECT_TRUE(p.is_absolute());
     }
     {
@@ -185,6 +232,31 @@ TEST(TestFilesystemHelper, is_empty)
 {
   auto p = path("");
   EXPECT_TRUE(p.empty());
+}
+
+TEST(TestFilesystemHelper, exists)
+{
+  {
+    auto p = path("");
+    EXPECT_FALSE(p.exists());
+  }
+  {
+    auto p = path(".");
+    EXPECT_TRUE(p.exists());
+  }
+  {
+    auto p = path("..");
+    EXPECT_TRUE(p.exists());
+  }
+  {
+    if (is_win32) {
+      auto p = path("\\");
+      EXPECT_TRUE(p.exists());
+    } else {
+      auto p = path("/");
+      EXPECT_TRUE(p.exists());
+    }
+  }
 }
 
 /**
