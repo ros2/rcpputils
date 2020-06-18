@@ -88,6 +88,15 @@ TEST(TestFilesystemHelper, parent_path)
     }
   }
   {
+    if (is_win32) {
+      auto p = path("C:\\");
+      EXPECT_EQ(p.parent_path().string(), "C:\\");
+    } else {
+      auto p = path("/");
+      EXPECT_EQ(p.parent_path().string(), "/");
+    }
+  }
+  {
     auto p = path("");
     EXPECT_EQ(p.parent_path().string(), "");
   }
