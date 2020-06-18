@@ -187,6 +187,22 @@ TEST(TestFilesystemHelper, is_empty)
   EXPECT_TRUE(p.empty());
 }
 
+TEST(TestFilesystemHelper, exists)
+{
+  {
+    auto p = path("");
+    EXPECT_FALSE(p.exists());
+  }
+  {
+    auto p = path(".");
+    EXPECT_TRUE(p.exists());
+  }
+  {
+    auto p = path("..");
+    EXPECT_TRUE(p.exists());
+  }
+}
+
 /**
  * Test filesystem manipulation API.
  *
