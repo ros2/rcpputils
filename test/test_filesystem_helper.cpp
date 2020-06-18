@@ -87,6 +87,10 @@ TEST(TestFilesystemHelper, parent_path)
       EXPECT_EQ(p.parent_path().string(), "/");
     }
   }
+  {
+    auto p = path("");
+    EXPECT_EQ(p.parent_path().string(), "");
+  }
 }
 
 TEST(TestFilesystemHelper, to_native_path)

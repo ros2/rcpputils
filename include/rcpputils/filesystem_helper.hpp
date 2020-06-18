@@ -251,6 +251,11 @@ public:
   */
   path parent_path() const
   {
+    // Edge case: empty path
+    if (this->empty()) {
+      return path("");
+    }
+
     // Edge case: if path only consists of one part, then return '.' or '/'
     //            depending if the path is absolute or not
     if (1u == path_as_vector_.size()) {
