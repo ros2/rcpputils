@@ -2,6 +2,16 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.1.0 (2020-06-22)
+------------------
+* Fix parent_path() for empty paths and paths of length one (`#73 <https://github.com/ros2/rcpputils/issues/73>`_)
+* Add get_executable_name() function (`#70 <https://github.com/ros2/rcpputils/issues/70>`_)
+* Address memory leak in remove pointer test (`#72 <https://github.com/ros2/rcpputils/issues/72>`_)
+* Add current_path to filesystem_helpers (`#63 <https://github.com/ros2/rcpputils/issues/63>`_)
+* Align path combine behavior with C++17 (`#68 <https://github.com/ros2/rcpputils/issues/68>`_)
+* Update quality declaration to QL 2 (`#71 <https://github.com/ros2/rcpputils/issues/71>`_)
+* Contributors: Jacob Perron, Scott K Logan, Stephen Brawner
+
 1.0.1 (2020-06-03)
 ------------------
 * Include stdexcept in get_env.hpp (`#69 <https://github.com/ros2/rcpputils/issues/69>`_)
