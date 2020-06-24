@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: ros-tooling/setup-ros@0.0.22
     # workaround to ensure ament_package dependency is installed
-    - run: python3 -m pip install -U --force-reinstall importlib-resources
+    - run: python3 -m pip install -U --force-reinstall importlib-resources importlib-metadata
     - uses: ros-tooling/action-ros-ci@0.0.17
       with:
         package-name: rcpputils
