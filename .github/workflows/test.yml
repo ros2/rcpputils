@@ -18,6 +18,7 @@ jobs:
           os: [ubuntu-18.04]
     steps:
     - uses: ros-tooling/setup-ros@0.0.22
+    # workaround to ensure ament_package dependency is installed
     - run: python3 -m pip install -U --force-reinstall importlib-resources
     - uses: ros-tooling/action-ros-ci@0.0.17
       with:
