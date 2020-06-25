@@ -53,12 +53,12 @@ TEST(test_scope_exit, code_types) {
   const auto const_code = []() {};
   rcpputils::make_scope_exit(const_code);
 
-  struct noncopyable_code
+  struct noncopyable_code_t
   {
-    noncopyable_code() = default;
-    noncopyable_code(const noncopyable_code &) = delete;
-    noncopyable_code(noncopyable_code &&) = default;
+    noncopyable_code_t() = default;
+    noncopyable_code_t(const noncopyable_code_t &) = delete;
+    noncopyable_code_t(noncopyable_code_t &&) = default;
     void operator()() {}
   };
-  rcpputils::make_scope_exit(noncopyable_code());
+  rcpputils::make_scope_exit(noncopyable_code_t());
 }
