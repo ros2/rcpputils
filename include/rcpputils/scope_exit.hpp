@@ -17,7 +17,7 @@
 
 #include <utility>
 
-#include "rcpputils/macros.hpp"
+#include "rcutils/macros.h"
 
 namespace rcpputils
 {
@@ -63,6 +63,6 @@ make_scope_exit(CallableT && callable)
 }  // namespace rcpputils
 
 #define RCPPUTILS_SCOPE_EXIT(code) \
-  auto RCPPUTILS_JOIN_STRING(scope_exit_, __LINE__) = rcpputils::make_scope_exit([&]() {code;})
+  auto RCUTILS_JOIN(scope_exit_, __LINE__) = rcpputils::make_scope_exit([&]() {code;})
 
 #endif  // RCPPUTILS__SCOPE_EXIT_HPP_
