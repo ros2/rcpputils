@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add scope_exit helper (`#78 <https://github.com/ros2/rcpputils/issues/78>`_)
+* Bump setup-ros to 0.0.23, action-ros-lint to 0.0.6, action-ros-ci to 0.0.17 (`#77 <https://github.com/ros2/rcpputils/issues/77>`_)
+* Contributors: Devin Bonnie, Michel Hidalgo
+
 1.1.0 (2020-06-22)
 ------------------
 * Fix parent_path() for empty paths and paths of length one (`#73 <https://github.com/ros2/rcpputils/issues/73>`_)
