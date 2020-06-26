@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.2.0 (2020-06-26)
+------------------
 * Add scope_exit helper (`#78 <https://github.com/ros2/rcpputils/issues/78>`_)
 * Bump setup-ros to 0.0.23, action-ros-lint to 0.0.6, action-ros-ci to 0.0.17 (`#77 <https://github.com/ros2/rcpputils/issues/77>`_)
 * Contributors: Devin Bonnie, Michel Hidalgo
