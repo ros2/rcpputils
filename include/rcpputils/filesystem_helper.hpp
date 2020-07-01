@@ -547,28 +547,32 @@ inline bool remove(const path & p)
  */
 inline bool remove_all(const path & p)
 {
-  if (!is_directory(p)) {return false;}
+  if (!is_directory(p)) {return remove(p);}
 
 #ifdef _WIN32
   // We need a string of type PCZZTSTR, which is a double null terminated char ptr
   size_t length = p.string().size();
   TCHAR * temp_dir = new TCHAR[length + 2];
   memcpy(temp_dir, p.string().c_str(), length);
-  temp_dir[length] = 0;
-  temp_dir[length + 1] = 0;    // double null terminated
+  temp_dir[length] = '\0';
+  temp_dir[length + 1] = '\0';  // double null terminated
 
   SHFILEOPSTRUCT file_options;
   file_options.hwnd = nullptr;
-  file_options.wFunc = FO_DELETE;    // delete (recursively)
+  file_options.wFunc = FO_DELETE;  // delete (recursively)
   file_options.pFrom = temp_dir;
   file_options.pTo = nullptr;
-  file_options.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;    // do not prompt user
+  file_options.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // do not prompt user
   file_options.fAnyOperationsAborted = FALSE;
   file_options.lpszProgressTitle = nullptr;
   file_options.hNameMappings = nullptr;
 
-  SHFileOperation(&file_options);
+  auto ret = SHFileOperation(&file_options);
   delete[] temp_dir;
+
+  if (0 != ret) {
+    return false;
+  }
 #else
   DIR * dir = opendir(p.string().c_str());
   struct dirent * directory_entry;
@@ -590,7 +594,7 @@ inline bool remove_all(const path & p)
   remove(p);
 #endif
 
-  return rcpputils::fs::exists(p);
+  return !rcpputils::fs::exists(p);
 }
 
 /**
