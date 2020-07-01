@@ -570,9 +570,7 @@ inline bool remove_all(const path & p)
   auto ret = SHFileOperation(&file_options);
   delete[] temp_dir;
 
-  if (0 != ret) {
-    return false;
-  }
+  return 0 == ret && false == file_options.fAnyOperationsAborted;
 #else
   DIR * dir = opendir(p.string().c_str());
   struct dirent * directory_entry;
@@ -592,9 +590,8 @@ inline bool remove_all(const path & p)
   closedir(dir);
   // directory is empty now, call remove
   remove(p);
-#endif
-
   return !rcpputils::fs::exists(p);
+#endif
 }
 
 /**
