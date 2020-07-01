@@ -313,7 +313,6 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   for (auto i = 0u; i < num_files; ++i) {
     std::string file_name = std::string("test_file") + std::to_string(i) + ".txt";
     auto file = dir / file_name;
-    uint64_t expected_file_size = 0;
     {
       std::ofstream output_buffer{file.string()};
       output_buffer << "test" << i;
