@@ -26,6 +26,7 @@ ament_export_include_directories(include)
 add_library(${PROJECT_NAME}
   src/asserts.cpp
   src/find_library.cpp
+  src/get_env.cpp
   src/shared_library.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
@@ -69,6 +70,7 @@ if(BUILD_TESTING)
       NORMAL_TEST=foo
   )
   ament_target_dependencies(test_get_env rcutils)
+  target_link_libraries(test_get_env ${PROJECT_NAME})
 
   ament_add_gtest(test_scope_exit test/test_scope_exit.cpp)
   target_link_libraries(test_scope_exit ${PROJECT_NAME})
@@ -80,6 +82,7 @@ if(BUILD_TESTING)
       EXPECTED_WORKING_DIRECTORY=$<SHELL_PATH:${CMAKE_CURRENT_BINARY_DIR}>
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
   ament_target_dependencies(test_filesystem_helper rcutils)
+  target_link_libraries(test_filesystem_helper ${PROJECT_NAME})
 
   ament_add_gtest(test_find_and_replace test/test_find_and_replace.cpp)
 
