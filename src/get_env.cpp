@@ -30,25 +30,24 @@
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef RCPPUTILS__GET_ENV_HPP_
-#define RCPPUTILS__GET_ENV_HPP_
-
+#include <stdexcept>
 #include <string>
 
-#include "rcpputils/visibility_control.hpp"
+#include "rcutils/get_env.h"
+
+#include "rcpputils/get_env.hpp"
 
 namespace rcpputils
 {
 
-/// Retrieve the value of the given environment variable if it exists, or "".
-/*
- * \param[in] env_var the name of the environment variable
- * \return The value of the environment variable if it exists, or "".
- * \throws std::runtime_error on error
- */
-RCPPUTILS_PUBLIC
-std::string get_env_var(const char * env_var);
+std::string get_env_var(const char * env_var)
+{
+  const char * value{};
+  const char * err = rcutils_get_env(env_var, &value);
+  if (err) {
+    throw std::runtime_error(err);
+  }
+  return value ? value : "";
+}
 
 }  // namespace rcpputils
-
-#endif  // RCPPUTILS__GET_ENV_HPP_
