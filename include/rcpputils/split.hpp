@@ -54,7 +54,8 @@ namespace rcpputils
  *
  * \param[in] input the input string to be split
  * \param[in] delim the delimiter used to split the input string
- * \param[in] insert iterator pointing to a storage container
+ * \param[in] it iterator pointing to a storage container
+ * \param[in] skip_empty remove empty strings from the return vector
  */
 template<
   class InsertIterator,
@@ -83,6 +84,7 @@ split(const std::string & input, char delim, InsertIterator & it, bool skip_empt
  *
  * \param[in] input the input string to be split
  * \param[in] delim the delimiter used to split the input string
+ * \param[in] skip_empty remove empty strings from the return vector
  * \return A vector of tokens.
  */
 inline std::vector<std::string>
