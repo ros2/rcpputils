@@ -33,7 +33,7 @@ class SharedLibrary
 public:
   /// The library is loaded in the constructor.
   /**
-   * \param[in] input The library string path.
+   * \param[in] library_path The library string path.
    * \throws std::bad_alloc if allocating storage for the callback fails
    * \throws std::runtime_error if there are some invalid arguments or the library
    * was not load properly
@@ -91,7 +91,7 @@ private:
  * The maximum file name size is 1024 characters, if the input library_name is bigger than
  * this value then the method throws an exception.
  *
- * \param[in] symbol_name library base name (without prefix and extension)
+ * \param[in] library_name library base name (without prefix and extension)
  * \param[in] debug if true the library will return a debug library name, otherwise
  * it returns a normal library path
  * \return platform specific library name
