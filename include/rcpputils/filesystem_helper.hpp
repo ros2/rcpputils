@@ -388,7 +388,7 @@ private:
 /**
  * \brief Check if the path is a regular file.
  *
- * \param The path to check
+ * \param p The path to check
  * \return True if the path exists, false otherwise.
  */
 inline bool is_regular_file(const path & p) noexcept
@@ -399,7 +399,7 @@ inline bool is_regular_file(const path & p) noexcept
 /**
  * \brief Check if the path is a directory.
  *
- * \param path The path to check
+ * \param p The path to check
  * \return True if the path is an existing directory, false otherwise.
  */
 inline bool is_directory(const path & p) noexcept
@@ -410,7 +410,7 @@ inline bool is_directory(const path & p) noexcept
 /**
  * \brief Get the file size of the path.
  *
- * \param The path to get the file size of.
+ * \param p The path to get the file size of.
  * \return The file size in bytes.
  *
  * \throws std::sytem_error
@@ -517,7 +517,7 @@ inline bool create_directories(const path & p)
 /**
  * \brief Remove the file or directory at the path p.
  *
- * \param The path of the object to remove.
+ * \param p The path of the object to remove.
  * \return true if the file exists and it was successfully removed, false otherwise.
  */
 inline bool remove(const path & p)
