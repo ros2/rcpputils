@@ -302,6 +302,56 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   EXPECT_TRUE(rcpputils::fs::exists(temp_dir));
   EXPECT_TRUE(rcpputils::fs::remove(temp_dir));
   EXPECT_TRUE(rcpputils::fs::remove(temp_dir.parent_path()));
+
+  // Remove empty directory
+  EXPECT_FALSE(rcpputils::fs::exists(dir));
+  EXPECT_TRUE(rcpputils::fs::create_directories(dir));
+  EXPECT_TRUE(rcpputils::fs::exists(dir));
+  EXPECT_TRUE(rcpputils::fs::is_directory(dir));
+  EXPECT_TRUE(rcpputils::fs::remove_all(dir));
+  EXPECT_FALSE(rcpputils::fs::is_directory(dir));
+
+  // Remove non-existing directory
+  EXPECT_FALSE(rcpputils::fs::remove_all(rcpputils::fs::path("some") / "nonsense" / "dir"));
+
+  EXPECT_FALSE(rcpputils::fs::exists(dir));
+  EXPECT_TRUE(rcpputils::fs::create_directories(dir));
+
+  // Remove single file with remove_all
+  file = dir / "remove_all_single_file.txt";
+  {
+    std::ofstream output_buffer{file.string()};
+    output_buffer << "some content";
+  }
+  ASSERT_TRUE(rcpputils::fs::exists(file));
+  ASSERT_TRUE(rcpputils::fs::is_regular_file(file));
+  EXPECT_TRUE(rcpputils::fs::remove_all(file));
+
+  // Remove directory and its content
+  EXPECT_TRUE(rcpputils::fs::exists(dir));
+  EXPECT_TRUE(rcpputils::fs::is_directory(dir));
+
+  auto num_files = 10u;
+  for (auto i = 0u; i < num_files; ++i) {
+    std::string file_name = std::string("test_file") + std::to_string(i) + ".txt";
+    auto file = dir / file_name;
+    {
+      std::ofstream output_buffer{file.string()};
+      output_buffer << "test" << i;
+    }
+  }
+
+  // remove shall fail given that directory is not empty
+  ASSERT_FALSE(rcpputils::fs::remove(dir));
+
+  EXPECT_TRUE(rcpputils::fs::remove_all(dir));
+
+  for (auto i = 0u; i < num_files; ++i) {
+    std::string file_name = std::string("test_file") + std::to_string(i) + ".txt";
+    auto file = dir / file_name;
+    ASSERT_FALSE(rcpputils::fs::exists(file));
+  }
+  ASSERT_FALSE(rcpputils::fs::exists(dir));
 }
 
 TEST(TestFilesystemHelper, remove_extension)
