@@ -109,6 +109,8 @@ if(BUILD_TESTING)
   set_tests_properties(test_find_library PROPERTIES
     ENVIRONMENT
       "_TEST_LIBRARY_DIR=$<TARGET_FILE_DIR:test_library>;_TEST_LIBRARY=$<TARGET_FILE:test_library>")
+
+  ament_add_gtest(test_clamp test/test_clamp.cpp)
 endif()
 
 ament_package()
