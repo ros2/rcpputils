@@ -2,6 +2,16 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Removed doxygen warnings (`#86 <https://github.com/ros2/rcpputils/issues/86>`_) (`#87 <https://github.com/ros2/rcpputils/issues/87>`_)
+* Add clamp header (`#85 <https://github.com/ros2/rcpputils/issues/85>`_)
+* Removed doxygen warnings (`#86 <https://github.com/ros2/rcpputils/issues/86>`_)
+* Split get_env_var() into header and implementation (`#83 <https://github.com/ros2/rcpputils/issues/83>`_)
+* Add cstring include for strcmp (`#81 <https://github.com/ros2/rcpputils/issues/81>`_)
+* filesystem helpers: adding remove_all to remove non-empty directories (`#79 <https://github.com/ros2/rcpputils/issues/79>`_)
+* Contributors: Alejandro Hernández Cordero, Christophe Bedard, Hunter L. Allen, Karsten Knese, Victor Lopez
+
 1.2.0 (2020-06-26)
 ------------------
 * Add scope_exit helper (`#78 <https://github.com/ros2/rcpputils/issues/78>`_)
