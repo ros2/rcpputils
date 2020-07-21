@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.0 (2020-07-21)
+------------------
 * Removed doxygen warnings (`#86 <https://github.com/ros2/rcpputils/issues/86>`_) (`#87 <https://github.com/ros2/rcpputils/issues/87>`_)
 * Add clamp header (`#85 <https://github.com/ros2/rcpputils/issues/85>`_)
 * Removed doxygen warnings (`#86 <https://github.com/ros2/rcpputils/issues/86>`_)
