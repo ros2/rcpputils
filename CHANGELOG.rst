@@ -2,6 +2,13 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.0 (2020-07-21)
+------------------
+* Removed doxygen warnings (`#86 <https://github.com/ros2/rcpputils/issues/86>`_) (`#90 <https://github.com/ros2/rcpputils/issues/90>`_)
+* Add clamp header (`#85 <https://github.com/ros2/rcpputils/issues/85>`_) (`#88 <https://github.com/ros2/rcpputils/issues/88>`_)
+* Add remove_all to remove non-empty directories… (`#80 <https://github.com/ros2/rcpputils/issues/80>`_)
+* Contributors: Alejandro Hernández Cordero, Hunter L. Allen, Karsten Knese, Victor Lopez
+
 1.1.0 (2020-06-22)
 ------------------
 * Fix parent_path() for empty paths and paths of length one (`#73 <https://github.com/ros2/rcpputils/issues/73>`_)
