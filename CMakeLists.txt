@@ -4,6 +4,7 @@ project(rcpputils)
 
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
+find_package(mimick_vendor REQUIRED)
 find_package(rcutils REQUIRED)
 
 # Default to C11
@@ -35,6 +36,7 @@ if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
     PRIVATE "RCPPUTILS_BUILDING_LIBRARY")
 endif()
+target_link_libraries(${PROJECT_NAME} mimick)
 ament_target_dependencies(${PROJECT_NAME} rcutils)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_targets(${PROJECT_NAME})
@@ -117,6 +119,9 @@ if(BUILD_TESTING)
       "_TEST_LIBRARY_DIR=$<TARGET_FILE_DIR:test_library>;_TEST_LIBRARY=$<TARGET_FILE:test_library>")
 
   ament_add_gtest(test_clamp test/test_clamp.cpp)
+
+  ament_add_gtest(test_patch test/test_patch.cpp)
+  target_link_libraries(test_patch ${PROJECT_NAME})
 endif()
 
 ament_package()
