@@ -511,7 +511,7 @@ inline bool create_directories(const path & p)
 #endif
     }
   }
-  return status == 0;
+  return p_built.is_directory() && status == 0;
 }
 
 /**
