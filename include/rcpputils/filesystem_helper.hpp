@@ -497,6 +497,10 @@ inline bool create_directories(const path & p)
   path p_built;
   int status = 0;
 
+  if (p.empty()) {
+    return true;
+  }
+
   for (auto it = p.cbegin(); it != p.cend() && status == 0; ++it) {
     if (!p_built.empty() || it->empty()) {
       p_built /= *it;
