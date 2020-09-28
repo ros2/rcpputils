@@ -77,6 +77,7 @@
 #endif
 
 #include "rcpputils/split.hpp"
+#include "rcutils/get_env.h"
 
 namespace rcpputils
 {
@@ -451,8 +452,9 @@ inline path temp_directory_path()
   }
   temp_path[size] = '\0';
 #else
-  const char * temp_path = getenv("TMPDIR");
-  if (!temp_path) {
+  const char * temp_path = NULL;
+  const char * ret_str = rcutils_get_env("TMPDIR", &temp_path);
+  if (NULL != ret_str || *temp_path == '\0') {
     temp_path = "/tmp";
   }
 #endif
