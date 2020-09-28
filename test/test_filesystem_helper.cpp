@@ -353,6 +353,9 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
     ASSERT_FALSE(rcpputils::fs::exists(file));
   }
   ASSERT_FALSE(rcpputils::fs::exists(dir));
+
+  // Empty path/directory cannot be created
+  EXPECT_FALSE(rcpputils::fs::create_directories(rcpputils::fs::path("")));
 }
 
 TEST(TestFilesystemHelper, remove_extension)
