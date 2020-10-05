@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.1 (2020-10-05)
+------------------
 * Make sure that an existing path is a directory for create_directories (`#98 <https://github.com/ros2/rcpputils/issues/98>`_)
 * Transfer ownership to Open Robotics (`#100 <https://github.com/ros2/rcpputils/issues/100>`_)
 * Ensure -fPIC is used when building a static lib (`#93 <https://github.com/ros2/rcpputils/issues/93>`_)
