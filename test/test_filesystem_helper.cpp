@@ -286,6 +286,7 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   EXPECT_TRUE(rcpputils::fs::exists(file));
   EXPECT_TRUE(rcpputils::fs::is_regular_file(file));
   EXPECT_FALSE(rcpputils::fs::is_directory(file));
+  EXPECT_FALSE(rcpputils::fs::create_directories(file));
   EXPECT_GE(rcpputils::fs::file_size(file), expected_file_size);
   EXPECT_THROW(rcpputils::fs::file_size(dir), std::system_error) <<
     "file_size is only applicable for files!";
@@ -352,6 +353,9 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
     ASSERT_FALSE(rcpputils::fs::exists(file));
   }
   ASSERT_FALSE(rcpputils::fs::exists(dir));
+
+  // Empty path/directory cannot be created
+  EXPECT_FALSE(rcpputils::fs::create_directories(rcpputils::fs::path("")));
 }
 
 TEST(TestFilesystemHelper, remove_extension)
