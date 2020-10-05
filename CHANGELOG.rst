@@ -2,6 +2,13 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Make sure that an existing path is a directory for create_directories (`#98 <https://github.com/ros2/rcpputils/issues/98>`_)
+* Transfer ownership to Open Robotics (`#100 <https://github.com/ros2/rcpputils/issues/100>`_)
+* Ensure -fPIC is used when building a static lib (`#93 <https://github.com/ros2/rcpputils/issues/93>`_)
+* Contributors: Christophe Bedard, Dirk Thomas, Louise Poubel, William Woodall
+
 2.0.0 (2020-07-21)
 ------------------
 * Removed doxygen warnings (`#86 <https://github.com/ros2/rcpputils/issues/86>`_) (`#87 <https://github.com/ros2/rcpputils/issues/87>`_)
