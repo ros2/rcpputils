@@ -17,10 +17,11 @@ jobs:
       matrix:
           os: [ubuntu-18.04]
     steps:
-    - uses: ros-tooling/setup-ros@0.0.13
-    - uses: ros-tooling/action-ros-ci@0.0.13
+    - uses: ros-tooling/setup-ros@0.0.23
+    - uses: ros-tooling/action-ros-ci@0.0.17
       with:
         package-name: rcpputils
+        target-ros2-distro: foxy
     - uses: actions/upload-artifact@v1
       with:
         name: colcon-logs
