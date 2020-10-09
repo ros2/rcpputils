@@ -70,6 +70,9 @@ if(BUILD_TESTING)
   )
   ament_target_dependencies(test_get_env rcutils)
 
+  ament_add_gtest(test_scope_exit test/test_scope_exit.cpp)
+  target_link_libraries(test_scope_exit ${PROJECT_NAME})
+
   ament_add_gtest(test_split test/test_split.cpp)
 
   ament_add_gtest(test_filesystem_helper test/test_filesystem_helper.cpp
