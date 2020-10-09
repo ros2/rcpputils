@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add scope_exit helper. (`#78 <https://github.com/ros2/rcpputils//issues/78>`_) (`#103 <https://github.com/ros2/rcpputils//issues/103>`_)
+* Contributors: Alejandro Hernández Cordero, Michel Hidalgo
+
 1.3.0 (2020-07-21)
 ------------------
 * Removed doxygen warnings (`#86 <https://github.com/ros2/rcpputils/issues/86>`_) (`#90 <https://github.com/ros2/rcpputils/issues/90>`_)
