@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.1 (2020-10-09)
+------------------
 * Add scope_exit helper. (`#78 <https://github.com/ros2/rcpputils//issues/78>`_) (`#103 <https://github.com/ros2/rcpputils//issues/103>`_)
 * Contributors: Alejandro Hernández Cordero, Michel Hidalgo
 
