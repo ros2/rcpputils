@@ -48,6 +48,7 @@
 #include <sys/stat.h>
 
 #include <algorithm>
+#include <cerrno>
 #include <cstring>
 #include <string>
 #include <vector>
