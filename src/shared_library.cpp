@@ -60,9 +60,9 @@ void SharedLibrary::unload_library()
   }
 }
 
-void * SharedLibrary::get_symbol(const std::string & symbol_name)
+void * SharedLibrary::get_symbol(const char * symbol_name)
 {
-  void * lib_symbol = rcutils_get_symbol(&lib, symbol_name.c_str());
+  void * lib_symbol = rcutils_get_symbol(&lib, symbol_name);
 
   if (!lib_symbol) {
     std::string rcutils_error_str(rcutils_get_error_string().str);
@@ -72,9 +72,19 @@ void * SharedLibrary::get_symbol(const std::string & symbol_name)
   return lib_symbol;
 }
 
+void * SharedLibrary::get_symbol(const std::string & symbol_name)
+{
+  return get_symbol(symbol_name.c_str());
+}
+
+bool SharedLibrary::has_symbol(const char * symbol_name)
+{
+  return rcutils_has_symbol(&lib, symbol_name);
+}
+
 bool SharedLibrary::has_symbol(const std::string & symbol_name)
 {
-  return rcutils_has_symbol(&lib, symbol_name.c_str());
+  return has_symbol(symbol_name.c_str());
 }
 
 std::string SharedLibrary::get_library_path()

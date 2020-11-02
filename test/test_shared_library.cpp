@@ -28,7 +28,11 @@ TEST(test_shared_library, valid_load) {
 
     EXPECT_TRUE(library->has_symbol("print_name"));
 
+    EXPECT_TRUE(library->has_symbol(std::string("print_name")));
+
     EXPECT_TRUE(library->get_symbol("print_name") != NULL);
+
+    EXPECT_TRUE(library->get_symbol(std::string("print_name")) != NULL);
   } catch (...) {
     FAIL();
   }

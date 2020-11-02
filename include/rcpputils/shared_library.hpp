@@ -60,6 +60,13 @@ public:
    */
   RCPPUTILS_PUBLIC
   bool
+  has_symbol(const char * symbol_name);
+
+  /**
+   * @copydoc SharedLibrary::has_symbol(const char *)
+   */
+  RCPPUTILS_PUBLIC
+  bool
   has_symbol(const std::string & symbol_name);
 
   /// Return shared library symbol pointer.
@@ -68,6 +75,13 @@ public:
    * \return shared library symbol pointer, if the symbol doesn't exist then throws a
    * runtime_error exception
    * \throws std::runtime_error if the symbol doesn't exist in the shared library
+   */
+  RCPPUTILS_PUBLIC
+  void *
+  get_symbol(const char * symbol_name);
+
+  /**
+   * @copydoc SharedLibrary::get_symbol(const char *)
    */
   RCPPUTILS_PUBLIC
   void *
