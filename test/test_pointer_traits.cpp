@@ -22,6 +22,7 @@
 TEST(TestPointerTraits, is_pointer) {
   auto ptr = new int(13);
   auto ptr_ptr = &ptr;
+  ASSERT_TRUE(ptr_ptr == &ptr);  // to quiet clang static analysis
   const auto * const cptrc = new int(13);
   auto sptr = std::make_shared<int>(13);
   const auto csptr = std::make_shared<int>(13);
@@ -89,6 +90,7 @@ TEST(TestPointerTraits, remove_pointer) {
   auto non_ptr = 13;
   auto ptr = new int(13);
   auto ptr_ptr = &ptr;
+  ASSERT_TRUE(ptr_ptr == &ptr);  // to quiet clang static analysis
   const auto * const cptrc = new int(13);
   auto sptr = std::make_shared<int>(13);
   const auto csptr = std::make_shared<int>(13);
