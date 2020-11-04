@@ -32,9 +32,8 @@
 /*! \file filesystem_helper.hpp
  * \brief Cross-platform filesystem helper functions and additional emulation of [std::filesystem](https://en.cppreference.com/w/cpp/filesystem).
  *
- * If std::filesystem is not available the necessary functions are emulated.
  * Note: Once std::filesystem is supported on all ROS2 platforms, this class
- * can be deprecated in favor of the built-in functionality.
+ * can be deprecated/removed in favor of the built-in functionality.
  */
 
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
@@ -220,7 +219,7 @@ public:
   bool is_absolute() const
   {
     return path_.size() > 0 &&
-           (path_.compare(0, 1, std::string(1, kPreferredSeparator)) == 0 ||
+           (path_[0] == kPreferredSeparator ||
            this->is_absolute_with_drive_letter());
   }
 
@@ -277,10 +276,13 @@ public:
 
     path parent;
     for (auto it = this->cbegin(); it != --this->cend(); ++it) {
-      if (!parent.empty() || it->empty()) {
-        parent /= *it;
-      } else {
+      if (parent.empty() && !this->is_absolute()) {
+        // This handles the case where we are dealing with a relative path;
+        // we don't want a separator at the beginning, so just copy the piece
+        // directly.
         parent = *it;
+      } else {
+        parent /= *it;
       }
     }
     return parent;
@@ -356,7 +358,13 @@ public:
       this->path_ = other.path_;
       this->path_as_vector_ = other.path_as_vector_;
     } else {
-      this->path_ += kPreferredSeparator + other.string();
+      if (this->path_[this->path_.length() - 1] != kPreferredSeparator) {
+        // This ensures that we don't put duplicate separators into the path;
+        // this can happen, for instance, on absolute paths where the first
+        // item in the vector is the empty string.
+        this->path_ += kPreferredSeparator;
+      }
+      this->path_ += other.string();
       this->path_as_vector_.insert(
         std::end(this->path_as_vector_),
         std::begin(other.path_as_vector_), std::end(other.path_as_vector_));

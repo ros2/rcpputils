@@ -392,3 +392,15 @@ TEST(TestFilesystemHelper, get_cwd)
   auto p = rcpputils::fs::current_path();
   EXPECT_EQ(expected_dir, p.string());
 }
+
+TEST(TestFilesystemHelper, parent_absolute_path)
+{
+  rcpputils::fs::path path("/home/foo/bar/baz");
+  ASSERT_EQ(path.string(), "/home/foo/bar/baz");
+
+  rcpputils::fs::path parent = path.parent_path();
+  ASSERT_EQ(parent.string(), "/home/foo/bar");
+
+  rcpputils::fs::path grandparent = parent.parent_path();
+  ASSERT_EQ(grandparent.string(), "/home/foo");
+}
