@@ -103,10 +103,11 @@ public:
    * \param p A string path split by the platform's string path separator.
    */
   path(const std::string & p)  // NOLINT(runtime/explicit): this is a conversion constructor
-  : path_(p), path_as_vector_(split(p, kPreferredSeparator))
+  : path_(p)
   {
     std::replace(path_.begin(), path_.end(), '\\', kPreferredSeparator);
     std::replace(path_.begin(), path_.end(), '/', kPreferredSeparator);
+    path_as_vector_ = split(path_, kPreferredSeparator);
   }
 
   /**
