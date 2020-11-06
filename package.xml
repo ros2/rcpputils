@@ -7,6 +7,7 @@
   <maintainer email="clalancette@openrobotics.org">Chris Lalancette</maintainer>
   <maintainer email="michael.jeronimo@openrobotics.org">Michael Jeronimo</maintainer>
   <license>Apache License 2.0</license>
+  <license>BSD-3-Clause</license>
   <author email="eknapp@amazon.com">Emerson Knapp</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
