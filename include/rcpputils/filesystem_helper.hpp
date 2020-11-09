@@ -277,10 +277,10 @@ public:
 
     path parent;
     for (auto it = this->cbegin(); it != --this->cend(); ++it) {
-      if (parent.empty() && !this->is_absolute()) {
-        // This handles the case where we are dealing with a relative path;
-        // we don't want a separator at the beginning, so just copy the piece
-        // directly.
+      if (parent.empty() && (!this->is_absolute() || this->is_absolute_with_drive_letter())) {
+        // This handles the case where we are dealing with a relative path or
+        // the Windows drive letter; in both cases we don't want a separator at
+        // the beginning, so just copy the piece directly.
         parent = *it;
       } else {
         parent /= *it;
