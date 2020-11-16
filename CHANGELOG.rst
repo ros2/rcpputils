@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.2 (2020-11-16)
+------------------
 * Fix working with filesystem parent paths. (`#112 <https://github.com/ros2/rcpputils/issues/112>`_)
 * Cleanup mislabeled BSD license (`#37 <https://github.com/ros2/rcpputils/issues/37>`_)
 * overload functions for has_symbol and get_symbol with raw string literal (`#110 <https://github.com/ros2/rcpputils/issues/110>`_)
