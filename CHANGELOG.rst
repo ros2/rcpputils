@@ -2,6 +2,17 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix working with filesystem parent paths. (`#112 <https://github.com/ros2/rcpputils/issues/112>`_)
+* Cleanup mislabeled BSD license (`#37 <https://github.com/ros2/rcpputils/issues/37>`_)
+* overload functions for has_symbol and get_symbol with raw string literal (`#110 <https://github.com/ros2/rcpputils/issues/110>`_)
+* Add an ASSERT to the pointer traits tests. (`#111 <https://github.com/ros2/rcpputils/issues/111>`_)
+* replace custom get env login into rcutils_get_env(). (`#99 <https://github.com/ros2/rcpputils/issues/99>`_)
+* Removed Github Actions (`#105 <https://github.com/ros2/rcpputils/issues/105>`_)
+* Update the package.xml files with the latest Open Robotics maintainers (`#102 <https://github.com/ros2/rcpputils/issues/102>`_)
+* Contributors: Alejandro Hernández Cordero, Chen Lihui, Chris Lalancette, Michael Jeronimo, Tully Foote, tomoya
+
 2.0.1 (2020-10-05)
 ------------------
 * Make sure that an existing path is a directory for create_directories (`#98 <https://github.com/ros2/rcpputils/issues/98>`_)
