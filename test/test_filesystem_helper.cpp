@@ -392,3 +392,36 @@ TEST(TestFilesystemHelper, get_cwd)
   auto p = rcpputils::fs::current_path();
   EXPECT_EQ(expected_dir, p.string());
 }
+
+TEST(TestFilesystemHelper, parent_absolute_path)
+{
+  rcpputils::fs::path path("/home/foo/bar/baz");
+  if (is_win32) {
+    ASSERT_EQ(path.string(), "\\home\\foo\\bar\\baz");
+  } else {
+    ASSERT_EQ(path.string(), "/home/foo/bar/baz");
+  }
+
+  rcpputils::fs::path parent = path.parent_path();
+  if (is_win32) {
+    ASSERT_EQ(parent.string(), "\\home\\foo\\bar");
+  } else {
+    ASSERT_EQ(parent.string(), "/home/foo/bar");
+  }
+
+  rcpputils::fs::path grandparent = parent.parent_path();
+  if (is_win32) {
+    ASSERT_EQ(grandparent.string(), "\\home\\foo");
+  } else {
+    ASSERT_EQ(grandparent.string(), "/home/foo");
+  }
+
+  if (is_win32) {
+    rcpputils::fs::path win_drive_letter("C:\\home\\foo\\bar");
+    ASSERT_EQ(win_drive_letter.string(), "C:\\home\\foo\\bar");
+    rcpputils::fs::path win_parent = win_drive_letter.parent_path();
+    ASSERT_EQ(win_parent.string(), "C:\\home\\foo");
+    rcpputils::fs::path win_grandparent = win_parent.parent_path();
+    ASSERT_EQ(win_grandparent.string(), "C:\\home");
+  }
+}
