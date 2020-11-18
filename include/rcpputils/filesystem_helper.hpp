@@ -359,7 +359,7 @@ public:
       this->path_ = other.path_;
       this->path_as_vector_ = other.path_as_vector_;
     } else {
-      if (this->path_[this->path_.length() - 1] != kPreferredSeparator) {
+      if (this->path_.empty() || this->path_[this->path_.length() - 1] != kPreferredSeparator) {
         // This ensures that we don't put duplicate separators into the path;
         // this can happen, for instance, on absolute paths where the first
         // item in the vector is the empty string.
