@@ -129,8 +129,8 @@ Results of the nightly linter tests can be found [here](http://build.ros2.org/vi
 
 ### Direct Runtime ROS Dependencies [5.i]/[5.ii]
 
-`rcpputils` has the following runtime ROS dependencies, which is at **Quality Level 1**.
-* `rcutils`
+`rcpputils` has the following runtime ROS dependency, which is at **Quality Level 1**.
+* `rcutils`: [QUALITY DECLARATION](https://github.com/ros2/rcutils/blob/master/QUALITY_DECLARATION.md)
 
 It has several "buildtool" dependencies, which do not affect the resulting quality of the package, because they do not contribute to the public library API.
 It also has several test dependencies, which do not affect the resulting quality of the package, because they are only used to build and run the test code.
