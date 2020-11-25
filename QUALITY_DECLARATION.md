@@ -72,7 +72,7 @@ The license for `rcpputils` is Apache 2.0, and a summary is in each source file,
 
 There is an automated test which runs a linter that ensures each file has a license statement.
 
-Most recent test results can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rcpputils__ubuntu_bionic_amd64/lastBuild/testReport/rcpputils/)
+Most recent test results can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rcpputils__ubuntu_focal_amd64/lastBuild/testReport/rcpputils/)
 
 ### Copyright Statements [3.iv]
 
@@ -80,7 +80,7 @@ The copyright holders each provide a statement of copyright in each source code 
 
 There is an automated test which runs a linter that ensures each file has at least one copyright statement.
 
-The results of the test can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rcpputils__ubuntu_bionic_amd64/lastBuild/testReport/rcpputils/copyright/).
+The results of the test can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rcpputils__ubuntu_focal_amd64/lastBuild/testReport/rcpputils/copyright/).
 
 ## Testing [4]
 
@@ -114,7 +114,7 @@ A description of how coverage statistics are summarized from this page, can be f
 `rcpputils` follows the recommendations for performance testing of C/C++ code in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#performance), and opts to do performance analysis on each release rather than each change.
 
 System level performance benchmarks that cover features of `rcpputils` can be found at:
-* [Benchmarks](http://build.ros2.org/view/Rci/job/Rci__benchmark_ubuntu_focal_amd64/lastCompletedBuild/)
+* [Benchmarks](http://build.ros2.org/view/Rci/job/Rci__benchmark_ubuntu_focal_amd64/BenchmarkTable/)
 * [Performance](http://build.ros2.org/view/Rci/job/Rci__nightly-performance_ubuntu_focal_amd64/lastCompletedBuild/)
 
 Changes that introduce regressions in performance must be adequately justified in order to be accepted and merged.
@@ -123,13 +123,13 @@ Changes that introduce regressions in performance must be adequately justified i
 
 `rcpputils` uses and passes all the standard linters and static analysis tools for a C++ package as described in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#linters).
 
-Results of the nightly linter tests can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rcpputils__ubuntu_bionic_amd64/lastBuild/testReport/rcpputils/).
+Results of the nightly linter tests can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rcpputils__ubuntu_focal_amd64/lastBuild/testReport/rcpputils/).
 
 ## Dependencies [5]
 
 ### Direct Runtime ROS Dependencies [5.i]/[5.ii]
 
-`rcpputils` has the following runtime ROS dependencies, all of which are at **Quality Level 1**.
+`rcpputils` has the following runtime ROS dependencies, which is at **Quality Level 1**.
 * `rcutils`
 
 It has several "buildtool" dependencies, which do not affect the resulting quality of the package, because they do not contribute to the public library API.
