@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update QD to QL 1 (`#114 <https://github.com/ros2/rcpputils/issues/114>`_)
+* Make sure to not try to index into an empty path. (`#113 <https://github.com/ros2/rcpputils/issues/113>`_)
+* Contributors: Chris Lalancette, Stephen Brawner
+
 2.0.2 (2020-11-16)
 ------------------
 * Fix working with filesystem parent paths. (`#112 <https://github.com/ros2/rcpputils/issues/112>`_)
