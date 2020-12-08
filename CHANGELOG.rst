@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.3 (2020-12-08)
+------------------
 * Update QD to QL 1 (`#114 <https://github.com/ros2/rcpputils/issues/114>`_)
 * Make sure to not try to index into an empty path. (`#113 <https://github.com/ros2/rcpputils/issues/113>`_)
 * Contributors: Chris Lalancette, Stephen Brawner
