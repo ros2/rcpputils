@@ -24,7 +24,7 @@ namespace
 
 bool endswith(const std::string & basestring, const std::string & substring)
 {
-  return basestring.length() > substring.length() && basestring.compare(
+  return basestring.length() >= substring.length() && basestring.compare(
     basestring.length() - substring.length(), substring.length(), substring) == 0;
 }
 
