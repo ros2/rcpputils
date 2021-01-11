@@ -60,6 +60,8 @@
 #endif
 
 #ifdef _WIN32
+#  define NOMINMAX
+#  define NOGDI
 #  include <windows.h>
 #  include <direct.h>
 #  include <fileapi.h>
