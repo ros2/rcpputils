@@ -29,6 +29,7 @@ ament_export_include_directories(include)
 
 add_library(${PROJECT_NAME}
   src/asserts.cpp
+  src/filesystem_helper.cpp
   src/find_library.cpp
   src/get_env.cpp
   src/shared_library.cpp)
