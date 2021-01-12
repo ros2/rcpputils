@@ -210,9 +210,6 @@ public:
   RCPPUTILS_PUBLIC path & operator/=(const path & other);
 
 private:
-  /// Returns true if the path is an absolute path with a drive letter on Windows
-  RCPPUTILS_LOCAL bool is_absolute_with_drive_letter() const;
-
   std::string path_;
   std::vector<std::string> path_as_vector_;
 };

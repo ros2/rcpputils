@@ -67,6 +67,9 @@ namespace rcpputils
 namespace fs
 {
 
+/// \internal Returns true if the path is an absolute path with a drive letter on Windows.
+static bool is_absolute_with_drive_letter(const std::string & path);
+
 path::path(const std::string & p)  // NOLINT(runtime/explicit): this is a conversion constructor
 : path_(p)
 {
@@ -145,7 +148,7 @@ bool path::is_absolute() const
 {
   return path_.size() > 0 &&
           (path_[0] == kPreferredSeparator ||
-          this->is_absolute_with_drive_letter());
+          is_absolute_with_drive_letter(path_));
 }
 
 std::vector<std::string>::const_iterator path::cbegin() const
@@ -170,7 +173,7 @@ path path::parent_path() const
   if (1u == path_as_vector_.size()) {
     if (this->is_absolute()) {
       // Windows is tricky, since an absolute path may start with 'C:\\' or '\\'
-      if (this->is_absolute_with_drive_letter()) {
+      if (is_absolute_with_drive_letter(path_)) {
         return path(path_as_vector_[0] + kPreferredSeparator);
       }
       return path(std::string(1, kPreferredSeparator));
@@ -180,13 +183,13 @@ path path::parent_path() const
 
   // Edge case: with a path 'C:\\foo' we want to return 'C:\\' not 'C:'
   // Don't drop the root directory from an absolute path on Windows starting with a letter drive
-  if (2u == path_as_vector_.size() && this->is_absolute_with_drive_letter()) {
+  if (2u == path_as_vector_.size() && is_absolute_with_drive_letter(path_)) {
     return path(path_as_vector_[0] + kPreferredSeparator);
   }
 
   path parent;
   for (auto it = this->cbegin(); it != --this->cend(); ++it) {
-    if (parent.empty() && (!this->is_absolute() || this->is_absolute_with_drive_letter())) {
+    if (parent.empty() && (!this->is_absolute() || is_absolute_with_drive_letter(path_))) {
       // This handles the case where we are dealing with a relative path or
       // the Windows drive letter; in both cases we don't want a separator at
       // the beginning, so just copy the piece directly.
@@ -246,13 +249,14 @@ path & path::operator/=(const path & other)
   return *this;
 }
 
-bool path::is_absolute_with_drive_letter() const
+static bool is_absolute_with_drive_letter(const std::string & path)
 {
+  (void)path; // Maybe unused
 #ifdef _WIN32
-  if (path_.empty()) {
+  if (path.empty()) {
     return false;
   }
-  return 0 == path_.compare(1, 2, ":\\");
+  return 0 == path.compare(1, 2, ":\\");
 #else
   return false;  // only Windows contains absolute paths starting with drive letters
 #endif
