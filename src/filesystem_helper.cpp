@@ -185,7 +185,9 @@ bool remove(const path & p)
 
 bool remove_all(const path & p)
 {
-  if (!is_directory(p)) {return rcpputils::fs::remove(p);}
+  if (!is_directory(p)) {
+    return rcpputils::fs::remove(p);
+  }
 
 #ifdef _WIN32
   // We need a string of type PCZZTSTR, which is a double null terminated char ptr
