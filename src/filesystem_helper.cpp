@@ -44,6 +44,7 @@
 #include <cstring>
 #include <string>
 #include <system_error>
+#include <vector>
 
 #ifdef _WIN32
 #  define NOMINMAX
@@ -147,8 +148,8 @@ bool path::empty() const
 bool path::is_absolute() const
 {
   return path_.size() > 0 &&
-          (path_[0] == kPreferredSeparator ||
-          is_absolute_with_drive_letter(path_));
+         (path_[0] == kPreferredSeparator ||
+         is_absolute_with_drive_letter(path_));
 }
 
 std::vector<std::string>::const_iterator path::cbegin() const
@@ -251,7 +252,7 @@ path & path::operator/=(const path & other)
 
 static bool is_absolute_with_drive_letter(const std::string & path)
 {
-  (void)path; // Maybe unused
+  (void)path;  // Maybe unused
 #ifdef _WIN32
   if (path.empty()) {
     return false;

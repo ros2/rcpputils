@@ -85,7 +85,8 @@ public:
    *
    * \param p A string path split by the platform's string path separator.
    */
-  RCPPUTILS_PUBLIC path(const std::string & p);  // NOLINT(runtime/explicit): this is a conversion constructor
+  RCPPUTILS_PUBLIC
+  path(const std::string & p);  // NOLINT(runtime/explicit): this is a conversion constructor
 
   /**
     * \brief Copy constructor.
