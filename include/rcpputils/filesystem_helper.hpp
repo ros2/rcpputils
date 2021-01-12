@@ -42,18 +42,6 @@
 #include <string>
 #include <vector>
 
-/**
- * \def RCPPUTILS_IMPL_OS_DIRSEP
- *
- * A definition for this platforms string path separator
- */
-
-#ifdef _WIN32
-#  define RCPPUTILS_IMPL_OS_DIRSEP '\\'
-#else
-#  define RCPPUTILS_IMPL_OS_DIRSEP '/'
-#endif
-
 #include "rcpputils/visibility_control.hpp"
 
 namespace rcpputils
@@ -61,7 +49,21 @@ namespace rcpputils
 namespace fs
 {
 
+#ifdef _WIN32
+#  define RCPPUTILS_IMPL_OS_DIRSEP '\\'
+#else
+#  define RCPPUTILS_IMPL_OS_DIRSEP '/'
+#endif
+
+/**
+ * \def kPreferredSeparator
+ *
+ * A definition for this platforms string path separator
+ */
 static constexpr const char kPreferredSeparator = RCPPUTILS_IMPL_OS_DIRSEP;
+
+#undef RCPPUTILS_IMPL_OS_DIRSEP
+
 
 /**
  * \brief Drop-in replacement for [std::filesystem::path](https://en.cppreference.com/w/cpp/filesystem/path).
@@ -301,8 +303,6 @@ RCPPUTILS_PUBLIC bool remove_all(const path & p);
  * \return The path object.
  */
 RCPPUTILS_PUBLIC path remove_extension(const path & file_path, int n_times = 1);
-
-#undef RCPPUTILS_IMPL_OS_DIRSEP
 
 }  // namespace fs
 }  // namespace rcpputils
