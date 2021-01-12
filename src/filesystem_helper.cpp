@@ -38,6 +38,9 @@
 
 #include "rcpputils/filesystem_helper.hpp"
 
+#include <sys/stat.h>
+
+#include <algorithm>
 #include <cstring>
 #include <string>
 #include <system_error>
@@ -57,11 +60,25 @@
 #endif
 
 #include "rcutils/get_env.h"
+#include "rcpputils/split.hpp"
 
 namespace rcpputils
 {
 namespace fs
 {
+
+path::path(const std::string & p)  // NOLINT(runtime/explicit): this is a conversion constructor
+: path_(p)
+{
+  std::replace(path_.begin(), path_.end(), '\\', kPreferredSeparator);
+  std::replace(path_.begin(), path_.end(), '/', kPreferredSeparator);
+  path_as_vector_ = split(path_, kPreferredSeparator);
+}
+
+std::string path::string() const
+{
+  return path_;
+}
 
 bool path::exists() const
 {
@@ -98,6 +115,167 @@ bool path::is_regular_file() const noexcept
 #else
   return S_ISREG(stat_buffer.st_mode);
 #endif
+}
+
+uint64_t path::file_size() const
+{
+  if (this->is_directory()) {
+    auto ec = std::make_error_code(std::errc::is_a_directory);
+    throw std::system_error{ec, "cannot get file size"};
+  }
+
+  struct stat stat_buffer;
+  const auto rc = stat(path_.c_str(), &stat_buffer);
+
+  if (rc != 0) {
+    std::error_code ec{errno, std::system_category()};
+    errno = 0;
+    throw std::system_error{ec, "cannot get file size"};
+  } else {
+    return static_cast<uint64_t>(stat_buffer.st_size);
+  }
+}
+
+bool path::empty() const
+{
+  return path_.empty();
+}
+
+bool path::is_absolute() const
+{
+  return path_.size() > 0 &&
+          (path_[0] == kPreferredSeparator ||
+          this->is_absolute_with_drive_letter());
+}
+
+std::vector<std::string>::const_iterator path::cbegin() const
+{
+  return path_as_vector_.cbegin();
+}
+
+std::vector<std::string>::const_iterator path::cend() const
+{
+  return path_as_vector_.cend();
+}
+
+path path::parent_path() const
+{
+  // Edge case: empty path
+  if (this->empty()) {
+    return path("");
+  }
+
+  // Edge case: if path only consists of one part, then return '.' or '/'
+  //            depending if the path is absolute or not
+  if (1u == path_as_vector_.size()) {
+    if (this->is_absolute()) {
+      // Windows is tricky, since an absolute path may start with 'C:\\' or '\\'
+      if (this->is_absolute_with_drive_letter()) {
+        return path(path_as_vector_[0] + kPreferredSeparator);
+      }
+      return path(std::string(1, kPreferredSeparator));
+    }
+    return path(".");
+  }
+
+  // Edge case: with a path 'C:\\foo' we want to return 'C:\\' not 'C:'
+  // Don't drop the root directory from an absolute path on Windows starting with a letter drive
+  if (2u == path_as_vector_.size() && this->is_absolute_with_drive_letter()) {
+    return path(path_as_vector_[0] + kPreferredSeparator);
+  }
+
+  path parent;
+  for (auto it = this->cbegin(); it != --this->cend(); ++it) {
+    if (parent.empty() && (!this->is_absolute() || this->is_absolute_with_drive_letter())) {
+      // This handles the case where we are dealing with a relative path or
+      // the Windows drive letter; in both cases we don't want a separator at
+      // the beginning, so just copy the piece directly.
+      parent = *it;
+    } else {
+      parent /= *it;
+    }
+  }
+  return parent;
+}
+
+path path::filename() const
+{
+  return path_.empty() ? path() : *--this->cend();
+}
+
+path path::extension() const
+{
+  const char * delimiter = ".";
+  auto split_fname = rcpputils::split(this->string(), *delimiter);
+  return split_fname.size() == 1 ? path("") : path("." + split_fname.back());
+}
+
+path path::operator/(const std::string & other)
+{
+  return this->operator/(path(other));
+}
+
+path & path::operator/=(const std::string & other)
+{
+  this->operator/=(path(other));
+  return *this;
+}
+
+path path::operator/(const path & other)
+{
+  return path(*this).operator/=(other);
+}
+
+path & path::operator/=(const path & other)
+{
+  if (other.is_absolute()) {
+    this->path_ = other.path_;
+    this->path_as_vector_ = other.path_as_vector_;
+  } else {
+    if (this->path_.empty() || this->path_[this->path_.length() - 1] != kPreferredSeparator) {
+      // This ensures that we don't put duplicate separators into the path;
+      // this can happen, for instance, on absolute paths where the first
+      // item in the vector is the empty string.
+      this->path_ += kPreferredSeparator;
+    }
+    this->path_ += other.string();
+    this->path_as_vector_.insert(
+      std::end(this->path_as_vector_),
+      std::begin(other.path_as_vector_), std::end(other.path_as_vector_));
+  }
+  return *this;
+}
+
+bool path::is_absolute_with_drive_letter() const
+{
+#ifdef _WIN32
+  if (path_.empty()) {
+    return false;
+  }
+  return 0 == path_.compare(1, 2, ":\\");
+#else
+  return false;  // only Windows contains absolute paths starting with drive letters
+#endif
+}
+
+bool is_regular_file(const path & p) noexcept
+{
+  return p.is_regular_file();
+}
+
+bool is_directory(const path & p) noexcept
+{
+  return p.is_directory();
+}
+
+uint64_t file_size(const path & p)
+{
+  return p.file_size();
+}
+
+bool exists(const path & path_to_check)
+{
+  return path_to_check.exists();
 }
 
 path temp_directory_path()
@@ -232,6 +410,20 @@ bool remove_all(const path & p)
   rcpputils::fs::remove(p);
   return !rcpputils::fs::exists(p);
 #endif
+}
+
+path remove_extension(const path & file_path, int n_times)
+{
+  path new_path(file_path);
+  for (int i = 0; i < n_times; i++) {
+    const auto new_path_str = new_path.string();
+    const auto last_dot = new_path_str.find_last_of('.');
+    if (last_dot == std::string::npos) {
+      return new_path;
+    }
+    new_path = path(new_path_str.substr(0, last_dot));
+  }
+  return new_path;
 }
 
 }  // namespace fs

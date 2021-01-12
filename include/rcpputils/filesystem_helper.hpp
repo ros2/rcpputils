@@ -39,9 +39,6 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
-#include <sys/stat.h>
-
-#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -57,7 +54,6 @@
 #  define RCPPUTILS_IMPL_OS_DIRSEP '/'
 #endif
 
-#include "rcpputils/split.hpp"
 #include "rcpputils/visibility_control.hpp"
 
 namespace rcpputils
@@ -79,37 +75,27 @@ public:
   /**
     * \brief Constructs an empty path.
     */
-  path()
-  : path("")
-  {}
+  RCPPUTILS_PUBLIC
+  path() = default;
 
   /**
    * \brief Conversion constructor from a std::string path.
    *
    * \param p A string path split by the platform's string path separator.
    */
-  path(const std::string & p)  // NOLINT(runtime/explicit): this is a conversion constructor
-  : path_(p)
-  {
-    std::replace(path_.begin(), path_.end(), '\\', kPreferredSeparator);
-    std::replace(path_.begin(), path_.end(), '/', kPreferredSeparator);
-    path_as_vector_ = split(path_, kPreferredSeparator);
-  }
+  RCPPUTILS_PUBLIC path(const std::string & p);  // NOLINT(runtime/explicit): this is a conversion constructor
 
   /**
     * \brief Copy constructor.
     */
-  path(const path & p) = default;
+  RCPPUTILS_PUBLIC path(const path & p) = default;
 
   /**
    * \brief Get the path delimited using this system's path separator.
    *
    * \return The path as a string
    */
-  std::string string() const
-  {
-    return path_;
-  }
+  RCPPUTILS_PUBLIC std::string string() const;
 
   /**
    * \brief Check if this path exists.
@@ -138,111 +124,42 @@ public:
   * \return size of file in bytes
   * \throws std::system_error
   */
-  uint64_t file_size() const
-  {
-    if (is_directory()) {
-      auto ec = std::make_error_code(std::errc::is_a_directory);
-      throw std::system_error{ec, "cannot get file size"};
-    }
-
-    struct stat stat_buffer;
-    const auto rc = stat(path_.c_str(), &stat_buffer);
-
-    if (rc != 0) {
-      std::error_code ec{errno, std::system_category()};
-      errno = 0;
-      throw std::system_error{ec, "cannot get file size"};
-    } else {
-      return static_cast<uint64_t>(stat_buffer.st_size);
-    }
-  }
+  RCPPUTILS_PUBLIC uint64_t file_size() const;
 
   /**
   * \brief Check if the path is empty.
   *
   * \return True if the path is empty, false otherwise.
   */
-  bool empty() const
-  {
-    return path_.empty();
-  }
+  RCPPUTILS_PUBLIC bool empty() const;
 
   /**
   * \brief Check if the path is an absolute path.
   *
   * \return True if the path is absolute, false otherwise.
   */
-  bool is_absolute() const
-  {
-    return path_.size() > 0 &&
-           (path_[0] == kPreferredSeparator ||
-           this->is_absolute_with_drive_letter());
-  }
+  RCPPUTILS_PUBLIC bool is_absolute() const;
 
   /**
   * \brief Const iterator to first element of this path.
   *
   * \return A const iterator to the first element.
   */
-  std::vector<std::string>::const_iterator cbegin() const
-  {
-    return path_as_vector_.cbegin();
-  }
+  RCPPUTILS_PUBLIC std::vector<std::string>::const_iterator cbegin() const;
 
   /**
   * Const iterator to one past the last element of this path.
   *
   * return A const iterator to one past the last element of the path.
   */
-  std::vector<std::string>::const_iterator cend() const
-  {
-    return path_as_vector_.cend();
-  }
+  RCPPUTILS_PUBLIC std::vector<std::string>::const_iterator cend() const;
 
   /**
   * \brief Get the parent directory of this path.
   *
   * \return A path to the parent directory.
   */
-  path parent_path() const
-  {
-    // Edge case: empty path
-    if (this->empty()) {
-      return path("");
-    }
-
-    // Edge case: if path only consists of one part, then return '.' or '/'
-    //            depending if the path is absolute or not
-    if (1u == path_as_vector_.size()) {
-      if (this->is_absolute()) {
-        // Windows is tricky, since an absolute path may start with 'C:\\' or '\\'
-        if (this->is_absolute_with_drive_letter()) {
-          return path(path_as_vector_[0] + kPreferredSeparator);
-        }
-        return path(std::string(1, kPreferredSeparator));
-      }
-      return path(".");
-    }
-
-    // Edge case: with a path 'C:\\foo' we want to return 'C:\\' not 'C:'
-    // Don't drop the root directory from an absolute path on Windows starting with a letter drive
-    if (2u == path_as_vector_.size() && this->is_absolute_with_drive_letter()) {
-      return path(path_as_vector_[0] + kPreferredSeparator);
-    }
-
-    path parent;
-    for (auto it = this->cbegin(); it != --this->cend(); ++it) {
-      if (parent.empty() && (!this->is_absolute() || this->is_absolute_with_drive_letter())) {
-        // This handles the case where we are dealing with a relative path or
-        // the Windows drive letter; in both cases we don't want a separator at
-        // the beginning, so just copy the piece directly.
-        parent = *it;
-      } else {
-        parent /= *it;
-      }
-    }
-    return parent;
-  }
+  RCPPUTILS_PUBLIC path parent_path() const;
 
   /**
   * \brief Get the last element in this path.
@@ -251,22 +168,14 @@ public:
   *
   * \return The last element in this path
   */
-  path filename() const
-  {
-    return path_.empty() ? path() : *--this->cend();
-  }
+  RCPPUTILS_PUBLIC path filename() const;
 
   /**
   * \brief Get a relative path to the component including and following the last '.'.
   *
   * \return The string extension
   */
-  path extension() const
-  {
-    const char * delimiter = ".";
-    auto split_fname = split(this->string(), *delimiter);
-    return split_fname.size() == 1 ? path("") : path("." + split_fname.back());
-  }
+  RCPPUTILS_PUBLIC path extension() const;
 
   /**
   * \brief Concatenate a path and a string into a single path.
@@ -274,10 +183,7 @@ public:
   * \param other the string compnoent to concatenate
   * \return The combined path of this and other.
   */
-  path operator/(const std::string & other)
-  {
-    return this->operator/(path(other));
-  }
+  RCPPUTILS_PUBLIC path operator/(const std::string & other);
 
   /**
   * \brief Append a string component to this path.
@@ -285,11 +191,7 @@ public:
   * \param other the string component to append
   * \return *this
   */
-  path & operator/=(const std::string & other)
-  {
-    this->operator/=(path(other));
-    return *this;
-  }
+  RCPPUTILS_PUBLIC path & operator/=(const std::string & other);
 
   /**
   * \brief Concatenate two paths together.
@@ -297,10 +199,7 @@ public:
   * \param other the path to append
   * \return The combined path.
   */
-  path operator/(const path & other)
-  {
-    return path(*this).operator/=(other);
-  }
+  RCPPUTILS_PUBLIC path operator/(const path & other);
 
   /**
   * \brief Append a string component to this path.
@@ -308,39 +207,11 @@ public:
   * \param other the string component to append
   * \return *this
   */
-  path & operator/=(const path & other)
-  {
-    if (other.is_absolute()) {
-      this->path_ = other.path_;
-      this->path_as_vector_ = other.path_as_vector_;
-    } else {
-      if (this->path_.empty() || this->path_[this->path_.length() - 1] != kPreferredSeparator) {
-        // This ensures that we don't put duplicate separators into the path;
-        // this can happen, for instance, on absolute paths where the first
-        // item in the vector is the empty string.
-        this->path_ += kPreferredSeparator;
-      }
-      this->path_ += other.string();
-      this->path_as_vector_.insert(
-        std::end(this->path_as_vector_),
-        std::begin(other.path_as_vector_), std::end(other.path_as_vector_));
-    }
-    return *this;
-  }
+  RCPPUTILS_PUBLIC path & operator/=(const path & other);
 
 private:
   /// Returns true if the path is an absolute path with a drive letter on Windows
-  bool is_absolute_with_drive_letter() const
-  {
-#ifdef _WIN32
-    if (path_.empty()) {
-      return false;
-    }
-    return 0 == path_.compare(1, 2, ":\\");
-#else
-    return false;  // only Windows contains absolute paths starting with drive letters
-#endif
-  }
+  RCPPUTILS_LOCAL bool is_absolute_with_drive_letter() const;
 
   std::string path_;
   std::vector<std::string> path_as_vector_;
@@ -352,10 +223,7 @@ private:
  * \param p The path to check
  * \return True if the path exists, false otherwise.
  */
-inline bool is_regular_file(const path & p) noexcept
-{
-  return p.is_regular_file();
-}
+RCPPUTILS_PUBLIC bool is_regular_file(const path & p) noexcept;
 
 /**
  * \brief Check if the path is a directory.
@@ -363,10 +231,7 @@ inline bool is_regular_file(const path & p) noexcept
  * \param p The path to check
  * \return True if the path is an existing directory, false otherwise.
  */
-inline bool is_directory(const path & p) noexcept
-{
-  return p.is_directory();
-}
+RCPPUTILS_PUBLIC bool is_directory(const path & p) noexcept;
 
 /**
  * \brief Get the file size of the path.
@@ -376,10 +241,7 @@ inline bool is_directory(const path & p) noexcept
  *
  * \throws std::sytem_error
  */
-inline uint64_t file_size(const path & p)
-{
-  return p.file_size();
-}
+RCPPUTILS_PUBLIC uint64_t file_size(const path & p);
 
 /**
  * \brief Check if a path exists.
@@ -387,10 +249,7 @@ inline uint64_t file_size(const path & p)
  * \param path_to_check The path to check.
  * \return True if the path exists, false otherwise.
  */
-inline bool exists(const path & path_to_check)
-{
-  return path_to_check.exists();
-}
+RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
 
 
 /**
@@ -444,19 +303,7 @@ RCPPUTILS_PUBLIC bool remove_all(const path & p);
  * \param n_times The number of extensions to remove if there are multiple extensions.
  * \return The path object.
  */
-inline path remove_extension(const path & file_path, int n_times = 1)
-{
-  path new_path(file_path);
-  for (int i = 0; i < n_times; i++) {
-    const auto new_path_str = new_path.string();
-    const auto last_dot = new_path_str.find_last_of('.');
-    if (last_dot == std::string::npos) {
-      return new_path;
-    }
-    new_path = path(new_path_str.substr(0, last_dot));
-  }
-  return new_path;
-}
+RCPPUTILS_PUBLIC path remove_extension(const path & file_path, int n_times = 1);
 
 #undef RCPPUTILS_IMPL_OS_DIRSEP
 
