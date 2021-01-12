@@ -39,6 +39,8 @@
 #include "rcpputils/filesystem_helper.hpp"
 
 #include <cstring>
+#include <string>
+#include <system_error>
 
 #ifdef _WIN32
 #  define NOMINMAX
