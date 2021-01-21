@@ -305,6 +305,15 @@ RCPPUTILS_PUBLIC bool remove_all(const path & p);
  */
 RCPPUTILS_PUBLIC path remove_extension(const path & file_path, int n_times = 1);
 
+/**
+* \brief Convert the path to a string for ostream usage, such as in logging or string formatting.
+*
+* \param os The stream to send the path string to
+* \param p The path to stringify
+* \return The ostream, for chaining
+*/
+RCPPUTILS_PUBLIC std::ostream & operator<<(std::ostream & os, const path & p);
+
 }  // namespace fs
 }  // namespace rcpputils
 

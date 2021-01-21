@@ -431,5 +431,11 @@ path remove_extension(const path & file_path, int n_times)
   return new_path;
 }
 
+std::ostream & operator<<(std::ostream & os, const path & p)
+{
+  os << p.string();
+  return os;
+}
+
 }  // namespace fs
 }  // namespace rcpputils
