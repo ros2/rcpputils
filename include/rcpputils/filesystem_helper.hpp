@@ -186,7 +186,7 @@ public:
   * \param other the string compnoent to concatenate
   * \return The combined path of this and other.
   */
-  RCPPUTILS_PUBLIC path operator/(const std::string & other);
+  RCPPUTILS_PUBLIC path operator/(const std::string & other) const;
 
   /**
   * \brief Append a string component to this path.
@@ -202,7 +202,7 @@ public:
   * \param other the path to append
   * \return The combined path.
   */
-  RCPPUTILS_PUBLIC path operator/(const path & other);
+  RCPPUTILS_PUBLIC path operator/(const path & other) const;
 
   /**
   * \brief Append a string component to this path.

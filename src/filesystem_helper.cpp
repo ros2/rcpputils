@@ -214,7 +214,7 @@ path path::extension() const
   return split_fname.size() == 1 ? path("") : path("." + split_fname.back());
 }
 
-path path::operator/(const std::string & other)
+path path::operator/(const std::string & other) const
 {
   return this->operator/(path(other));
 }
@@ -225,7 +225,7 @@ path & path::operator/=(const std::string & other)
   return *this;
 }
 
-path path::operator/(const path & other)
+path path::operator/(const path & other) const
 {
   return path(*this).operator/=(other);
 }
