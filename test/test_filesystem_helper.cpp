@@ -434,3 +434,11 @@ TEST(TestFilesystemHelper, parent_absolute_path)
     ASSERT_EQ(win_grandparent.string(), "C:\\home");
   }
 }
+
+TEST(TestFilesystemHelper, stream_operator)
+{
+  path p{"foo"};
+  std::stringstream s;
+  s << "bar" << p;
+  ASSERT_EQ(s.str(), "barfoo");
+}
