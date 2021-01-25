@@ -21,6 +21,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
+
 
 #include "rcutils/filesystem.h"
 #include "rcutils/get_env.h"
@@ -67,7 +69,7 @@ std::string find_library_path(const std::string & library_name)
       return path;
     }
   }
-  return "";
+  return filename;
 }
 
 }  // namespace rcpputils
