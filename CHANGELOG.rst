@@ -2,6 +2,14 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add stream operator for paths to make it easier to log (`#120 <https://github.com/ros2/rcpputils/issues/120>`_)
+* Path join operator is const (`#119 <https://github.com/ros2/rcpputils/issues/119>`_)
+* No windows.h in header files (`#118 <https://github.com/ros2/rcpputils/issues/118>`_)
+* Fix rcpputils::SharedLibrary tests. (`#117 <https://github.com/ros2/rcpputils/issues/117>`_)
+* Contributors: Emerson Knapp, Ivan Santiago Paunovic, Michel Hidalgo
+
 2.0.3 (2020-12-08)
 ------------------
 * Update QD to QL 1 (`#114 <https://github.com/ros2/rcpputils/issues/114>`_)
