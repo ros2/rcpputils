@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.4 (2021-01-25)
+------------------
 * Add stream operator for paths to make it easier to log (`#120 <https://github.com/ros2/rcpputils/issues/120>`_)
 * Path join operator is const (`#119 <https://github.com/ros2/rcpputils/issues/119>`_)
 * No windows.h in header files (`#118 <https://github.com/ros2/rcpputils/issues/118>`_)
