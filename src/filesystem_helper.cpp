@@ -74,8 +74,11 @@ static bool is_absolute_with_drive_letter(const std::string & path);
 path::path(const std::string & p)  // NOLINT(runtime/explicit): this is a conversion constructor
 : path_(p)
 {
-  std::replace(path_.begin(), path_.end(), '\\', kPreferredSeparator);
-  std::replace(path_.begin(), path_.end(), '/', kPreferredSeparator);
+  if (kPreferredSeparator != '\\') {
+    std::replace(path_.begin(), path_.end(), '\\', kPreferredSeparator);
+  } else if (kPreferredSeparator != '/') {
+    std::replace(path_.begin(), path_.end(), '/', kPreferredSeparator);
+  }
   path_as_vector_ = split(path_, kPreferredSeparator);
 }
 
