@@ -76,7 +76,8 @@ path::path(const std::string & p)  // NOLINT(runtime/explicit): this is a conver
 {
   if (kPreferredSeparator != '\\') {
     std::replace(path_.begin(), path_.end(), '\\', kPreferredSeparator);
-  } else if (kPreferredSeparator != '/') {
+  }
+  if (kPreferredSeparator != '/') {
     std::replace(path_.begin(), path_.end(), '/', kPreferredSeparator);
   }
   path_as_vector_ = split(path_, kPreferredSeparator);
