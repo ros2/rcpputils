@@ -57,7 +57,7 @@ public:
    *
    * \return The string message
    */
-  virtual const char * what() const throw();
+  virtual const char * what() const noexcept;
 };
 
 /**
@@ -82,7 +82,7 @@ public:
    *
    * \return The string message
    */
-  virtual const char * what() const throw();
+  virtual const char * what() const noexcept;
 };
 
 /**
