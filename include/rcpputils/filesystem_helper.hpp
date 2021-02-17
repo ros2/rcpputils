@@ -327,6 +327,14 @@ RCPPUTILS_PUBLIC bool remove_all(const path & p);
 RCPPUTILS_PUBLIC path remove_extension(const path & file_path, int n_times = 1);
 
 /**
+ * \brief Compare two paths for equality.
+ *
+ * \return True if both paths are equal as strings.
+ */
+RCPPUTILS_PUBLIC bool operator==(const path & a, const path & b);
+RCPPUTILS_PUBLIC bool operator!=(const path & a, const path & b);
+
+/**
 * \brief Convert the path to a string for ostream usage, such as in logging or string formatting.
 *
 * \param os The stream to send the path string to

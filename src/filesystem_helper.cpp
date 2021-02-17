@@ -465,6 +465,16 @@ path remove_extension(const path & file_path, int n_times)
   return new_path;
 }
 
+bool operator==(const path & a, const path & b)
+{
+  return a.string() == b.string();
+}
+
+bool operator!=(const path & a, const path & b)
+{
+  return !(a == b);
+}
+
 std::ostream & operator<<(std::ostream & os, const path & p)
 {
   os << p.string();
