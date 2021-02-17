@@ -264,10 +264,10 @@ RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
 RCPPUTILS_PUBLIC path temp_directory_path();
 
 /**
- * \brief Construct a uniquely named temporary directory, in "parent", with format base_name.XXXXXX
+ * \brief Construct a uniquely named temporary directory, in "parent", with format base_nameXXXXXX
  *
  * The output, if successful, is guaranteed to be a newly-created directory.
- * The underlying utilities check if the generated path name exists until a one is found.
+ * The underlying implementation keeps generating paths until one that does not exist is found.
  * This guarantees that there will be no existing files in the returned directory.
  *
  * \param base_name User-specified portion of the created directory

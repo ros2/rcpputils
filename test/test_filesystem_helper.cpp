@@ -453,6 +453,14 @@ TEST(TestFilesystemHelper, create_temp_directory)
     EXPECT_TRUE(tmpdir1.exists());
     EXPECT_TRUE(tmpdir1.is_directory());
 
+    auto tmp_file = tmpdir1 / "test_file.txt";
+    {
+      std::ofstream output_buffer{tmp_file.string()};
+      output_buffer << "test";
+    }
+    EXPECT_TRUE(rcpputils::fs::exists(tmp_file));
+    EXPECT_TRUE(rcpputils::fs::is_regular_file(tmp_file));
+
     const auto tmpdir2 = rcpputils::fs::create_temp_directory(basename);
     EXPECT_TRUE(tmpdir2.exists());
     EXPECT_TRUE(tmpdir2.is_directory());
@@ -487,7 +495,7 @@ TEST(TestFilesystemHelper, create_temp_directory)
     const auto tmpdir_emptybase = rcpputils::fs::create_temp_directory("");
     EXPECT_EQ(tmpdir_emptybase.filename().string().size(), 6u);
 
-    // Empty path doesn't exist and cannott be created
+    // Empty path doesn't exist and cannot be created
     EXPECT_THROW(rcpputils::fs::create_temp_directory("basename", path()), std::system_error);
 
     // With the template string XXXXXX already in the name, it will still be there, the unique
@@ -495,6 +503,9 @@ TEST(TestFilesystemHelper, create_temp_directory)
     const auto tmpdir_template_in_name = rcpputils::fs::create_temp_directory("base_XXXXXX");
     EXPECT_TRUE(tmpdir_template_in_name.exists());
     EXPECT_TRUE(tmpdir_template_in_name.is_directory());
-    EXPECT_EQ(tmpdir_template_in_name.filename().string().rfind("base_XXXXXX", 0), 0u);
+    // On Linux, it will not replace the base_name Xs, only the final 6 that the function appends.
+    // On OSX, it will replace _all_ trailing Xs.
+    // Either way, the result is unique, the exact value doesn't matter.
+    EXPECT_EQ(tmpdir_template_in_name.filename().string().rfind("base_", 0), 0u);
   }
 }
