@@ -472,12 +472,29 @@ TEST(TestFilesystemHelper, create_temp_directory)
     }
   }
 
-  // parent paths
+  // newly created paths
   {
     const auto new_relative = rcpputils::fs::current_path() / "child1" / "child2";
     const auto tmpdir = rcpputils::fs::create_temp_directory("base_name", new_relative);
     EXPECT_TRUE(tmpdir.exists());
     EXPECT_TRUE(tmpdir.is_directory());
     EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir));
+  }
+
+  // edge case inputs
+  {
+    // Provided no base name we should still get a path with the 6 unique template chars
+    const auto tmpdir_emptybase = rcpputils::fs::create_temp_directory("");
+    EXPECT_EQ(tmpdir_emptybase.filename().string().size(), 6u);
+
+    // Empty path doesn't exist and cannott be created
+    EXPECT_THROW(rcpputils::fs::create_temp_directory("basename", path()), std::system_error);
+
+    // With the template string XXXXXX already in the name, it will still be there, the unique
+    // portion is appended to the end.
+    const auto tmpdir_template_in_name = rcpputils::fs::create_temp_directory("base_XXXXXX");
+    EXPECT_TRUE(tmpdir_template_in_name.exists());
+    EXPECT_TRUE(tmpdir_template_in_name.is_directory());
+    EXPECT_EQ(tmpdir_template_in_name.filename().string().rfind("base_XXXXXX", 0), 0u);
   }
 }
