@@ -446,13 +446,12 @@ TEST(TestFilesystemHelper, stream_operator)
 TEST(TestFilesystemHelper, create_temp_directory)
 {
   const std::string basename = "test_base_name";
-  const auto parent = rcpputils::fs::temp_directory_path();
 
-  const auto tmpdir1 = rcpputils::fs::create_temp_directory(parent, basename);
+  const auto tmpdir1 = rcpputils::fs::create_temp_directory(basename);
   EXPECT_TRUE(tmpdir1.exists());
   EXPECT_TRUE(tmpdir1.is_directory());
 
-  const auto tmpdir2 = rcpputils::fs::create_temp_directory(parent, basename);
+  const auto tmpdir2 = rcpputils::fs::create_temp_directory(basename);
   EXPECT_TRUE(tmpdir2.exists());
   EXPECT_TRUE(tmpdir2.is_directory());
 

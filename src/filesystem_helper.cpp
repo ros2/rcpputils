@@ -306,7 +306,7 @@ path temp_directory_path()
   return path(temp_path);
 }
 
-path create_temp_directory(const path & parent, const std::string & base_name)
+path create_temp_directory(const std::string & base_name, const path & parent)
 {
   auto template_path = base_name + ".XXXXXX";
 

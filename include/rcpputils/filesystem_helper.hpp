@@ -270,11 +270,13 @@ RCPPUTILS_PUBLIC path temp_directory_path();
  * if the generated filename exists and keeps generating until a new one is found. This guarantees
  * that there will be no existing files in the returned directory.
  *
- * \param parent The parent path of the directory that will be created
  * \param base_name User-specified portion of the created directory
+ * \param parent The parent path of the directory that will be created
  * \return A path to a newly-created directory with base_name and a 6-character unique suffix
  */
-RCPPUTILS_PUBLIC path create_temp_directory(const path & parent, const std::string & base_name);
+RCPPUTILS_PUBLIC path create_temp_directory(
+  const std::string & base_name,
+  const path & parent = temp_directory_path());
 
 /**
  * \brief Return current working directory.
