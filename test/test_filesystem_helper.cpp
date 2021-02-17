@@ -445,18 +445,39 @@ TEST(TestFilesystemHelper, stream_operator)
 
 TEST(TestFilesystemHelper, create_temp_directory)
 {
-  const std::string basename = "test_base_name";
+  // basic usage
+  {
+    const std::string basename = "test_base_name";
 
-  const auto tmpdir1 = rcpputils::fs::create_temp_directory(basename);
-  EXPECT_TRUE(tmpdir1.exists());
-  EXPECT_TRUE(tmpdir1.is_directory());
+    const auto tmpdir1 = rcpputils::fs::create_temp_directory(basename);
+    EXPECT_TRUE(tmpdir1.exists());
+    EXPECT_TRUE(tmpdir1.is_directory());
 
-  const auto tmpdir2 = rcpputils::fs::create_temp_directory(basename);
-  EXPECT_TRUE(tmpdir2.exists());
-  EXPECT_TRUE(tmpdir2.is_directory());
+    const auto tmpdir2 = rcpputils::fs::create_temp_directory(basename);
+    EXPECT_TRUE(tmpdir2.exists());
+    EXPECT_TRUE(tmpdir2.is_directory());
 
-  EXPECT_NE(tmpdir1.string(), tmpdir2.string());
+    EXPECT_NE(tmpdir1.string(), tmpdir2.string());
 
-  EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir1));
-  EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir2));
+    EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir1));
+    EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir2));
+  }
+
+  // bad names
+  {
+    if (is_win32) {
+      EXPECT_THROW(rcpputils::fs::create_temp_directory("illegalchar?"), std::system_error);
+    } else {
+      EXPECT_THROW(rcpputils::fs::create_temp_directory("base/name"), std::system_error);
+    }
+  }
+
+  // parent paths
+  {
+    const auto new_relative = rcpputils::fs::current_path() / "child1" / "child2";
+    const auto tmpdir = rcpputils::fs::create_temp_directory("base_name", new_relative);
+    EXPECT_TRUE(tmpdir.exists());
+    EXPECT_TRUE(tmpdir.is_directory());
+    EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir));
+  }
 }

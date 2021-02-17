@@ -266,17 +266,19 @@ RCPPUTILS_PUBLIC path temp_directory_path();
 /**
  * \brief Construct a uniquely named temporary directory, in "parent", with format base_name.XXXXXX
  *
- * The output is guaranteed to be a newly-created directory, the underlying utilities check
- * if the generated filename exists and keeps generating until a new one is found. This guarantees
- * that there will be no existing files in the returned directory.
+ * The output, if successful, is guaranteed to be a newly-created directory.
+ * The underlying utilities check if the generated path name exists until a one is found.
+ * This guarantees that there will be no existing files in the returned directory.
  *
  * \param base_name User-specified portion of the created directory
  * \param parent The parent path of the directory that will be created
  * \return A path to a newly-created directory with base_name and a 6-character unique suffix
+ *
+ * \throws std::system_error If any OS APIs do not succeed.
  */
 RCPPUTILS_PUBLIC path create_temp_directory(
   const std::string & base_name,
-  const path & parent = temp_directory_path());
+  const path & parent_path = temp_directory_path());
 
 /**
  * \brief Return current working directory.

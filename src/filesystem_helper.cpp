@@ -306,20 +306,38 @@ path temp_directory_path()
   return path(temp_path);
 }
 
-path create_temp_directory(const std::string & base_name, const path & parent)
+path create_temp_directory(const std::string & base_name, const path & parent_path)
 {
-  auto template_path = base_name + ".XXXXXX";
+  const auto template_path = base_name + "XXXXXX";
+  std::string full_template_str = (parent_path / template_path).string();
+  char * mutable_full_template_data = &full_template_str[0];
 
 #ifdef _WIN32
-  _mktemp_s(&template_path[0], template_path.size() + 1);
-  const auto final_path = parent / template;
-  create_directories(final_path);
-  return final_path
+  errno_t ec = _mktemp_s(mutable_full_template_data, full_template_str.size() + 1);
+  if (ec) {
+    throw std::system_error(ec, "could not format the temp directory name template");
+  }
+  const path final_path{full_template_str};
+  if (!create_directories(final_path)) {
+    std::error_code ec(static_cast<int>(GetLastError()), std::system_category());
+    throw std::system_error(ec, "could not create the temp directory");
+  }
 #else
-  auto full_template = (parent / template_path).string();
-  const char * dir_name = mkdtemp(&full_template[0]);
-  return path(dir_name);
+  if (!create_directories(parent_path)) {
+    std::error_code ec{errno, std::system_category()};
+    errno = 0;
+    throw std::system_error(ec, "could not create the parent directory");
+  }
+  const char * dir_name = mkdtemp(mutable_full_template_data);
+  if (dir_name == nullptr) {
+    std::error_code ec{errno, std::system_category()};
+    errno = 0;
+    throw std::system_error(ec, "could not format or create the temp directory");
+  }
+  const path final_path{full_template_str};
 #endif
+
+  return final_path;
 }
 
 path current_path()
