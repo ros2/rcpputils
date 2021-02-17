@@ -442,3 +442,22 @@ TEST(TestFilesystemHelper, stream_operator)
   s << "bar" << p;
   ASSERT_EQ(s.str(), "barfoo");
 }
+
+TEST(TestFilesystemHelper, create_temp_directory)
+{
+  const std::string basename = "test_base_name";
+  const auto parent = rcpputils::fs::temp_directory_path();
+
+  const auto tmpdir1 = rcpputils::fs::create_temp_directory(parent, basename);
+  EXPECT_TRUE(tmpdir1.exists());
+  EXPECT_TRUE(tmpdir1.is_directory());
+
+  const auto tmpdir2 = rcpputils::fs::create_temp_directory(parent, basename);
+  EXPECT_TRUE(tmpdir2.exists());
+  EXPECT_TRUE(tmpdir2.is_directory());
+
+  EXPECT_NE(tmpdir1.string(), tmpdir2.string());
+
+  EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir1));
+  EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir2));
+}

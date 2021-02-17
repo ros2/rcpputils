@@ -306,6 +306,22 @@ path temp_directory_path()
   return path(temp_path);
 }
 
+path create_temp_directory(const path & parent, const std::string & base_name)
+{
+  auto template_path = base_name + ".XXXXXX";
+
+#ifdef _WIN32
+  _mktemp_s(&template_path[0], template_path.size() + 1);
+  const auto final_path = parent / template;
+  create_directories(final_path);
+  return final_path
+#else
+  auto full_template = (parent / template_path).string();
+  const char * dir_name = mkdtemp(&full_template[0]);
+  return path(dir_name);
+#endif
+}
+
 path current_path()
 {
 #ifdef _WIN32

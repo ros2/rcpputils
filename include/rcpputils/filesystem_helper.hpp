@@ -260,6 +260,15 @@ RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
 RCPPUTILS_PUBLIC path temp_directory_path();
 
 /**
+ * \brief Construct a uniquely named temporary directory, in "parent", with format base_name.XXXXXX
+ *
+ * \param parent The parent path of the directory that will be created
+ * \param base_name User-specified portion of the created directory
+ * \return A path to a newly-created directory with base_name and a 6-character unique suffix
+ */
+RCPPUTILS_PUBLIC path create_temp_directory(const path & parent, const std::string & base_name);
+
+/**
  * \brief Return current working directory.
  *
  * \return The current working directory.
