@@ -255,12 +255,20 @@ RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
 /**
  * \brief Get a path to a location in the temporary directory, if it's available.
  *
+ * This does not create any directories.
+ * On Windows, this uses "GetTempPathA"
+ * On non-Windows, this prefers the environment variable TMPDIR, falling back to /tmp
+ *
  * \return A path to a directory for storing temporary files and directories.
  */
 RCPPUTILS_PUBLIC path temp_directory_path();
 
 /**
  * \brief Construct a uniquely named temporary directory, in "parent", with format base_name.XXXXXX
+ *
+ * The output is guaranteed to be a newly-created directory, the underlying utilities check
+ * if the generated filename exists and keeps generating until a new one is found. This guarantees
+ * that there will be no existing files in the returned directory.
  *
  * \param parent The parent path of the directory that will be created
  * \param base_name User-specified portion of the created directory
