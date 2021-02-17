@@ -239,8 +239,11 @@ TEST(TestFilesystemHelper, correct_extension)
 
 TEST(TestFilesystemHelper, is_empty)
 {
-  auto p = path("");
-  EXPECT_TRUE(p.empty());
+  auto p_no_arg = path();
+  EXPECT_TRUE(p_no_arg.empty());
+
+  auto p_empty_string = path("");
+  EXPECT_TRUE(p_empty_string.empty());
 }
 
 TEST(TestFilesystemHelper, exists)
@@ -441,4 +444,71 @@ TEST(TestFilesystemHelper, stream_operator)
   std::stringstream s;
   s << "bar" << p;
   ASSERT_EQ(s.str(), "barfoo");
+}
+
+TEST(TestFilesystemHelper, create_temp_directory)
+{
+  // basic usage
+  {
+    const std::string basename = "test_base_name";
+
+    const auto tmpdir1 = rcpputils::fs::create_temp_directory(basename);
+    EXPECT_TRUE(tmpdir1.exists());
+    EXPECT_TRUE(tmpdir1.is_directory());
+
+    auto tmp_file = tmpdir1 / "test_file.txt";
+    {
+      std::ofstream output_buffer{tmp_file.string()};
+      output_buffer << "test";
+    }
+    EXPECT_TRUE(rcpputils::fs::exists(tmp_file));
+    EXPECT_TRUE(rcpputils::fs::is_regular_file(tmp_file));
+
+    const auto tmpdir2 = rcpputils::fs::create_temp_directory(basename);
+    EXPECT_TRUE(tmpdir2.exists());
+    EXPECT_TRUE(tmpdir2.is_directory());
+
+    EXPECT_NE(tmpdir1.string(), tmpdir2.string());
+
+    EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir1));
+    EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir2));
+  }
+
+  // bad names
+  {
+    if (is_win32) {
+      EXPECT_THROW(rcpputils::fs::create_temp_directory("illegalchar?"), std::system_error);
+    } else {
+      EXPECT_THROW(rcpputils::fs::create_temp_directory("base/name"), std::system_error);
+    }
+  }
+
+  // newly created paths
+  {
+    const auto new_relative = rcpputils::fs::current_path() / "child1" / "child2";
+    const auto tmpdir = rcpputils::fs::create_temp_directory("base_name", new_relative);
+    EXPECT_TRUE(tmpdir.exists());
+    EXPECT_TRUE(tmpdir.is_directory());
+    EXPECT_TRUE(rcpputils::fs::remove_all(tmpdir));
+  }
+
+  // edge case inputs
+  {
+    // Provided no base name we should still get a path with the 6 unique template chars
+    const auto tmpdir_emptybase = rcpputils::fs::create_temp_directory("");
+    EXPECT_EQ(tmpdir_emptybase.filename().string().size(), 6u);
+
+    // Empty path doesn't exist and cannot be created
+    EXPECT_THROW(rcpputils::fs::create_temp_directory("basename", path()), std::system_error);
+
+    // With the template string XXXXXX already in the name, it will still be there, the unique
+    // portion is appended to the end.
+    const auto tmpdir_template_in_name = rcpputils::fs::create_temp_directory("base_XXXXXX");
+    EXPECT_TRUE(tmpdir_template_in_name.exists());
+    EXPECT_TRUE(tmpdir_template_in_name.is_directory());
+    // On Linux, it will not replace the base_name Xs, only the final 6 that the function appends.
+    // On OSX, it will replace _all_ trailing Xs.
+    // Either way, the result is unique, the exact value doesn't matter.
+    EXPECT_EQ(tmpdir_template_in_name.filename().string().rfind("base_", 0), 0u);
+  }
 }

@@ -255,9 +255,30 @@ RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
 /**
  * \brief Get a path to a location in the temporary directory, if it's available.
  *
+ * This does not create any directories.
+ * On Windows, this uses "GetTempPathA"
+ * On non-Windows, this prefers the environment variable TMPDIR, falling back to /tmp
+ *
  * \return A path to a directory for storing temporary files and directories.
  */
 RCPPUTILS_PUBLIC path temp_directory_path();
+
+/**
+ * \brief Construct a uniquely named temporary directory, in "parent", with format base_nameXXXXXX
+ *
+ * The output, if successful, is guaranteed to be a newly-created directory.
+ * The underlying implementation keeps generating paths until one that does not exist is found.
+ * This guarantees that there will be no existing files in the returned directory.
+ *
+ * \param base_name User-specified portion of the created directory
+ * \param parent The parent path of the directory that will be created
+ * \return A path to a newly-created directory with base_name and a 6-character unique suffix
+ *
+ * \throws std::system_error If any OS APIs do not succeed.
+ */
+RCPPUTILS_PUBLIC path create_temp_directory(
+  const std::string & base_name,
+  const path & parent_path = temp_directory_path());
 
 /**
  * \brief Return current working directory.
@@ -272,7 +293,7 @@ RCPPUTILS_PUBLIC path current_path();
  * \brief Create a directory with the given path p.
  *
  * This builds directories recursively and will skip directories if they are already created.
- * \return Return true if the directory is created, false otherwise.
+ * \return Return true if the directory already exists or is created, false otherwise.
  */
 RCPPUTILS_PUBLIC bool create_directories(const path & p);
 
