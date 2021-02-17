@@ -310,6 +310,11 @@ path create_temp_directory(const std::string & base_name, const path & parent_pa
 {
   const auto template_path = base_name + "XXXXXX";
   std::string full_template_str = (parent_path / template_path).string();
+  if (!create_directories(parent_path)) {
+    std::error_code ec{errno, std::system_category()};
+    errno = 0;
+    throw std::system_error(ec, "could not create the parent directory");
+  }
 
 #ifdef _WIN32
   errno_t errcode = _mktemp_s(&full_template_str[0], full_template_str.size() + 1);
@@ -323,11 +328,6 @@ path create_temp_directory(const std::string & base_name, const path & parent_pa
     throw std::system_error(ec, "could not create the temp directory");
   }
 #else
-  if (!create_directories(parent_path)) {
-    std::error_code ec{errno, std::system_category()};
-    errno = 0;
-    throw std::system_error(ec, "could not create the parent directory");
-  }
   const char * dir_name = mkdtemp(&full_template_str[0]);
   if (dir_name == nullptr) {
     std::error_code ec{errno, std::system_category()};

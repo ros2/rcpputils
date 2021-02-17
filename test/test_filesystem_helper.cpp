@@ -239,8 +239,11 @@ TEST(TestFilesystemHelper, correct_extension)
 
 TEST(TestFilesystemHelper, is_empty)
 {
-  auto p = path("");
-  EXPECT_TRUE(p.empty());
+  auto p_no_arg = path();
+  EXPECT_TRUE(p_no_arg.empty());
+
+  auto p_empty_string = path("");
+  EXPECT_TRUE(p_empty_string.empty());
 }
 
 TEST(TestFilesystemHelper, exists)

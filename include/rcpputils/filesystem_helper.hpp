@@ -293,7 +293,7 @@ RCPPUTILS_PUBLIC path current_path();
  * \brief Create a directory with the given path p.
  *
  * This builds directories recursively and will skip directories if they are already created.
- * \return Return true if the directory is created, false otherwise.
+ * \return Return true if the directory already exists or is created, false otherwise.
  */
 RCPPUTILS_PUBLIC bool create_directories(const path & p);
 
