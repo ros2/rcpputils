@@ -512,3 +512,15 @@ TEST(TestFilesystemHelper, create_temp_directory)
     EXPECT_EQ(tmpdir_template_in_name.filename().string().rfind("base_", 0), 0u);
   }
 }
+
+TEST(TestFilesystemHelper, equal_operators)
+{
+  path a{"foo"};
+  EXPECT_EQ(a, a);
+  path b{"bar"};
+  EXPECT_NE(a, b);
+
+  path c = a / b;
+  path d = path("foo") / "bar";
+  EXPECT_EQ(c, d);
+}
