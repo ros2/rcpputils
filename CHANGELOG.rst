@@ -2,6 +2,13 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add path equality operators (`#127 <https://github.com/ros2/rcpputils/issues/127>`_)
+* Add create_temp_directory filesystem helper (`#126 <https://github.com/ros2/rcpputils/issues/126>`_)
+* Use new noexcept specifier. (`#123 <https://github.com/ros2/rcpputils/issues/123>`_)
+* Contributors: Chen Lihui, Emerson Knapp
+
 2.0.4 (2021-01-25)
 ------------------
 * Add stream operator for paths to make it easier to log (`#120 <https://github.com/ros2/rcpputils/issues/120>`_)
