@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.1.0 (2021-03-01)
+------------------
 * Add path equality operators (`#127 <https://github.com/ros2/rcpputils/issues/127>`_)
 * Add create_temp_directory filesystem helper (`#126 <https://github.com/ros2/rcpputils/issues/126>`_)
 * Use new noexcept specifier. (`#123 <https://github.com/ros2/rcpputils/issues/123>`_)
