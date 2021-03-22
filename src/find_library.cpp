@@ -31,28 +31,6 @@
 namespace rcpputils
 {
 
-namespace
-{
-
-#ifdef _WIN32
-static constexpr char kPathVar[] = "PATH";
-static constexpr char kPathSeparator = ';';
-static constexpr char kSolibPrefix[] = "";
-static constexpr char kSolibExtension[] = ".dll";
-#elif __APPLE__
-static constexpr char kPathVar[] = "DYLD_LIBRARY_PATH";
-static constexpr char kPathSeparator = ':';
-static constexpr char kSolibPrefix[] = "lib";
-static constexpr char kSolibExtension[] = ".dylib";
-#else
-static constexpr char kPathVar[] = "LD_LIBRARY_PATH";
-static constexpr char kPathSeparator = ':';
-static constexpr char kSolibPrefix[] = "lib";
-static constexpr char kSolibExtension[] = ".so";
-#endif
-
-}  // namespace
-
 std::string find_library_path(const std::string & library_name)
 {
   std::string search_path = get_env_var(kPathVar);

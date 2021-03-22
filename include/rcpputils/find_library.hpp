@@ -26,6 +26,23 @@
 namespace rcpputils
 {
 
+#ifdef _WIN32
+static constexpr char kPathVar[] = "PATH";
+static constexpr char kPathSeparator = ';';
+static constexpr char kSolibPrefix[] = "";
+static constexpr char kSolibExtension[] = ".dll";
+#elif __APPLE__
+static constexpr char kPathVar[] = "DYLD_LIBRARY_PATH";
+static constexpr char kPathSeparator = ':';
+static constexpr char kSolibPrefix[] = "lib";
+static constexpr char kSolibExtension[] = ".dylib";
+#else
+static constexpr char kPathVar[] = "LD_LIBRARY_PATH";
+static constexpr char kPathSeparator = ':';
+static constexpr char kSolibPrefix[] = "lib";
+static constexpr char kSolibExtension[] = ".so";
+#endif
+
 /// Find a library located in the OS's specified environment variable for library paths.
 /**
  *
