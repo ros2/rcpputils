@@ -45,7 +45,7 @@ std::string find_library_path(const std::string & library_name);
 /// Create the filename corresponding to the library name.
 /**
  *
- * @sa find_library_path() for information about the platform-specific filenames.
+ * \sa find_library_path() for information about the platform-specific filenames.
  *
  * \param[in] library_name Name of the library.
  * \return The filename for the library.
