@@ -69,7 +69,8 @@ std::string find_library_path(const std::string & library_name)
   return "";
 }
 
-std::string filename_for_library(const std::string & library_name) {
+std::string filename_for_library(const std::string & library_name)
+{
   return kSolibPrefix + library_name + kSolibExtension;
 }
 
