@@ -26,23 +26,6 @@
 namespace rcpputils
 {
 
-#ifdef _WIN32
-static constexpr char kPathVar[] = "PATH";
-static constexpr char kPathSeparator = ';';
-static constexpr char kSolibPrefix[] = "";
-static constexpr char kSolibExtension[] = ".dll";
-#elif __APPLE__
-static constexpr char kPathVar[] = "DYLD_LIBRARY_PATH";
-static constexpr char kPathSeparator = ':';
-static constexpr char kSolibPrefix[] = "lib";
-static constexpr char kSolibExtension[] = ".dylib";
-#else
-static constexpr char kPathVar[] = "LD_LIBRARY_PATH";
-static constexpr char kPathSeparator = ':';
-static constexpr char kSolibPrefix[] = "lib";
-static constexpr char kSolibExtension[] = ".so";
-#endif
-
 /// Find a library located in the OS's specified environment variable for library paths.
 /**
  *
@@ -57,6 +40,18 @@ static constexpr char kSolibExtension[] = ".so";
  */
 RCPPUTILS_PUBLIC
 std::string find_library_path(const std::string & library_name);
+
+
+/// Create the filename corresponding to the library name.
+/**
+ *
+ * @sa find_library_path() for information about the platform-specific filenames.
+ *
+ * \param[in] library_name Name of the library.
+ * \return The filename for the library.
+ */
+RCPPUTILS_PUBLIC
+std::string filename_for_library(const std::string & library_name);
 
 }  // namespace rcpputils
 

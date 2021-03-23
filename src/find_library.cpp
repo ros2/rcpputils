@@ -31,13 +31,34 @@
 namespace rcpputils
 {
 
+namespace
+{
+
+#ifdef _WIN32
+static constexpr char kPathVar[] = "PATH";
+static constexpr char kPathSeparator = ';';
+static constexpr char kSolibPrefix[] = "";
+static constexpr char kSolibExtension[] = ".dll";
+#elif __APPLE__
+static constexpr char kPathVar[] = "DYLD_LIBRARY_PATH";
+static constexpr char kPathSeparator = ':';
+static constexpr char kSolibPrefix[] = "lib";
+static constexpr char kSolibExtension[] = ".dylib";
+#else
+static constexpr char kPathVar[] = "LD_LIBRARY_PATH";
+static constexpr char kPathSeparator = ':';
+static constexpr char kSolibPrefix[] = "lib";
+static constexpr char kSolibExtension[] = ".so";
+#endif
+
+}  // namespace
+
 std::string find_library_path(const std::string & library_name)
 {
   std::string search_path = get_env_var(kPathVar);
   std::vector<std::string> search_paths = rcpputils::split(search_path, kPathSeparator);
 
-  std::string filename = kSolibPrefix;
-  filename += library_name + kSolibExtension;
+  std::string filename = filename_for_library(library_name);
 
   for (const auto & search_path : search_paths) {
     std::string path = search_path + "/" + filename;
@@ -46,6 +67,10 @@ std::string find_library_path(const std::string & library_name)
     }
   }
   return "";
+}
+
+std::string filename_for_library(const std::string & library_name) {
+  return kSolibPrefix + library_name + kSolibExtension;
 }
 
 }  // namespace rcpputils
