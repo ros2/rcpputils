@@ -45,7 +45,7 @@ TEST(test_find_library, find_library)
   // Get ground-truth values from CTest properties.
   const auto pair = test_lib_path_and_dir();
   const std::string expected_library_path = pair.first;
-  const std::string test_library_path = pair.second;
+  const char * test_lib_dir = pair.second;
 
   // Set our relevant path variable.
   const char * env_var{};
@@ -80,7 +80,7 @@ TEST(test_find_library, library_path)
   // Get ground-truth values from CTest properties.
   const auto pair = test_lib_path_and_dir();
   const std::string expected_library_path = pair.first;
-  const std::string test_library_path = pair.second;
+  const std::string test_lib_dir = pair.second;
 
   const std::string test_lib_actual = rcpputils::path_for_library(test_lib_dir, "test_library");
   const std::string bad_path = rcpputils::path_for_library(
