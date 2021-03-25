@@ -25,6 +25,7 @@
 #include "rcutils/filesystem.h"
 #include "rcutils/get_env.h"
 
+#include "rcpputils/filesystem_helper.hpp"
 #include "rcpputils/split.hpp"
 #include "rcpputils/get_env.hpp"
 
@@ -65,6 +66,15 @@ std::string find_library_path(const std::string & library_name)
     if (rcutils_is_file(path.c_str())) {
       return path;
     }
+  }
+  return "";
+}
+
+std::string path_for_library(const std::string & directory, const std::string & library_name)
+{
+  auto path = rcpputils::fs::path(directory) / filename_for_library(library_name);
+  if (path.is_regular_file()) {
+    return path.string();
   }
   return "";
 }

@@ -35,12 +35,22 @@ namespace rcpputils
  *  * Windows: `%PATH%`, `{}.dll`
  *
  * \param[in] library_name Name of the library to find.
- * \return The absolute filesystem path, including the appropriate prefix and extension
+ * \return The absolute filesystem path, including the appropriate prefix and extension, or the
+ * empty string when the library was not found.
  * \throws std::runtime_error if an error is encountered when accessing environment variables.
  */
 RCPPUTILS_PUBLIC
 std::string find_library_path(const std::string & library_name);
 
+/// Construct the filepath for a library given its directory, and checks that it exists.
+/**
+ * \param[in] directory The directory that contains the library.
+ * \param[in] library_name Name of the library to find.
+ * \return The absolute filesystem path, including the appropriate prefix and extension, or the
+ * empty string when the library does not exist.
+ */
+RCPPUTILS_PUBLIC
+std::string path_for_library(const std::string & directory, const std::string & library_name);
 
 /// Create the filename corresponding to the library name.
 /**
