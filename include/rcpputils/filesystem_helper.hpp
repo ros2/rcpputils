@@ -70,6 +70,7 @@
 #  include <direct.h>
 #  include <fileapi.h>
 #  include <io.h>
+#  include <codecvt>
 #  define access _access_s
 #else
 #  include <dirent.h>
@@ -441,23 +442,28 @@ inline bool exists(const path & path_to_check)
 inline path temp_directory_path()
 {
 #ifdef _WIN32
-#ifdef UNICODE
-#error "rcpputils::fs does not support Unicode paths"
-#endif
   TCHAR temp_path[MAX_PATH];
-  DWORD size = GetTempPathA(MAX_PATH, temp_path);
+  DWORD size = GetTempPath(MAX_PATH, temp_path);
   if (size > MAX_PATH || size == 0) {
     std::error_code ec(static_cast<int>(GetLastError()), std::system_category());
     throw std::system_error(ec, "cannot get temporary directory path");
   }
   temp_path[size] = '\0';
+#ifdef UNICODE
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
+  std::string temp_pathA = conv.to_bytes(temp_path);
+  return path(temp_pathA);
+#else
+  return path(temp_path);
+#endif
+
 #else
   const char * temp_path = getenv("TMPDIR");
   if (!temp_path) {
     temp_path = "/tmp";
   }
-#endif
   return path(temp_path);
+#endif
 }
 
 /**
@@ -470,9 +476,6 @@ inline path temp_directory_path()
 inline path current_path()
 {
 #ifdef _WIN32
-#ifdef UNICODE
-#error "rcpputils::fs does not support Unicode paths"
-#endif
   char cwd[MAX_PATH];
   if (nullptr == _getcwd(cwd, MAX_PATH)) {
 #else
@@ -552,6 +555,11 @@ inline bool remove_all(const path & p)
   if (!is_directory(p)) {return remove(p);}
 
 #ifdef _WIN32
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) \
+    && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+  // UWP does not support SHFileOperation.
+  return false;
+#else
   // We need a string of type PCZZTSTR, which is a double null terminated char ptr
   size_t length = p.string().size();
   TCHAR * temp_dir = new TCHAR[length + 2];
@@ -573,6 +581,7 @@ inline bool remove_all(const path & p)
   delete[] temp_dir;
 
   return 0 == ret && false == file_options.fAnyOperationsAborted;
+#endif
 #else
   DIR * dir = opendir(p.string().c_str());
   struct dirent * directory_entry;
