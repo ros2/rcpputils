@@ -15,31 +15,37 @@
 #include <stdlib.h>
 
 #include <string>
+#include <utility>
 
 #include "gtest/gtest.h"
 
 #include "rcutils/get_env.h"
 #include "rcpputils/find_library.hpp"
 
-namespace rcpputils
-{
 namespace
 {
 
-TEST(test_find_library, find_library)
+std::pair<const char *, const char *> test_lib_path_and_dir()
 {
-  // Get ground-truth values from CTest properties.
-  std::string expected_library_path;
-  {
-    const char * _expected_library_path{};
-    EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY", &_expected_library_path), nullptr);
-    EXPECT_NE(_expected_library_path, nullptr);
-    expected_library_path = _expected_library_path;
-  }
+  const char * test_lib_path{};
+  EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY", &test_lib_path), nullptr);
+  EXPECT_NE(test_lib_path, nullptr);
 
   const char * test_lib_dir{};
   EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY_DIR", &test_lib_dir), nullptr);
   EXPECT_NE(test_lib_dir, nullptr);
+
+  return {test_lib_path, test_lib_dir};
+}
+
+}  // anonymous namespace
+
+TEST(test_find_library, find_library)
+{
+  // Get ground-truth values from CTest properties.
+  const auto pair = test_lib_path_and_dir();
+  const std::string expected_library_path = pair.first;
+  const char * test_lib_dir = pair.second;
 
   // Set our relevant path variable.
   const char * env_var{};
@@ -59,15 +65,26 @@ TEST(test_find_library, find_library)
 #endif
 
   // Positive test.
-  const std::string test_lib_actual = find_library_path("test_library");
+  const std::string test_lib_actual = rcpputils::find_library_path("test_library");
   EXPECT_EQ(test_lib_actual, expected_library_path);
 
   // (Hopefully) Negative test.
-  const std::string bad_path = find_library_path(
+  const std::string bad_path = rcpputils::find_library_path(
     "this_is_a_junk_libray_name_please_dont_define_this_if_you_do_then_"
     "you_are_really_naughty");
   EXPECT_EQ(bad_path, "");
 }
 
-}  // namespace
-}  // namespace rcpputils
+TEST(test_find_library, library_path)
+{
+  // Get ground-truth values from CTest properties.
+  const auto pair = test_lib_path_and_dir();
+  const std::string expected_library_path = pair.first;
+  const std::string test_lib_dir = pair.second;
+
+  const std::string test_lib_actual = rcpputils::path_for_library(test_lib_dir, "test_library");
+  const std::string bad_path = rcpputils::path_for_library(
+    test_lib_dir,
+    "highly_unlikely_12_library_34567_name_890.txt.exe");
+  EXPECT_EQ(bad_path, "");
+}
