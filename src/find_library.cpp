@@ -67,7 +67,7 @@ std::string find_library_path(const std::string & library_name)
       return path;
     }
   }
-  return "";
+  return filename;
 }
 
 }  // namespace rcpputils
