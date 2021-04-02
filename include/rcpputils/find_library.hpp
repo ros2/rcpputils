@@ -19,6 +19,7 @@
 #ifndef RCPPUTILS__FIND_LIBRARY_HPP_
 #define RCPPUTILS__FIND_LIBRARY_HPP_
 
+#include <cerrno>
 #include <string>
 
 #include "rcpputils/visibility_control.hpp"
