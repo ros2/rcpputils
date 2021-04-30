@@ -19,7 +19,7 @@
 
 #include "gtest/gtest.h"
 
-#include "rcutils/get_env.h"
+#include "rcutils/env.h"
 #include "rcpputils/find_library.hpp"
 
 namespace
