@@ -23,7 +23,6 @@
 #include <vector>
 
 #include "rcutils/filesystem.h"
-#include "rcutils/get_env.h"
 
 #include "rcpputils/filesystem_helper.hpp"
 #include "rcpputils/split.hpp"

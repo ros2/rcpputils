@@ -33,7 +33,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "rcutils/get_env.h"
+#include "rcutils/env.h"
 
 #include "rcpputils/get_env.hpp"
 
