@@ -388,3 +388,10 @@ TEST(TestFilesystemHelper, get_cwd)
   auto p = rcpputils::fs::current_path();
   EXPECT_EQ(expected_dir, p.string());
 }
+TEST(TestFilesystemHelper, stream_operator)
+{
+  path p{"foo"};
+  std::stringstream s;
+  s << "bar" << p;
+  ASSERT_EQ(s.str(), "barfoo");
+}
