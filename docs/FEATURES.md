@@ -14,7 +14,7 @@ This package includes the following convenience functions for generally cross-pl
 ## Assertion Functions {#assertion-functions}
 The [rcpputils/asserts.hpp](rcpputils/include/rcpputils/asserts.hpp) header provides the helper functions:
 * `require_true`: for validating function inputs. Throws an `std::invalid_argument` exception if the condition fails.
-* `check_true`: for checking states. Throws an `rcpputils::InvalidStateException` if the condition fails.
+* `check_true`: for checking states. Throws an `rcpputils::IllegalStateException` if the condition fails.
 * `assert_true`: for verifying results. Throws an `rcpputils::AssertionException` if the condition fails. This function becomes a no-op in release builds.
 
 These helper functions can be used to improve readability of C++ functions.
