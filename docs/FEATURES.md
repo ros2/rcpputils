@@ -12,10 +12,10 @@ This package includes the following convenience functions for generally cross-pl
 * [Shared Libraries](#shared-libraries)
 
 ## Assertion Functions {#assertion-functions}
-The [rcpputils/asserts.hpp](rcpputils/include/rcpputils/asserts.hpp) header provides the helper functions:
-* `require_true`: for validating function inputs. Throws an `std::invalid_argument` exception if the condition fails.
-* `check_true`: for checking states. Throws an `rcpputils::IllegalStateException` if the condition fails.
-* `assert_true`: for verifying results. Throws an `rcpputils::AssertionException` if the condition fails. This function becomes a no-op in release builds.
+The `rcpputils/asserts.hpp` header provides the helper functions:
+* `rcpputils::require_true()`: for validating function inputs. Throws an `std::invalid_argument` exception if the condition fails.
+* `rcpputils::check_true()`: for checking states. Throws a `rcpputils::IllegalStateException` if the condition fails.
+* `rcpputils::assert_true()`: for verifying results. Throws a `rcpputils::AssertionException` if the condition fails. This function becomes a no-op in release builds.
 
 These helper functions can be used to improve readability of C++ functions.
 Example usage:
@@ -41,32 +41,31 @@ ResultType some_function(ArgType arg)
 ```
 
 ## Clang Thread Safety Annotation Macros {#clang-thread-safety-annotation-macros}
-the `rcpputils/thread_safety_annotations.hpp` header provides macros for Clang's [Thread Safety Analysis](https://clang.llvm.org/docs/ThreadSafetyAnalysis.html) feature.
+The `rcpputils/thread_safety_annotations.hpp` header provides macros for Clang's [Thread Safety Analysis](https://clang.llvm.org/docs/ThreadSafetyAnalysis.html) feature.
 
 The macros allow you to annotate your code, but expand to nothing when using a non-clang compiler, so they are safe for cross-platform use.
 
 To use thread safety annotation in your package (in a Clang+libcxx build), enable the `-Wthread-safety` compiler flag.
 
-For example usage, see [the documentation of this feature](https://clang.llvm.org/docs/ThreadSafetyAnalysis.html) and the tests in `test/test_basic.cpp`
+For example usage, see [the documentation of this feature](https://clang.llvm.org/docs/ThreadSafetyAnalysis.html) and the tests in `test/test_thread_safety_annotations.cpp`.
 
 ## Endianness helpers {#endianness-helpers}
-In `rcpputils/endian.hpp`
-
-Emulates the features of std::endian if it is not available. See [cppreference](https://en.cppreference.com/w/cpp/types/endian) for more information.
+The `rcpputils/endian.hpp` header emulates the features of `std::endian` if it is not available.
+See [cppreference](https://en.cppreference.com/w/cpp/types/endian) for more information.
 
 ## Library Discovery {#library-discovery}
+The `rcpputils/find_library.hpp` facilitates finding a library located in the OS's library paths environment variable.
 
-In `rcpputils/find_library.hpp`:
-
-*   `find_library(library_name)`: Namely used for dynamically loading RMW
+* `rcpputils::find_library_path(const std::string & library_name)`: Namely used for dynamically loading RMW
     implementations.
-    *   For dynamically loading user-defined plugins in C++, please use
-        [`pluginlib`](https://github.com/ros/pluginlib) instead.
+  * For dynamically loading user-defined plugins in C++, please use [`pluginlib`](https://github.com/ros/pluginlib) instead.
 
 ## String Helpers {#string-helpers}
-In `rcpputils/join.hpp` and `rcpputils/split.hpp`
+String helper utilities can be found in the `rcpputils/find_and_replace.hpp`, `rcpputils/join.hpp`, and `rcpputils/split.hpp` headers.
 
-These headers include simple functions for joining a container into a single string and splitting a string into a container of values.
+These headers include simple functions that facilitate find and replace functionality for strings, joining a container into a single string, and splitting a string into a container of values.
+
+The functions of interest are namesakes of each of the specified header files.
 
 ## File system helpers {#file-system-helpers}
 `rcpputils/filesystem_helper.hpp` provides `std::filesystem`-like functionality on systems that do not yet include those features. See the [cppreference](https://en.cppreference.com/w/cpp/header/filesystem) for more information.
@@ -77,5 +76,21 @@ These headers include simple functions for joining a container into a single str
 ## Visibility definitions and macros {#visibility-definitions-and-macros}
 `rcpputils/visibility_control.hpp` provides macros and definitions for controlling the visibility of class members. The logic was borrowed and then namespaced from [https://gcc.gnu.org/wiki/Visibility](https://gcc.gnu.org/wiki/Visibility).
 
-## Shared Libraries
-`rcpputils/shared_library.hpp` provides dynamically loads, unloads and get symbols from shared libraries at run-time.
+## Shared Libraries {#shared-libraries}
+The `rcpputils/shared_library.hpp` header provides utilities to dynamically load, unload, and get symbols from shared libraries at run-time.
+
+Example usage:
+```c++
+// Obtain platform-specific library name from the provided base name.
+const std::string library_name = rcpputils::get_platform_library_name("foo_lib");
+
+// The shared library is loaded in the constructor.
+auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+
+// Check if a symbol exists in the shared library.
+// If so, obtain a pointer to the symbol.
+if(library -> has_symbol("example_symbol")) {
+    std::shared_ptr<void> symbol(library -> get_symbol("example_symbol"));
+    // use shared library symbol pointer
+}
+```
