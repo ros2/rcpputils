@@ -93,7 +93,7 @@ auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
 // Check if a symbol exists in the shared library.
 // If so, obtain a pointer to the symbol.
 if(library -> has_symbol("example_symbol")) {
-    std::shared_ptr<void> symbol(library -> get_symbol("example_symbol"));
+    std::shared_ptr<void> symbol(library->get_symbol("example_symbol"));
     // Use shared library symbol pointer.
 }
 ```
