@@ -90,8 +90,8 @@ These headers include simple functions for joining a container into a single str
 `rcppmath/clamp.hpp` provides functionality to perform clamping - which restricts a value between two bounds.
 The `rcppmath::clamp()` function is overloaded as follows:
 
-* `rcppmath::clamp(const T &, const T &, const T &)` - Takes a value to clamp, and the lower and upper boundaries to clamp against.
-* `rcppmath::clamp(const T &, const T &, const T &, Compare)` - In addition to the previous signature, accepts a comparison object that returns `true` if its first argument is less than the second.
+* `rcppmath::clamp(const T &, const T &, const T &)`: Takes a value to clamp, and the lower and upper boundaries to clamp against.
+* `rcppmath::clamp(const T &, const T &, const T &, Compare)`: In addition to the previous signature, accepts a comparison object that returns `true` if its first argument is less than the second.
 
 ### Rolling mean accumulator {#rolling-mean-accumulator}
 The `rcppmath/rolling_mean_accumulator.hpp` facilitates computing the rolling mean of a window of accumulated items.
