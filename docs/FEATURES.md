@@ -59,16 +59,18 @@ See [cppreference](https://en.cppreference.com/w/cpp/types/endian) for more info
 ## Library Discovery {#library-discovery}
 The `rcpputils/find_library.hpp` facilitates finding a library located in the OS's library paths environment variable.
 
-* `rcpputils::find_library_path(const std::string &)`: Namely used for dynamically loading RMW
-    implementations.
+* `rcpputils::find_library_path(const std::string &)`: Searches for the given library name in a OS's library paths environment variable, and returns an absolute filesystem path, including the platform-specific prefix and extension. If the library is not found, returns an empty string.
   * For dynamically loading user-defined plugins in C++, please use [`pluginlib`](https://github.com/ros/pluginlib) instead.
 
 ## String Helpers {#string-helpers}
 String helper utilities can be found in the `rcpputils/find_and_replace.hpp`, `rcpputils/join.hpp`, and `rcpputils/split.hpp` headers.
 
-These headers include simple functions that facilitate find and replace functionality for strings, joining a container into a single string, and splitting a string into a container of values.
-
-The functions of interest are namesakes of each of the specified header files.
+These headers provide the following functionality respectively:
+* `rcpputils::find_and_replace()`: On an input string, finds and replaces all instances of a string with another string.
+* `rcpputils::join()`: Values in a provided container are converted to strings, and joined by a provided delimiter.
+* `rcpputils::split()`: This is an overloaded method. It splits a specified input into string tokens using a delimiter, and:
+  * If an iterator to a storage container is provided, stores tokens in said container.
+  * Else, returns a `std::vector<string>` containing the tokens.
 
 ## File system helpers {#file-system-helpers}
 `rcpputils/filesystem_helper.hpp` provides `std::filesystem`-like functionality on systems that do not yet include those features. See the [cppreference](https://en.cppreference.com/w/cpp/header/filesystem) for more information.
@@ -101,7 +103,7 @@ if(library -> has_symbol("example_symbol")) {
 ## Process helpers {#process-helpers}
 The `rcpputils/process.hpp` header contains process utilities.
 
-Namely, this header provides the `rcpputils::get_executable_name()` function, which retrieves and returns the current program name as a string. It is a *thread-safe* function.
+Namely, this header provides the `rcpputils::get_executable_name()` function, which retrieves and returns the current program name as a string.
 
 ## Environment helpers {#environment-helpers}
 The `rcpputils/get_env.hpp` header provides functionality to lookup the value of a provided environment variable through the `rcpputils::get_env_var(const char *)` function.
