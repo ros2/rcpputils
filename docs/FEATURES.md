@@ -1,6 +1,6 @@
 # rcpputils Features
 
-This package includes convenience functions for generally cross-platform c++ functionalityand for mathematical utilties. These functionalities are siloed into the `rcpputils` and the `rcppmath` namespaces respectively:
+This package includes convenience functions for cross-platform c++ functionality and for mathematical utilties. These functionalities are siloed into the `rcpputils` and the `rcppmath` namespaces respectively:
 * [`rcpputils` - General convenience functions](#rcpputils-general-convenience-functions)
   * [Assertion functions](#assertion-functions)
   * [Clang thread safety annotation macros](#clang-thread-safety-annotation-macros)
