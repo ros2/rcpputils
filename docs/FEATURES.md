@@ -10,6 +10,9 @@ This package includes the following convenience functions for generally cross-pl
 * [Type traits helpers](#type-traits-helpers)
 * [Visibility macros](#visibility-macros)
 * [Shared Libraries](#shared-libraries)
+* [Process helpers](#process-helpers)
+* [Environment helpers](#environment-helpers)
+* [Scope guard support](#scope-guard-support)
 
 ## Assertion Functions {#assertion-functions}
 The `rcpputils/asserts.hpp` header provides the helper functions:
@@ -56,7 +59,7 @@ See [cppreference](https://en.cppreference.com/w/cpp/types/endian) for more info
 ## Library Discovery {#library-discovery}
 The `rcpputils/find_library.hpp` facilitates finding a library located in the OS's library paths environment variable.
 
-* `rcpputils::find_library_path(const std::string & library_name)`: Namely used for dynamically loading RMW
+* `rcpputils::find_library_path(const std::string &)`: Namely used for dynamically loading RMW
     implementations.
   * For dynamically loading user-defined plugins in C++, please use [`pluginlib`](https://github.com/ros/pluginlib) instead.
 
@@ -91,6 +94,43 @@ auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
 // If so, obtain a pointer to the symbol.
 if(library -> has_symbol("example_symbol")) {
     std::shared_ptr<void> symbol(library -> get_symbol("example_symbol"));
-    // use shared library symbol pointer
+    // Use shared library symbol pointer.
 }
+```
+
+## Process helpers {#process-helpers}
+The `rcpputils/process.hpp` header contains process utilities.
+
+Namely, this header provides the `rcpputils::get_executable_name()` function, which retrieves and returns the current program name as a string. It is a *thread-safe* function.
+
+## Environment helpers {#environment-helpers}
+The `rcpputils/get_env.hpp` header provides functionality to lookup the value of a provided environment variable through the `rcpputils::get_env_var(const char *)` function.
+
+## Scope guard support {#scope-guard-support}
+Support for a general-purpose scope guard is provided in the `rcpputils/scope_exit.hpp` header.
+
+This utility provides a convenient tool for resource management when exception safety is an issue. It also facilitates the placement of cleanup code next to resource intialization code, improving ease of maintainability. The header provides the functions:
+
+* `rcpputils::make_scope_exit(CallableT &&)`: Create a scope guard with a callable object containing resource cleanup/release code.
+* `rcpputils::scope_exit::cancel()`: Makes the scope guard inactive.
+
+Expected use:
+```c++
+auto resource_handle = acquire_resource();
+
+// `make_scope_exit` creates a scope guard that will call
+// `release_resource(resource_handle)` once the scope guard
+// goes out of scope.
+auto cleanup_resource_handle = rcpputils::make_scope_exit(
+    [resource_handle]() {
+        release_resource(resource_handle);
+    });
+
+// Use the resource.
+...
+
+// At this point, the resource may be released.
+release_resource(resource);
+// Since the resource has been released, cancel the "cleanup code" in the scope guard.
+cleanup_resource_handle.cancel();
 ```
