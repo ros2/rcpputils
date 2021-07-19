@@ -27,20 +27,30 @@ namespace rcppmath
 
 /**
  * \brief Simplification of boost::accumulators::accumulator_set<double,
- *  bacc::stats<bacc::tag::rolling_mean>> to avoid dragging boost dependencies
+ *  bacc::stats<bacc::tag::rolling_mean>> to avoid dragging boost dependencies.
  *
- * Computes the mean of the last accumulated elements
+ * Computes the mean of the last accumulated elements.
  */
 template<typename T>
 class RollingMeanAccumulator
 {
 public:
+  /**
+   * Constructs the rolling mean accumulator with a specified window size.
+   *
+   * \param[in] rolling_window_size The unsigned integral length of the accumulator's window length.
+   */
   explicit RollingMeanAccumulator(size_t rolling_window_size)
   : buffer_(rolling_window_size, 0.0), next_insert_(0),
     sum_(0.0), buffer_filled_(false)
   {
   }
 
+  /**
+   * Collects the provided value in the accumulator's buffer.
+   *
+   * \param[in] val The value to accumulate.
+   */
   void accumulate(T val)
   {
     sum_ -= buffer_[next_insert_];
@@ -51,6 +61,11 @@ public:
     next_insert_ = next_insert_ % buffer_.size();
   }
 
+  /**
+   * Calculates the rolling mean accumulated insofar.
+   *
+   * \return Rolling mean of the accumulated values.
+   */
   T getRollingMean() const
   {
     size_t valid_data_count = buffer_filled_ * buffer_.size() + !buffer_filled_ * next_insert_;
