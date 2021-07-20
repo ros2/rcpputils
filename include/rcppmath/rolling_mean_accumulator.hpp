@@ -26,10 +26,10 @@ namespace rcppmath
 {
 
 /**
- * \brief Simplification of boost::accumulators::accumulator_set<double,
- *  bacc::stats<bacc::tag::rolling_mean>> to avoid dragging boost dependencies.
+ * \brief Computes the mean of the last accumulated elements.
  *
- * Computes the mean of the last accumulated elements.
+ * This is a simplified version of boost's rolling mean accumulator,
+ * written to avoid dragging boost dependencies.
  */
 template<typename T>
 class RollingMeanAccumulator
