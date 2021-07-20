@@ -29,7 +29,7 @@ namespace rcppmath
  * \brief Computes the mean of the last accumulated elements.
  *
  * This is a simplified version of boost's rolling mean accumulator,
- * written to avoid dragging boost dependencies.
+ * written to avoid dragging in boost dependencies.
  */
 template<typename T>
 class RollingMeanAccumulator
