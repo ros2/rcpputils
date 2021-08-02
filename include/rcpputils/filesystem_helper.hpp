@@ -271,7 +271,7 @@ RCPPUTILS_PUBLIC path temp_directory_path();
  * This guarantees that there will be no existing files in the returned directory.
  *
  * \param base_name User-specified portion of the created directory
- * \param parent The parent path of the directory that will be created
+ * \param parent_path The parent path of the directory that will be created
  * \return A path to a newly-created directory with base_name and a 6-character unique suffix
  *
  * \throws std::system_error If any OS APIs do not succeed.
@@ -310,7 +310,7 @@ RCPPUTILS_PUBLIC bool remove(const path & p);
  *
  * Additionally to \sa remove, remove_all removes a directory and its containing files.
  *
- * \param The path of the directory to remove.
+ * \param p The path of the directory to remove.
  * \return true if the directory exists and it was successfully removed, false otherwise.
  */
 RCPPUTILS_PUBLIC bool remove_all(const path & p);
