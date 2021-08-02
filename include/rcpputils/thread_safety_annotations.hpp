@@ -32,6 +32,7 @@
 * [their documentation](https://clang.llvm.org/docs/ThreadSafetyAnalysis.html) for more info
 */
 
+/// @cond
 // Prefixing all macros to avoid potential conflict with other projects.
 /**
   * \def RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)
@@ -45,6 +46,7 @@
 #else
 #define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   // no-op
 #endif
+/// @endcond
 
 /**
   * \brief Defined for negation functionality
