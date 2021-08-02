@@ -52,7 +52,9 @@ constexpr const T & clamp(const T & v, const T & lo, const T & hi)
  * \param[in] comp Comparison object that returns true if the first argument is
  * less than the second.
  * \return Reference to lo if v is less than lo, reference to hi if hi is less than v, otherwise
- * reference to v.
+ * reference to v. "Less than" semantics determined by Comparison object.
+ * \warning Capturing the result of clamp by reference if one of the parameters is rvalue produces
+ * a dangling reference if that parameter is returned.
  * \sa rcppmath::clamp(const T&, const T&, const T&)
  */
 template<class T, class Compare>
