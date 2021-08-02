@@ -33,6 +33,13 @@
 */
 
 // Prefixing all macros to avoid potential conflict with other projects.
+/**
+  * \def RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)
+  * \brief Enable thread safety attributes only with clang.
+  *
+  * The attributes can be safely erased when compiling with other compilers.
+  * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h
+  */
 #if defined(__clang__) && defined(_LIBCPP_HAS_THREAD_SAFETY_ANNOTATIONS) && (!defined(SWIG))
 #define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))
 #else
