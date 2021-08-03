@@ -44,6 +44,7 @@
 namespace rcpputils
 {
 
+/// @cond
 /// Split a specified input into tokens using a delimiter and a type erased insert iterator.
 /**
  * The returned vector will contain the tokens split from the input
@@ -73,6 +74,7 @@ split(const std::string & input, char delim, InsertIterator & it, bool skip_empt
     it = item;
   }
 }
+/// @endcond
 
 /// Split a specified input into tokens using a delimiter.
 /**

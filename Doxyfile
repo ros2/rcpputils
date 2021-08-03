@@ -5,7 +5,7 @@ PROJECT_NUMBER         = master
 PROJECT_BRIEF          = "C++ API providing common utilities and data structures."
 
 # Use these lines to include the generated logging_macro.h (update install path if needed)
-INPUT                  = README.md ./include ./docs
+INPUT                  = README.md QUALITY_DECLARATION.md CONTRIBUTING.md ./include ./docs
 USE_MDFILE_AS_MAINPAGE = README.md
 RECURSIVE              = YES
 OUTPUT_DIRECTORY       = doc_output
@@ -14,6 +14,7 @@ EXTRACT_ALL            = YES
 SORT_MEMBER_DOCS       = NO
 
 GENERATE_LATEX         = NO
+GENERATE_XML           = YES
 EXCLUDE_SYMBOLS        = detail details
 
 ENABLE_PREPROCESSING   = YES

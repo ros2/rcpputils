@@ -48,7 +48,7 @@ public:
   /**
    * \brief Constructor for AssertionException
    *
-   * \param msg The message to display when this exception is thrown.
+   * \param[in] msg The message to display when this exception is thrown.
    */
   explicit AssertionException(const char * msg);
 
@@ -72,7 +72,7 @@ public:
   /**
    * \brief Constructor for IllegalStateException
    *
-   * \param msg The message to display when this exception is thrown.
+   * \param[in] msg The message to display when this exception is thrown.
    */
 
   explicit IllegalStateException(const char * msg);
@@ -88,8 +88,8 @@ public:
 /**
  * \brief Check that an argument condition passes.
  *
- * \param condition condition that is asserted to be true
- * \param msg message to pass to exception when condition is false
+ * \param[in] condition condition that is asserted to be true
+ * \param[in] msg message to pass to exception when condition is false
  * \throw std::invalid_argument if the condition is not met.
  */
 inline void require_true(bool condition, const std::string & msg = "invalid argument passed")
@@ -102,8 +102,8 @@ inline void require_true(bool condition, const std::string & msg = "invalid argu
 /**
  * \brief Check that a state condition passes.
  *
- * \param condition condition to check whether it is true or not
- * \param msg message to pass to exception when condition is false
+ * \param[in] condition condition to check whether it is true or not
+ * \param[in] msg message to pass to exception when condition is false
  * \throw rcpputils::IllegalStateException if the condition is not met.
  */
 inline void check_true(bool condition, const std::string & msg = "check reported invalid state")
@@ -119,8 +119,8 @@ inline void check_true(bool condition, const std::string & msg = "check reported
  * This function behaves similar to assert, except that it throws instead of invoking abort().
  * It is only enabled when NDEBUG is not defined
  *
- * \param condition condition to check whether it's true or not
- * \param msg message to pass to exception when condition is not met.
+ * \param[in] condition condition to check whether it's true or not
+ * \param[in] msg message to pass to exception when condition is not met.
  * \throw rcpputils::AssertionException if the macro NDEBUG is not set and the condition is not met.
  */
 inline void assert_true(bool condition, const std::string & msg = "assertion failed")
