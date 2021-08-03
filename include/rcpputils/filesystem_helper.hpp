@@ -83,7 +83,7 @@ public:
   /**
    * \brief Conversion constructor from a std::string path.
    *
-   * \param p A string path split by the platform's string path separator.
+   * \param[in] p A string path split by the platform's string path separator.
    */
   RCPPUTILS_PUBLIC
   path(const std::string & p);  // NOLINT(runtime/explicit): this is a conversion constructor
@@ -183,7 +183,7 @@ public:
   /**
   * \brief Concatenate a path and a string into a single path.
   *
-  * \param other the string compnoent to concatenate
+  * \param[in] other the string compnoent to concatenate
   * \return The combined path of this and other.
   */
   RCPPUTILS_PUBLIC path operator/(const std::string & other) const;
@@ -191,7 +191,7 @@ public:
   /**
   * \brief Append a string component to this path.
   *
-  * \param other the string component to append
+  * \param[in] other the string component to append
   * \return *this
   */
   RCPPUTILS_PUBLIC path & operator/=(const std::string & other);
@@ -199,7 +199,7 @@ public:
   /**
   * \brief Concatenate two paths together.
   *
-  * \param other the path to append
+  * \param[in] other the path to append
   * \return The combined path.
   */
   RCPPUTILS_PUBLIC path operator/(const path & other) const;
@@ -207,7 +207,7 @@ public:
   /**
   * \brief Append a string component to this path.
   *
-  * \param other the string component to append
+  * \param[in] other the string component to append
   * \return *this
   */
   RCPPUTILS_PUBLIC path & operator/=(const path & other);
@@ -220,7 +220,7 @@ private:
 /**
  * \brief Check if the path is a regular file.
  *
- * \param p The path to check
+ * \param[in] p The path to check
  * \return True if the path exists, false otherwise.
  */
 RCPPUTILS_PUBLIC bool is_regular_file(const path & p) noexcept;
@@ -228,7 +228,7 @@ RCPPUTILS_PUBLIC bool is_regular_file(const path & p) noexcept;
 /**
  * \brief Check if the path is a directory.
  *
- * \param p The path to check
+ * \param[in] p The path to check
  * \return True if the path is an existing directory, false otherwise.
  */
 RCPPUTILS_PUBLIC bool is_directory(const path & p) noexcept;
@@ -236,7 +236,7 @@ RCPPUTILS_PUBLIC bool is_directory(const path & p) noexcept;
 /**
  * \brief Get the file size of the path.
  *
- * \param p The path to get the file size of.
+ * \param[in] p The path to get the file size of.
  * \return The file size in bytes.
  *
  * \throws std::sytem_error
@@ -246,7 +246,7 @@ RCPPUTILS_PUBLIC uint64_t file_size(const path & p);
 /**
  * \brief Check if a path exists.
  *
- * \param path_to_check The path to check.
+ * \param[in] path_to_check The path to check.
  * \return True if the path exists, false otherwise.
  */
 RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
@@ -270,8 +270,8 @@ RCPPUTILS_PUBLIC path temp_directory_path();
  * The underlying implementation keeps generating paths until one that does not exist is found.
  * This guarantees that there will be no existing files in the returned directory.
  *
- * \param base_name User-specified portion of the created directory
- * \param parent_path The parent path of the directory that will be created
+ * \param[in] base_name User-specified portion of the created directory
+ * \param[in] parent_path The parent path of the directory that will be created
  * \return A path to a newly-created directory with base_name and a 6-character unique suffix
  *
  * \throws std::system_error If any OS APIs do not succeed.
@@ -293,6 +293,7 @@ RCPPUTILS_PUBLIC path current_path();
  * \brief Create a directory with the given path p.
  *
  * This builds directories recursively and will skip directories if they are already created.
+ * \param[in] path The path at which to create the directory.
  * \return Return true if the directory already exists or is created, false otherwise.
  */
 RCPPUTILS_PUBLIC bool create_directories(const path & p);
@@ -300,7 +301,7 @@ RCPPUTILS_PUBLIC bool create_directories(const path & p);
 /**
  * \brief Remove the file or directory at the path p.
  *
- * \param p The path of the object to remove.
+ * \param[in] p The path of the object to remove.
  * \return true if the file exists and it was successfully removed, false otherwise.
  */
 RCPPUTILS_PUBLIC bool remove(const path & p);
@@ -310,7 +311,7 @@ RCPPUTILS_PUBLIC bool remove(const path & p);
  *
  * Additionally to \sa remove, remove_all removes a directory and its containing files.
  *
- * \param p The path of the directory to remove.
+ * \param[in] p The path of the directory to remove.
  * \return true if the directory exists and it was successfully removed, false otherwise.
  */
 RCPPUTILS_PUBLIC bool remove_all(const path & p);
@@ -320,8 +321,8 @@ RCPPUTILS_PUBLIC bool remove_all(const path & p);
  *
  * An extension is defined as text starting from the end of a path to the first period (.) character.
  *
- * \param file_path The file path string.
- * \param n_times The number of extensions to remove if there are multiple extensions.
+ * \param[in] file_path The file path string.
+ * \param[in] n_times The number of extensions to remove if there are multiple extensions.
  * \return The path object.
  */
 RCPPUTILS_PUBLIC path remove_extension(const path & file_path, int n_times = 1);
@@ -337,8 +338,8 @@ RCPPUTILS_PUBLIC bool operator!=(const path & a, const path & b);
 /**
 * \brief Convert the path to a string for ostream usage, such as in logging or string formatting.
 *
-* \param os The stream to send the path string to
-* \param p The path to stringify
+* \param[in] os The stream to send the path string to
+* \param[in] p The path to stringify
 * \return The ostream, for chaining
 */
 RCPPUTILS_PUBLIC std::ostream & operator<<(std::ostream & os, const path & p);
