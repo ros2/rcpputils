@@ -32,21 +32,19 @@
 * [their documentation](https://clang.llvm.org/docs/ThreadSafetyAnalysis.html) for more info
 */
 
-/// @cond
 // Prefixing all macros to avoid potential conflict with other projects.
 /**
-  * \def RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)
+  * \def RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(x)
   * \brief Enable thread safety attributes only with clang.
   *
   * The attributes can be safely erased when compiling with other compilers.
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h
   */
 #if defined(__clang__) && defined(_LIBCPP_HAS_THREAD_SAFETY_ANNOTATIONS) && (!defined(SWIG))
-#define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   __attribute__((x))
+#define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(x)   __attribute__((x))
 #else
-#define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(x)   // no-op
+#define RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(x)   // no-op
 #endif
-/// @endcond
 
 /**
   * \brief Defined for negation functionality
@@ -69,7 +67,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#capability-string
   */
 #define RCPPUTILS_TSA_CAPABILITY(x) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(capability(x))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(capability(x))
 
 /**
   * \def RCPPUTILS_TSA_SCOPED_CAPABILITY
@@ -81,7 +79,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#scoped-capability
   */
 #define RCPPUTILS_TSA_SCOPED_CAPABILITY \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(scoped_lockable)
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(scoped_lockable)
 
 /**
   * \def RCPPUTILS_TSA_GUARDED_BY
@@ -92,7 +90,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * access. https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#guarded-by-c-and-pt-guarded-by-c
   */
 #define RCPPUTILS_TSA_GUARDED_BY(x) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(guarded_by(x))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(guarded_by(x))
 
 /**
   * \def RCPPUTILS_TSA_PT_GUARDED_BY
@@ -104,7 +102,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#guarded-by-c-and-pt-guarded-by-c
   */
 #define RCPPUTILS_TSA_PT_GUARDED_BY(x) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(pt_guarded_by(x))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(pt_guarded_by(x))
 
 /**
   * \def RCPPUTILS_TSA_ACQUIRED_BEFORE
@@ -116,7 +114,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#acquired-before-acquired-after
   */
 #define RCPPUTILS_TSA_ACQUIRED_BEFORE(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(acquired_before(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(acquired_before(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_ACQUIRED_AFTER
@@ -128,7 +126,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#acquired-before-acquired-after
   */
 #define RCPPUTILS_TSA_ACQUIRED_AFTER(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(acquired_after(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(acquired_after(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_REQUIRES
@@ -140,7 +138,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#requires-requires-shared
   */
 #define RCPPUTILS_TSA_REQUIRES(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(requires_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(requires_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_REQUIRES_SHARED
@@ -152,7 +150,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#requires-requires-shared
   */
 #define RCPPUTILS_TSA_REQUIRES_SHARED(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(requires_shared_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(requires_shared_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_ACQUIRE
@@ -163,7 +161,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#acquire-acquire-shared-release-release-shared
   */
 #define RCPPUTILS_TSA_ACQUIRE(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(acquire_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(acquire_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_ACQUIRE_SHARED
@@ -174,7 +172,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#acquire-acquire-shared-release-release-shared
   */
 #define RCPPUTILS_TSA_ACQUIRE_SHARED(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(acquire_shared_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(acquire_shared_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_RELEASE
@@ -185,7 +183,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#acquire-acquire-shared-release-release-shared
   */
 #define RCPPUTILS_TSA_RELEASE(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(release_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(release_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_RELEASE_SHARED
@@ -196,7 +194,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#acquire-acquire-shared-release-release-shared
   */
 #define RCPPUTILS_TSA_RELEASE_SHARED(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(release_shared_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(release_shared_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_TRY_ACQUIRE
@@ -206,7 +204,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#try-acquire-bool-try-acquire-shared-bool
   */
 #define RCPPUTILS_TSA_TRY_ACQUIRE(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(try_acquire_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_TRY_ACQUIRE_SHARED
@@ -216,7 +214,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#try-acquire-bool-try-acquire-shared-bool
   */
 #define RCPPUTILS_TSA_TRY_ACQUIRE_SHARED(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_shared_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(try_acquire_shared_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_EXCLUDES
@@ -230,7 +228,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#negative-capabilities
   */
 #define RCPPUTILS_TSA_EXCLUDES(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(locks_excluded(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(locks_excluded(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_ASSERT_CAPABILITY
@@ -240,7 +238,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#assert-capability-and-assert-shared-capability
   */
 #define RCPPUTILS_TSA_ASSERT_CAPABILITY(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(assert_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(assert_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_ASSERT_SHARED_CAPABILITY
@@ -251,7 +249,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#assert-capability-and-assert-shared-capability
   */
 #define RCPPUTILS_TSA_ASSERT_SHARED_CAPABILITY(...) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(assert_shared_capability(__VA_ARGS__))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(assert_shared_capability(__VA_ARGS__))
 
 /**
   * \def RCPPUTILS_TSA_RETURN_CAPABILITY
@@ -262,7 +260,7 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#return-capability-c
   */
 #define RCPPUTILS_TSA_RETURN_CAPABILITY(x) \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(lock_returned(x))
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(lock_returned(x))
 
 /**
   * \def RCPPUTILS_TSA_NO_THREAD_SAFETY_ANALYSIS
@@ -275,6 +273,6 @@ inline const std::mutex & operator!(const std::mutex & a)
   * https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#return-capability-c
   */
 #define RCPPUTILS_TSA_NO_THREAD_SAFETY_ANALYSIS \
-  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE__(no_thread_safety_analysis)
+  RCPPUTILS_THREAD_ANNOTATION_ATTRIBUTE_IMPL(no_thread_safety_analysis)
 
 #endif  // RCPPUTILS__THREAD_SAFETY_ANNOTATIONS_HPP_
