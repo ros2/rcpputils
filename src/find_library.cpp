@@ -62,7 +62,7 @@ std::string find_library_path(const std::string & library_name)
   std::string search_path = get_env_var(kPathVar);
   std::vector<std::string> search_paths = rcpputils::split(search_path, kPathSeparator);
 
-  #ifdef _WIN32 && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+  #if defined(_WIN32) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
   uint32_t length = GetDllDirectoryA(0, NULL);
   if (length > 0)
   {
