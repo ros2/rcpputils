@@ -28,6 +28,10 @@
 #include "rcpputils/split.hpp"
 #include "rcpputils/get_env.hpp"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 namespace rcpputils
 {
 
@@ -58,11 +62,23 @@ std::string find_library_path(const std::string & library_name)
   std::string search_path = get_env_var(kPathVar);
   std::vector<std::string> search_paths = rcpputils::split(search_path, kPathSeparator);
 
+  #ifdef _WIN32 && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+  uint32_t length = GetDllDirectoryA(0, NULL);
+  if (length > 0)
+  {
+    std::string app_search_path(length - 1, '\0');
+    if (GetDllDirectoryA(length, &app_search_path[0]) != 0)
+    {
+      search_paths.insert(search_paths.begin(), app_search_path);
+    }
+  }
+  #endif
+
   std::string filename = kSolibPrefix;
   filename += library_name + kSolibExtension;
 
-  for (const auto & search_path : search_paths) {
-    std::string path = search_path + "/" + filename;
+  for (const auto & current_search_path : search_paths) {
+    std::string path = current_search_path + "/" + filename;
     if (rcutils_is_file(path.c_str())) {
       return path;
     }
