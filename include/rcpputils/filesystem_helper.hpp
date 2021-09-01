@@ -621,6 +621,19 @@ inline path remove_extension(const path & file_path, int n_times = 1)
 
 #undef RCPPUTILS_IMPL_OS_DIRSEP
 
+/**
+* \brief Convert the path to a string for ostream usage, such as in logging or string formatting.
+*
+* \param os The stream to send the path string to
+* \param p The path to stringify
+* \return The ostream, for chaining
+*/
+inline std::ostream & operator<<(std::ostream & os, const path & p)
+{
+  os << p.string();
+  return os;
+}
+
 }  // namespace fs
 }  // namespace rcpputils
 
