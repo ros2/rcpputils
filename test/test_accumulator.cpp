@@ -14,7 +14,7 @@
 
 #include <rcppmath/rolling_mean_accumulator.hpp>
 
-#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 #include <cmath>
 #include <memory>
 
