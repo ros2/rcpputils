@@ -2,6 +2,15 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.2 (2021-08-31)
+------------------
+* Add stream operator for paths to make it easier to log (`#120 <https://github.com/ros2/rcpputils/issues/120>`_) (`#121 <https://github.com/ros2/rcpputils/issues/121>`_)
+* Removed Github Actions (`#105 <https://github.com/ros2/rcpputils/issues/105>`_) (`#106 <https://github.com/ros2/rcpputils/issues/106>`_)
+* Updating quality declaration links (`ros2/docs.ros2.org#52 <https://github.com/ros2/docs.ros2.org/issues/52>`_) (`#131 <https://github.com/ros2/rcpputils/issues/131>`_)
+* Update to quality level 1 (`#115 <https://github.com/ros2/rcpputils/issues/115>`_)
+* Update maintainer list for Foxy (`#109 <https://github.com/ros2/rcpputils/issues/109>`_)
+* Contributors: Alejandro Hernández Cordero, Emerson Knapp, Michael Jeronimo, Stephen Brawner, shonigmann
+
 1.3.1 (2020-10-09)
 ------------------
 * Add scope_exit helper. (`#78 <https://github.com/ros2/rcpputils//issues/78>`_) (`#103 <https://github.com/ros2/rcpputils//issues/103>`_)
