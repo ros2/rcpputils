@@ -122,6 +122,8 @@ if(BUILD_TESTING)
       "_TEST_LIBRARY_DIR=$<TARGET_FILE_DIR:test_library>;_TEST_LIBRARY=$<TARGET_FILE:test_library>")
 
   ament_add_gtest(test_clamp test/test_clamp.cpp)
+
+  ament_add_gtest(test_accumulator test/test_accumulator.cpp)
 endif()
 
 ament_package()
