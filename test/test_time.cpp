@@ -16,13 +16,13 @@
 
 #include <rcpputils/time.hpp>
 
-TEST(test_time, test_convert_to_rcutils_duration) {
+TEST(test_time, test_convert_to_nanoseconds) {
   rcutils_duration_value_t expect_value = RCUTILS_S_TO_NS(5 * 60);  // 5 minutes
   rcutils_duration_value_t cast_val;
-  EXPECT_NO_THROW(cast_val = rcpputils::convert_to_rcutils_duration(std::chrono::minutes(5)));
+  EXPECT_NO_THROW(cast_val = rcpputils::convert_to_nanoseconds(std::chrono::minutes(5)).count());
   EXPECT_EQ(cast_val, expect_value);
 
   EXPECT_THROW(
-    rcpputils::convert_to_rcutils_duration(std::chrono::hours(10000000)),
+    rcpputils::convert_to_nanoseconds(std::chrono::hours(10000000)),
     std::invalid_argument);
 }

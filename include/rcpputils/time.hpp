@@ -24,15 +24,18 @@
 namespace rcpputils
 {
 
-/// Convert to rcutils duration value.
-/*
- * \param[in] time The time to be converted to rcutils duration.
- * \return rcutils duration value
+/// Convert to std::chrono::nanoseconds.
+/**
+ * This function help to convert from std::chrono::duration to std::chrono::nanoseconds and throw
+ * exception if overflow occurs while coverting.
+ *
+ * \param[in] time The time to be converted to std::chrono::nanoseconds.
+ * \return std::chrono::nanoseconds.
  * \throws std::invalid_argument if time is bigger than std::chrono::nanoseconds::max().
  */
 template<typename DurationRepT = int64_t, typename DurationT = std::milli>
 RCPPUTILS_PUBLIC
-rcutils_duration_value_t convert_to_rcutils_duration(
+std::chrono::nanoseconds convert_to_nanoseconds(
   const std::chrono::duration<DurationRepT, DurationT> & time)
 {
   // Casting to a double representation might lose precision and allow the check below to succeed
@@ -54,7 +57,7 @@ rcutils_duration_value_t convert_to_rcutils_duration(
             "time must be less than std::chrono::nanoseconds::max()"};
   }
 
-  return (std::chrono::duration_cast<std::chrono::nanoseconds>(time)).count();
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(time);
 }
 
 }  // namespace rcpputils
