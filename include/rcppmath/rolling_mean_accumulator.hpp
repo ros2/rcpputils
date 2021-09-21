@@ -21,6 +21,7 @@
 
 #include <cassert>
 #include <vector>
+#include <cstddef>
 
 namespace rcppmath
 {
