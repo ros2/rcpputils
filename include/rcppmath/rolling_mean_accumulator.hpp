@@ -20,6 +20,7 @@
 #define RCPPMATH__ROLLING_MEAN_ACCUMULATOR_HPP_
 
 #include <cassert>
+#include <cstddef>
 #include <vector>
 
 namespace rcppmath
