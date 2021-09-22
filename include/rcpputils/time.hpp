@@ -19,8 +19,6 @@
 
 #include "rcutils/time.h"
 
-#include "rcpputils/visibility_control.hpp"
-
 namespace rcpputils
 {
 
@@ -34,7 +32,6 @@ namespace rcpputils
  * \throws std::invalid_argument if time is bigger than std::chrono::nanoseconds::max().
  */
 template<typename DurationRepT = int64_t, typename DurationT = std::milli>
-RCPPUTILS_PUBLIC
 std::chrono::nanoseconds convert_to_nanoseconds(
   const std::chrono::duration<DurationRepT, DurationT> & time)
 {

@@ -18,7 +18,7 @@
 
 TEST(test_time, test_convert_to_nanoseconds) {
   rcutils_duration_value_t expect_value = RCUTILS_S_TO_NS(5 * 60);  // 5 minutes
-  rcutils_duration_value_t cast_val;
+  rcutils_duration_value_t cast_val = 0;
   EXPECT_NO_THROW(cast_val = rcpputils::convert_to_nanoseconds(std::chrono::minutes(5)).count());
   EXPECT_EQ(cast_val, expect_value);
 
