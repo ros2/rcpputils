@@ -29,7 +29,8 @@ namespace rcpputils
  *
  * \param[in] time The time to be converted to std::chrono::nanoseconds.
  * \return std::chrono::nanoseconds.
- * \throws std::invalid_argument if time is bigger than std::chrono::nanoseconds::max().
+ * \throws std::invalid_argument if time is bigger than std::chrono::nanoseconds::max() or less than
+ * std::chrono::nanoseconds::min().
  */
 template<typename DurationRepT = int64_t, typename DurationT = std::milli>
 std::chrono::nanoseconds convert_to_nanoseconds(
@@ -52,6 +53,14 @@ std::chrono::nanoseconds convert_to_nanoseconds(
   if (time > ns_max_as_double) {
     throw std::invalid_argument{
             "time must be less than std::chrono::nanoseconds::max()"};
+  }
+
+  constexpr auto ns_min_as_double =
+    std::chrono::duration_cast<std::chrono::duration<double, std::chrono::nanoseconds::period>>(
+    std::chrono::nanoseconds::min());
+  if (time < ns_min_as_double) {
+    throw std::invalid_argument{
+            "time must be bigger than std::chrono::nanoseconds::min()"};
   }
 
   return std::chrono::duration_cast<std::chrono::nanoseconds>(time);
