@@ -46,6 +46,7 @@ std::chrono::nanoseconds convert_to_nanoseconds(
   // version of Howard Hinnant's (the <chrono> guy>) response here:
   // https://stackoverflow.com/a/44637334/2089061
   // However, this doesn't solve the issue for all possible duration types of period.
+  // e.g std::chrono::hours(10000000) cannot be converted to nanoseconds.
   // Follow-up issue: https://github.com/ros2/rclcpp/issues/1177
   constexpr auto ns_max_as_double =
     std::chrono::duration_cast<std::chrono::duration<double, std::chrono::nanoseconds::period>>(
