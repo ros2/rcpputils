@@ -34,8 +34,9 @@
 #include <string>
 
 #include "rcutils/env.h"
+#include "rcutils/error_handling.h"
 
-#include "rcpputils/get_env.hpp"
+#include "rcpputils/env.hpp"
 
 namespace rcpputils
 {
@@ -48,6 +49,17 @@ std::string get_env_var(const char * env_var)
     throw std::runtime_error(err);
   }
   return value ? value : "";
+}
+
+bool set_env_var(const char * env_var, const char * env_value)
+{
+  if (!rcutils_set_env(env_var, env_value)) {
+    std::string err = rcutils_get_error_string().str;
+    // Resetting the error state since error string has been extracted
+    rcutils_reset_error();
+    throw std::runtime_error(err);
+  }
+  return true;
 }
 
 }  // namespace rcpputils

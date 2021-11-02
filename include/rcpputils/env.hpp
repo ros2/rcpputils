@@ -30,8 +30,8 @@
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef RCPPUTILS__GET_ENV_HPP_
-#define RCPPUTILS__GET_ENV_HPP_
+#ifndef RCPPUTILS__ENV_HPP_
+#define RCPPUTILS__ENV_HPP_
 
 #include <string>
 
@@ -49,6 +49,19 @@ namespace rcpputils
 RCPPUTILS_PUBLIC
 std::string get_env_var(const char * env_var);
 
+/// Set/un-set a process-scoped environment variable.
+/*
+ *  \param[in] env_var The name of the environment variable.
+ *  \param[in] env_value Value to set the environment variable to, or `NULL`
+ *    to un-set.
+ *  \return Boolean representing whether the operation was successful.
+ *  \throws std::runtime_error if env_name is invalid/NULL, or if setting
+ *    the environment variable fails.
+ *
+ */
+RCPPUTILS_PUBLIC
+bool set_env_var(const char * env_var, const char * env_value);
+
 }  // namespace rcpputils
 
-#endif  // RCPPUTILS__GET_ENV_HPP_
+#endif  // RCPPUTILS__ENV_HPP_
