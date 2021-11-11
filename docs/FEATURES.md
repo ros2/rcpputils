@@ -108,7 +108,7 @@ The `rcpputils/process.hpp` header contains process utilities.
 Namely, this header provides the `rcpputils::get_executable_name()` function, which retrieves and returns the current program name as a string.
 
 ## Environment helpers {#environment-helpers}
-The `rcpputils/get_env.hpp` header provides functionality to lookup the value of a provided environment variable through the `rcpputils::get_env_var(const char *)` function.
+The `rcpputils/env.hpp` header provides functionality to lookup the value of a provided environment variable through the `rcpputils::get_env_var(const char *)` function and set/un-set the value of a named, process-scoped environment variable through the `rcpputils::set_env_var(const char *, const char *)` function.
 
 ## Scope guard support {#scope-guard-support}
 Support for a general-purpose scope guard is provided in the `rcpputils/scope_exit.hpp` header.

@@ -30,16 +30,36 @@
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef RCPPUTILS__GET_ENV_HPP_
-#define RCPPUTILS__GET_ENV_HPP_
+#include <stdexcept>
+#include <string>
 
-#ifdef _MSC_VER
-#pragma message \
-  ("rcpputils/get_env.hpp has been deprecated, please include rcpputils/env.hpp instead")
-#else
-#warning rcpputils/get_env.hpp has been deprecated, please include rcpputils/env.hpp instead
-#endif
+#include "rcutils/env.h"
+#include "rcutils/error_handling.h"
 
 #include "rcpputils/env.hpp"
 
-#endif  // RCPPUTILS__GET_ENV_HPP_
+namespace rcpputils
+{
+
+std::string get_env_var(const char * env_var)
+{
+  const char * value{};
+  const char * err = rcutils_get_env(env_var, &value);
+  if (err) {
+    throw std::runtime_error(err);
+  }
+  return value ? value : "";
+}
+
+bool set_env_var(const char * env_var, const char * env_value)
+{
+  if (!rcutils_set_env(env_var, env_value)) {
+    std::string err = rcutils_get_error_string().str;
+    // Resetting the error state since error string has been extracted
+    rcutils_reset_error();
+    throw std::runtime_error(err);
+  }
+  return true;
+}
+
+}  // namespace rcpputils

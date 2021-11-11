@@ -26,7 +26,7 @@
 
 #include "rcpputils/filesystem_helper.hpp"
 #include "rcpputils/split.hpp"
-#include "rcpputils/get_env.hpp"
+#include "rcpputils/env.hpp"
 
 namespace rcpputils
 {

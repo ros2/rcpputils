@@ -31,7 +31,7 @@ add_library(${PROJECT_NAME}
   src/asserts.cpp
   src/filesystem_helper.cpp
   src/find_library.cpp
-  src/get_env.cpp
+  src/env.cpp
   src/shared_library.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
@@ -69,13 +69,13 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_join test/test_join.cpp)
 
-  ament_add_gtest(test_get_env test/test_get_env.cpp
+  ament_add_gtest(test_env test/test_env.cpp
     ENV
       EMPTY_TEST=
       NORMAL_TEST=foo
   )
-  ament_target_dependencies(test_get_env rcutils)
-  target_link_libraries(test_get_env ${PROJECT_NAME})
+  ament_target_dependencies(test_env rcutils)
+  target_link_libraries(test_env ${PROJECT_NAME})
 
   ament_add_gtest(test_scope_exit test/test_scope_exit.cpp)
   target_link_libraries(test_scope_exit ${PROJECT_NAME})
