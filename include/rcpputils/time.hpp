@@ -32,25 +32,13 @@ namespace rcpputils
  * \throws std::invalid_argument if time is bigger than std::chrono::nanoseconds::max() or less than
  * std::chrono::nanoseconds::min().
  */
-template<typename DurationRepT = int64_t, typename DurationT = std::milli>
+template<typename DurationRepT, typename DurationT>
 std::chrono::nanoseconds convert_to_nanoseconds(
   const std::chrono::duration<DurationRepT, DurationT> & time)
 {
-  // Casting to a double representation might lose precision and allow the check below to succeed
-  // but the actual cast to nanoseconds fail. Using 1 worth of nanoseconds less than max
-  constexpr auto maximum_safe_cast_ns =
-    std::chrono::nanoseconds::max() - std::chrono::nanoseconds(1);
-  // If period is greater than nanoseconds::max(), the duration_cast to nanoseconds will overflow
-  // a signed integer, which is undefined behavior. Checking whether any std::chrono::duration is
-  // greater than nanoseconds::max() is a difficult general problem. This is a more conservative
-  // version of Howard Hinnant's (the <chrono> guy>) response here:
-  // https://stackoverflow.com/a/44637334/2089061
-  // However, this doesn't solve the issue for all possible duration types of period.
-  // e.g std::chrono::hours(10000000) cannot be converted to nanoseconds.
-  // Follow-up issue: https://github.com/ros2/rclcpp/issues/1177
   constexpr auto ns_max_as_double =
     std::chrono::duration_cast<std::chrono::duration<double, std::chrono::nanoseconds::period>>(
-    maximum_safe_cast_ns);
+    std::chrono::nanoseconds::max());
   if (time > ns_max_as_double) {
     throw std::invalid_argument{
             "time must be less than std::chrono::nanoseconds::max()"};
