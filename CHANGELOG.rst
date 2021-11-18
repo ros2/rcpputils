@@ -2,6 +2,24 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add checked convert_to_nanoseconds() function (`#145 <https://github.com/ros2/rcpputils/issues/145>`_)
+* Add missing sections in docs/FEATURES.md TOC (`#151 <https://github.com/ros2/rcpputils/issues/151>`_)
+* [env] Add `set_env_var` function (`#150 <https://github.com/ros2/rcpputils/issues/150>`_)
+* Add missing cstddef include (`#147 <https://github.com/ros2/rcpputils/issues/147>`_)
+* Add accumulator test to CMakeLists.txt (`#144 <https://github.com/ros2/rcpputils/issues/144>`_)
+* `rcpputils::fs`: Fix doxygen parameter identifier (`#142 <https://github.com/ros2/rcpputils/issues/142>`_)
+* Make thread safety macro C++ standards compliant (`#141 <https://github.com/ros2/rcpputils/issues/141>`_)
+* Fix API documentation for clean `rosdoc2` build (`#139 <https://github.com/ros2/rcpputils/issues/139>`_)
+* Improve `rcppmath` Doxygen documentation (`#138 <https://github.com/ros2/rcpputils/issues/138>`_)
+* Improve documentation of utilities in docs/FEATURES.md (`#137 <https://github.com/ros2/rcpputils/issues/137>`_)
+* Include `rcppmath` utilities in docs/FEATURES.md (`#136 <https://github.com/ros2/rcpputils/issues/136>`_)
+* Fix `IllegalStateException` reference in FEATURES (`#135 <https://github.com/ros2/rcpputils/issues/135>`_)
+* migrate rolling mean from ros2_controllers to rcppmath (`#133 <https://github.com/ros2/rcpputils/issues/133>`_)
+* Update includes after rcutils/get_env.h deprecation (`#132 <https://github.com/ros2/rcpputils/issues/132>`_)
+* Contributors: Abrar Rahman Protyasha, Barry Xu, Christophe Bedard, Karsten Knese, Octogonapus
+
 2.2.0 (2021-04-02)
 ------------------
 * Update quality declaration links (`#130 <https://github.com/ros2/rcpputils/issues/130>`_)
