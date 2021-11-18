@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.0 (2021-11-18)
+------------------
 * Add checked convert_to_nanoseconds() function (`#145 <https://github.com/ros2/rcpputils/issues/145>`_)
 * Add missing sections in docs/FEATURES.md TOC (`#151 <https://github.com/ros2/rcpputils/issues/151>`_)
 * [env] Add `set_env_var` function (`#150 <https://github.com/ros2/rcpputils/issues/150>`_)
