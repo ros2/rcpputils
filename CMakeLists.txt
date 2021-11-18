@@ -69,6 +69,9 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_join test/test_join.cpp)
 
+  ament_add_gtest(test_time test/test_time.cpp)
+  ament_target_dependencies(test_time rcutils)
+
   ament_add_gtest(test_env test/test_env.cpp
     ENV
       EMPTY_TEST=
