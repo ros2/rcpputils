@@ -4,11 +4,14 @@
   <name>rcpputils</name>
   <version>2.3.0</version>
   <description>Package containing utility code for C++.</description>
+
   <maintainer email="clalancette@openrobotics.org">Chris Lalancette</maintainer>
-  <maintainer email="michael.jeronimo@openrobotics.org">Michael Jeronimo</maintainer>
+
   <license>Apache License 2.0</license>
   <license>BSD-3-Clause</license>
+
   <author email="eknapp@amazon.com">Emerson Knapp</author>
+  <author email="michael.jeronimo@openrobotics.org">Michael Jeronimo</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
