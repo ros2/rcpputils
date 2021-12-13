@@ -133,7 +133,7 @@ struct FakeGuarded
   FakeGuarded()
   {
     pData = new int;
-    * pData = 0;
+    *pData = 0;
   }
 
   ~FakeGuarded()
