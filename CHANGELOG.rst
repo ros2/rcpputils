@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.1 (2021-12-17)
+------------------
 * Fixes for uncrustify 0.72 (`#154 <https://github.com/ros2/rcpputils/issues/154>`_)
 * Fix the BSD license headers to use the standard one. (`#153 <https://github.com/ros2/rcpputils/issues/153>`_)
 * Update maintainers to Chris Lalancette (`#152 <https://github.com/ros2/rcpputils/issues/152>`_)
