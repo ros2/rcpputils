@@ -2,6 +2,13 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fixes for uncrustify 0.72 (`#154 <https://github.com/ros2/rcpputils/issues/154>`_)
+* Fix the BSD license headers to use the standard one. (`#153 <https://github.com/ros2/rcpputils/issues/153>`_)
+* Update maintainers to Chris Lalancette (`#152 <https://github.com/ros2/rcpputils/issues/152>`_)
+* Contributors: Audrow Nash, Chris Lalancette
+
 2.3.0 (2021-11-18)
 ------------------
 * Add checked convert_to_nanoseconds() function (`#145 <https://github.com/ros2/rcpputils/issues/145>`_)
