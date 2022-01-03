@@ -94,6 +94,13 @@ public:
   RCPPUTILS_PUBLIC path(const path & p) = default;
 
   /**
+   * \brief Copy assignment operator.
+   *
+   * \return Reference to the copied path.
+   */
+  RCPPUTILS_PUBLIC path & operator=(const path &) = default;
+
+  /**
    * \brief Get the path delimited using this system's path separator.
    *
    * \return The path as a string
