@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* migrate rolling mean from ros2_controllers to rcppmath (backport `#133 <https://github.com/ros2/rcpputils/issues/133>`_) (`#143 <https://github.com/ros2/rcpputils/issues/143>`_)
+* Contributors: mergify[bot]
+
 2.2.0 (2021-04-02)
 ------------------
 * Update quality declaration links (`#130 <https://github.com/ros2/rcpputils/issues/130>`_)
