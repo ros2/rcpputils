@@ -17,7 +17,7 @@
 
 #include "gtest/gtest.h"
 
-#include <rcpputils/env.hpp>
+#include "rcpputils/env.hpp"
 
 /* Tests get_env_var.
  *
