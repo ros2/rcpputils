@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gtest/gtest.h>
-
-#include <rcpputils/env.hpp>
-
 #include <stdexcept>
 #include <string>
 
+#include "gtest/gtest.h"
+
+#include "rcpputils/env.hpp"
 
 /* Tests get_env_var.
  *

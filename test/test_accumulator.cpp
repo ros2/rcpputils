@@ -20,12 +20,12 @@
 #endif
 #endif
 
-#include <rcppmath/rolling_mean_accumulator.hpp>
-
-#include <gtest/gtest.h>
 #include <cmath>
 #include <memory>
 
+#include "gtest/gtest.h"
+
+#include "rcppmath/rolling_mean_accumulator.hpp"
 
 TEST(TestAccumulator, test_accumulator)
 {
