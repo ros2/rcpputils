@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.2 (2022-01-14)
+------------------
+* Fix include order for cpplint (`#158 <https://github.com/ros2/rcpputils/issues/158>`_)
+* [path] Declare the default assignment operator (`#156 <https://github.com/ros2/rcpputils/issues/156>`_)
+* Contributors: Abrar Rahman Protyasha, Jacob Perron
+
 2.3.1 (2021-12-17)
 ------------------
 * Fixes for uncrustify 0.72 (`#154 <https://github.com/ros2/rcpputils/issues/154>`_)
