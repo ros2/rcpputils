@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Install includes to include/${PROJECT_NAME} (`#160 <https://github.com/ros2/rcpputils/issues/160>`_)
+* Contributors: Shane Loretz
+
 2.3.2 (2022-01-14)
 ------------------
 * Fix include order for cpplint (`#158 <https://github.com/ros2/rcpputils/issues/158>`_)
