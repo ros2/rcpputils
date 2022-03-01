@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.4.0 (2022-03-01)
+------------------
 * Install includes to include/${PROJECT_NAME} (`#160 <https://github.com/ros2/rcpputils/issues/160>`_)
 * Contributors: Shane Loretz
 
