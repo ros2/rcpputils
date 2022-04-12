@@ -371,12 +371,13 @@ bool create_directories(const path & p)
     } else {
       p_built = *it;
     }
-    if (!p_built.exists()) {
 #ifdef _WIN32
-      status = _mkdir(p_built.string().c_str());
+    status = _mkdir(p_built.string().c_str());
 #else
-      status = mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
+    status = mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
 #endif
+    if (status == -1 && errno == EEXIST) {
+      status = 0;
     }
   }
   return status == 0 && p_built.is_directory();
