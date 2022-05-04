@@ -2,6 +2,9 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.5.1 (2022-05-04)
+------------------
+
 2.5.0 (2022-04-29)
 ------------------
 * Fix possible race condition in create_directories() (`#162 <https://github.com/ros2/rcpputils/issues/162>`_)
