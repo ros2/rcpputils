@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.5.2 (2022-09-13)
+------------------
 * Mirror rolling to master
 * Contributors: Audrow Nash
 
