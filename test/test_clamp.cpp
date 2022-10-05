@@ -15,9 +15,7 @@
 #include <gtest/gtest.h>
 #include <limits>
 
-#define RCPPMATH__CLAMP_HPP_WARNING_DISABLED 1
 #include "rcppmath/clamp.hpp"
-#undef RCPPMATH__CLAMP_HPP_WARNING_DISABLED
 
 #ifdef _MSC_VER
 #pragma warning(push)
