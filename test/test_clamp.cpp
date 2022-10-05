@@ -15,7 +15,17 @@
 #include <gtest/gtest.h>
 #include <limits>
 
+#define RCPPMATH__CLAMP_HPP_WARNING_DISABLED 1
 #include "rcppmath/clamp.hpp"
+#undef RCPPMATH__CLAMP_HPP_WARNING_DISABLED
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 TEST(test_clamp, test_basic) {
   EXPECT_EQ(rcppmath::clamp(1, 2, 5), 2);
@@ -50,3 +60,9 @@ TEST(test_clamp, test_limits) {
       std::numeric_limits<double>::quiet_NaN(), 0.0, 1.0),
     std::numeric_limits<double>::quiet_NaN());
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#else
+#pragma GCC diagnostic pop
+#endif

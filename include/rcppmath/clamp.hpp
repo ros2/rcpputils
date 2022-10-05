@@ -21,6 +21,11 @@
 
 #include <cassert>
 
+
+#ifndef RCPPMATH__CLAMP_HPP_WARNING_DISABLED
+# warning "the rcppmath namespace is deprecated, include <algorithm> and use std::clamp instead"
+#endif
+
 namespace rcppmath
 {
 /**
