@@ -37,6 +37,7 @@ namespace rcppmath
  *  a dangling reference if that parameter is returned.
  */
 template<class T>
+[[deprecated("use std::clamp instead, introduced in C++17")]]
 constexpr const T & clamp(const T & v, const T & lo, const T & hi)
 {
   assert(!(hi < lo) );
@@ -58,6 +59,7 @@ constexpr const T & clamp(const T & v, const T & lo, const T & hi)
  * \sa rcppmath::clamp(const T&, const T&, const T&)
  */
 template<class T, class Compare>
+[[deprecated("use std::clamp instead, introduced in C++17")]]
 constexpr const T & clamp(const T & v, const T & lo, const T & hi, Compare comp)
 {
   assert(!comp(hi, lo) );
