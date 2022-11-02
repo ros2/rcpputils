@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* require C++17 and deprecate the rcppmath namespace (`#165 <https://github.com/ros2/rcpputils/issues/165>`_)
+* Contributors: William Woodall
+
 2.5.2 (2022-09-13)
 ------------------
 * Mirror rolling to master
