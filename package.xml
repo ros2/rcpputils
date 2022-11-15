@@ -5,11 +5,13 @@
   <version>2.6.0</version>
   <description>Package containing utility code for C++.</description>
 
-  <maintainer email="clalancette@openrobotics.org">Chris Lalancette</maintainer>
+  <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
+  <maintainer email="william@openrobotics.org">William Woodall</maintainer>
 
   <license>Apache License 2.0</license>
   <license>BSD-3-Clause</license>
 
+  <author email="clalancette@openrobotics.org">Chris Lalancette</author>
   <author email="eknapp@amazon.com">Emerson Knapp</author>
   <author email="michael.jeronimo@openrobotics.org">Michael Jeronimo</author>
 
