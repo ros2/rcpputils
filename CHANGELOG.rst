@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.2 (2022-12-02)
+------------------
+* Add missing cstddef include (`#148 <https://github.com/ros2/rcpputils/issues/148>`_)
+* Contributors: Octogonapus
+
 2.2.1 (2022-01-07)
 ------------------
 * migrate rolling mean from ros2_controllers to rcppmath (backport `#133 <https://github.com/ros2/rcpputils/issues/133>`_) (`#143 <https://github.com/ros2/rcpputils/issues/143>`_)
