@@ -27,6 +27,7 @@ add_library(${PROJECT_NAME}
   src/asserts.cpp
   src/filesystem_helper.cpp
   src/find_library.cpp
+  src/mutex.cpp
   src/env.cpp
   src/shared_library.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -72,6 +73,9 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_join test/test_join.cpp)
   target_link_libraries(test_join ${PROJECT_NAME})
+
+  ament_add_gtest(test_mutex test/test_mutex.cpp)
+  target_link_libraries(test_mutex ${PROJECT_NAME})
 
   ament_add_gtest(test_time test/test_time.cpp)
   target_link_libraries(test_time ${PROJECT_NAME})
