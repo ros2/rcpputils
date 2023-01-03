@@ -78,14 +78,13 @@ TEST(test_mutex, pimutex_lockthread) {
   test_mutex.lock();
   std::atomic<int> result {-1};
 
-  std::thread* test_thread = new std::thread([&result, &test_mutex]() {
+  std::thread test_thread([&result, &test_mutex]() {
       result = 0;
       test_mutex.lock();
       result = 1; // this line should not be reached
     });
   std::this_thread::sleep_for(20ms);
-  test_thread->detach();
-  delete test_thread;
+  test_thread.detach();
   EXPECT_EQ(0, result);
 
   test_mutex.unlock();
