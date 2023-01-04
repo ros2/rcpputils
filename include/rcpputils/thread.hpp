@@ -27,7 +27,8 @@ namespace rcpputils
 /**
  * This function intentionally only works on operating systems which support a FIFO thread scheduler.
  * Note for Linux: using this function requires elevated privileges.
- * Implementation note: For setting thread priorities which are intended for a non-realtime/fair thread scheduler a new utility function should be implemented.
+ * Implementation note: For setting thread priorities which are intended for a non-realtime/fair
+ *                      thread scheduler a new utility function should be implemented.
  *
  * \param[in] thread std thread instance
  * \param[in] priority priority to set for the given thread
@@ -39,7 +40,9 @@ bool configure_realtime_thread(
   std::thread & thread, const ThreadPriority priority,
   const unsigned int cpu_bitmask = (unsigned) -1)
 {
-  return configure_native_realtime_thread(thread.native_handle(), priority, cpu_bitmask);
+  rcutils_ret_t return_value = configure_native_realtime_thread(thread.native_handle(),
+                                                                priority, cpu_bitmask);
+  return return_value == RCUTILS_RET_OK ? true : false;
 }
 
 }  // namespace rcpputils
