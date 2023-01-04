@@ -27,8 +27,8 @@ add_library(${PROJECT_NAME}
   src/asserts.cpp
   src/filesystem_helper.cpp
   src/find_library.cpp
-  src/mutex.cpp
   src/env.cpp
+  src/mutex.cpp
   src/shared_library.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"

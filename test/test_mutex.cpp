@@ -18,7 +18,7 @@
 #include <chrono>
 
 #include "rcpputils/mutex.hpp"
-#include "rcpputils/thread_config.hpp"
+#include "rcpputils/thread.hpp"
 
 using namespace std::chrono_literals;
 
@@ -110,12 +110,12 @@ TEST(test_mutex, pimutex_priority_inversion) {
       test_mutex.unlock();
     });
   if (rcpputils::configure_realtime_thread(
-      low_prio_thread, rcpputils::ThreadPriority::LOW,
+      low_prio_thread, THREAD_PRIORITY_LOW,
       cpu_bitmask) == false)
   {
     end_low_prio_thread = true;
     low_prio_thread.join();
-    std::cerr << "ThreadPriority::LOW could not be set. Skipping testcase.\n";
+    std::cerr << "THREAD_PRIORITY_LOW could not be set. Skipping testcase.\n";
     GTEST_SKIP();
     return;
   }
@@ -134,7 +134,7 @@ TEST(test_mutex, pimutex_priority_inversion) {
   EXPECT_TRUE(
     rcpputils::configure_realtime_thread(
       high_prio_thread,
-      rcpputils::ThreadPriority::HIGH, cpu_bitmask)) << "ThreadPriority::HIGH could not be set.";
+      THREAD_PRIORITY_HIGH, cpu_bitmask)) << "THREAD_PRIORITY_HIGH could not be set.";
 
   // create medium priority thread that would block the low prio thread
   // if there is no priority inheritance
@@ -145,8 +145,8 @@ TEST(test_mutex, pimutex_priority_inversion) {
   EXPECT_TRUE(
     rcpputils::configure_realtime_thread(
       medium_prio_thread,
-      rcpputils::ThreadPriority::MEDIUM,
-      cpu_bitmask)) << "ThreadPriority::MEDIUM could not be set.";
+      THREAD_PRIORITY_MEDIUM,
+      cpu_bitmask)) << "THREAD_PRIORITY_MEDIUM could not be set.";
 
   // do the actual test: see if the low prio thread gets unblocked (through high priority)
   end_low_prio_thread = true;
