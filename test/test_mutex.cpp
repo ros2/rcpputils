@@ -18,6 +18,7 @@
 #include <chrono>
 
 #include "rcpputils/mutex.hpp"
+#include "rcpputils/thread_config.hpp"
 
 using namespace std::chrono_literals;
 
@@ -49,14 +50,18 @@ TEST(test_mutex, pimutex_trylocktwice) {
   mutex.unlock();
 }
 
-TEST(test_mutex, rpimutex_trylocktwice) {
+TEST(test_mutex, rpimutex_trylockmultiple) {
   rcpputils::RecursivePIMutex rmutex;
 
-  EXPECT_TRUE(rmutex.try_lock());
-  EXPECT_TRUE(rmutex.try_lock());
+  const unsigned count = 20;
 
-  rmutex.unlock();
-  rmutex.unlock();
+  for (unsigned i = 0; i < count; i++) {
+    EXPECT_TRUE(rmutex.try_lock());
+  }
+
+  for (unsigned i = 0; i < count; i++) {
+    rmutex.unlock();
+  }
 }
 
 TEST(test_mutex, rpimutex_trylockthread) {
@@ -81,27 +86,86 @@ TEST(test_mutex, pimutex_lockthread) {
   std::thread test_thread([&result, &test_mutex]() {
       result = 0;
       test_mutex.lock();
-      result = 1; // this line should not be reached
+      result = 1;  // this line should not be reached as long as the mutex is locked
     });
   std::this_thread::sleep_for(20ms);
-  test_thread.detach();
   EXPECT_EQ(0, result);
 
   test_mutex.unlock();
+  test_thread.join();
 }
-
-#ifndef _WIN32
-
-#include <pthread.h>
 
 TEST(test_mutex, pimutex_priority_inversion) {
-  // ToDo
-  EXPECT_FALSE(true);
-}
+  rcpputils::PIMutex test_mutex;
+  std::atomic<bool> end_low_prio_thread {false};
+  std::atomic<bool> end_medium_prio_thread {false};
+  const unsigned int cpu_bitmask = 1;  // allow only one cpu core to be used!
 
-TEST(test_mutex, rpimutex_priority_inversion) {
-  // ToDo
-  EXPECT_FALSE(true);
-}
+  // create low prio thread & take mutex
+  std::thread low_prio_thread([&test_mutex, &end_low_prio_thread]() {
+      test_mutex.lock();
+      while (!end_low_prio_thread)
+      {
+        std::this_thread::sleep_for(1ms);
+      }
+      test_mutex.unlock();
+    });
+  if (rcpputils::configure_realtime_thread(
+      low_prio_thread, rcpputils::ThreadPriority::LOW,
+      cpu_bitmask) == false)
+  {
+    end_low_prio_thread = true;
+    low_prio_thread.join();
+    std::cerr << "ThreadPriority::LOW could not be set. Skipping testcase.\n";
+    GTEST_SKIP();
+    return;
+  }
 
-#endif  // _WIN32
+  // wait until mutex is taken by low prio thread
+  while (test_mutex.try_lock()) {
+    test_mutex.unlock();
+    std::this_thread::sleep_for(1ms);
+  }
+
+  // create high prio thread & take mutex
+  std::thread high_prio_thread([&test_mutex]() {
+      test_mutex.lock();  // this call will block initially
+      test_mutex.unlock();
+    });
+  EXPECT_TRUE(
+    rcpputils::configure_realtime_thread(
+      high_prio_thread,
+      rcpputils::ThreadPriority::HIGH, cpu_bitmask)) << "ThreadPriority::HIGH could not be set.";
+
+  // create medium priority thread that would block the low prio thread
+  // if there is no priority inheritance
+  std::thread medium_prio_thread([&end_medium_prio_thread]() {
+      // create 100% workload on assigned cpu core
+      while (!end_medium_prio_thread) {}
+    });
+  EXPECT_TRUE(
+    rcpputils::configure_realtime_thread(
+      medium_prio_thread,
+      rcpputils::ThreadPriority::MEDIUM,
+      cpu_bitmask)) << "ThreadPriority::MEDIUM could not be set.";
+
+  // do the actual test; see if the low prio thread continues unblocked (with high prio)
+  end_low_prio_thread = true;
+  std::this_thread::sleep_for(20ms);
+
+  // if priority inheritance worked the mutex should not be locked anymore
+  if(test_mutex.try_lock())
+  {
+    test_mutex.unlock();
+  }
+  else
+  {
+    FAIL() << "Mutex should not be locked anymore.";
+  }
+
+  // cleanup
+  low_prio_thread.detach();
+  high_prio_thread.detach();
+  end_medium_prio_thread = true;
+  medium_prio_thread.join();
+}
