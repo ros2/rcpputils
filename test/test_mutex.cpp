@@ -148,15 +148,15 @@ TEST(test_mutex, pimutex_priority_inversion) {
       rcpputils::ThreadPriority::MEDIUM,
       cpu_bitmask)) << "ThreadPriority::MEDIUM could not be set.";
 
-  // do the actual test; see if the low prio thread continues unblocked (with high prio)
+  // do the actual test: see if the low prio thread gets unblocked (through high priority)
   end_low_prio_thread = true;
   std::this_thread::sleep_for(20ms);
 
   // if priority inheritance worked the mutex should not be locked anymore
-  if (test_mutex.try_lock()) {
+  bool try_lock_result = test_mutex.try_lock();
+  EXPECT_TRUE(try_lock_result) << "Mutex should not be locked anymore.";
+  if (try_lock_result) {
     test_mutex.unlock();
-  } else {
-    FAIL() << "Mutex should not be locked anymore.";
   }
 
   // cleanup
