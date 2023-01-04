@@ -23,7 +23,7 @@
 namespace rcpputils
 {
 
-/// Sets the priority and cpu affinity of the given std thread.
+/// Sets a realtime thread priority and a cpu affinity for the given std thread.
 /**
  * This function intentionally only works on operating systems which support a FIFO thread scheduler.
  * Note for Linux: using this function requires elevated privileges.
