@@ -40,8 +40,9 @@ bool configure_realtime_thread(
   std::thread & thread, const ThreadPriority priority,
   const unsigned int cpu_bitmask = (unsigned) -1)
 {
-  rcutils_ret_t return_value = configure_native_realtime_thread(thread.native_handle(),
-                                                                priority, cpu_bitmask);
+  rcutils_ret_t return_value = configure_native_realtime_thread(
+    thread.native_handle(),
+    priority, cpu_bitmask);
   return return_value == RCUTILS_RET_OK ? true : false;
 }
 
