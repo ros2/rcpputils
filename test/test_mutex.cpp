@@ -148,7 +148,7 @@ TEST(test_mutex, pimutex_priority_inversion) {
       THREAD_PRIORITY_MEDIUM,
       cpu_bitmask)) << "THREAD_PRIORITY_MEDIUM could not be set.";
 
-  // do the actual test: see if the low prio thread gets unblocked (through high priority)
+  // do the actual test: see if the low prio thread gets unblocked (through priority inheritance)
   end_low_prio_thread = true;
   std::this_thread::sleep_for(20ms);
 
