@@ -104,8 +104,7 @@ TEST(test_mutex, pimutex_priority_inversion) {
   // create low prio thread & take mutex
   std::thread low_prio_thread([&test_mutex, &end_low_prio_thread]() {
       test_mutex.lock();
-      while (!end_low_prio_thread)
-      {
+      while (!end_low_prio_thread) {
         std::this_thread::sleep_for(1ms);
       }
       test_mutex.unlock();
@@ -154,12 +153,9 @@ TEST(test_mutex, pimutex_priority_inversion) {
   std::this_thread::sleep_for(20ms);
 
   // if priority inheritance worked the mutex should not be locked anymore
-  if(test_mutex.try_lock())
-  {
+  if (test_mutex.try_lock()) {
     test_mutex.unlock();
-  }
-  else
-  {
+  } else {
     FAIL() << "Mutex should not be locked anymore.";
   }
 
