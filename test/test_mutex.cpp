@@ -95,8 +95,9 @@ TEST(test_mutex, pimutex_lockthread) {
   test_thread.join();
 }
 
-template <class MutexClass>
-void priority_inheritance_test() {
+template<class MutexClass>
+void priority_inheritance_test()
+{
   MutexClass test_mutex;
   std::atomic<bool> end_low_prio_thread {false};
   std::atomic<bool> end_medium_prio_thread {false};
@@ -170,11 +171,9 @@ void priority_inheritance_test() {
   // if priority inheritance worked the mutex should not be locked anymore
   bool try_lock_result;
   int count = 0;
-  while((try_lock_result = test_mutex.try_lock()) == false)
-  {
+  while ((try_lock_result = test_mutex.try_lock()) == false) {
     std::this_thread::sleep_for(1ms);
-    if(count++ >= 20)
-    {
+    if (count++ >= 20) {
       EXPECT_TRUE(try_lock_result) << "Mutex should not be locked anymore.";
       break;
     }
