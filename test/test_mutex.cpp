@@ -18,7 +18,11 @@
 #include <chrono>
 
 #include "rcpputils/mutex.hpp"
-#include "rcpputils/thread.hpp"
+
+#ifdef __linux__
+#include <pthread.h>
+#include "rcutils/types/rcutils_ret.h"
+#endif  // __linux__
 
 using namespace std::chrono_literals;
 
@@ -95,6 +99,89 @@ TEST(test_mutex, pimutex_lockthread) {
   test_thread.join();
 }
 
+#ifdef __linux__
+//
+// The test cases pimutex_priority_inversion & rpimutex_priority_inversion provoke
+// a thread priority inversion. To do so they need to configure the cpu priority,
+// scheduler type and cpu core affinity for a thread. Since this functionality is
+// not part of ROS2 yet the necessary functionality is implemented here for the
+// purpose of implementing these tests. Moreover, the required functionality is
+// OS specific and the current implementation is for RT Linux only. Feel free
+// to extend the implementation for other realtime capable operating systems,
+// like VxWorks and QNX.
+//
+// Note: for RT Linux elevated user rights are needed for the process.
+//
+
+/// Enum for OS independent thread priorities
+enum ThreadPriority
+{
+  THREAD_PRIORITY_LOWEST,
+  THREAD_PRIORITY_LOW,
+  THREAD_PRIORITY_MEDIUM,
+  THREAD_PRIORITY_HIGH,
+  THREAD_PRIORITY_HIGHEST
+};
+
+rcutils_ret_t calculate_os_fifo_thread_priority(
+  const int thread_priority,
+  int * os_priority)
+{
+  if (thread_priority > THREAD_PRIORITY_HIGHEST || thread_priority < THREAD_PRIORITY_LOWEST) {
+    return RCUTILS_RET_ERROR;
+  }
+  const int max_prio = sched_get_priority_max(SCHED_FIFO);
+  const int min_prio = sched_get_priority_min(SCHED_FIFO);
+  const int range_prio = max_prio - min_prio;
+
+  int priority = min_prio + (thread_priority - THREAD_PRIORITY_LOWEST) *
+    range_prio / (THREAD_PRIORITY_HIGHEST - THREAD_PRIORITY_LOWEST);
+  if (priority > min_prio && priority < max_prio) {
+    // on Linux systems THREAD_PRIORITY_MEDIUM should be prio 49 instead of 50
+    // in order to not block any interrupt handlers
+    priority--;
+  }
+
+  *os_priority = priority;
+
+  return RCUTILS_RET_OK;
+}
+
+rcutils_ret_t configure_native_realtime_thread(
+  unsigned long int native_handle, const int priority, // NOLINT
+  const unsigned int cpu_bitmask)
+{
+  int success = 1;
+
+  struct sched_param params;
+  int policy;
+  success &= (pthread_getschedparam(native_handle, &policy, &params) == 0);
+  success &= (calculate_os_fifo_thread_priority(priority, &params.sched_priority) ==
+    RCUTILS_RET_OK ? 1 : 0);
+  success &= (pthread_setschedparam(native_handle, SCHED_FIFO, &params) == 0);
+
+  cpu_set_t cpuset;
+  CPU_ZERO(&cpuset);
+  for (unsigned int i = 0; i < sizeof(cpu_bitmask) * 8; i++) {
+    if ( (cpu_bitmask & (1 << i)) != 0) {
+      CPU_SET(i, &cpuset);
+    }
+  }
+  success &= (pthread_setaffinity_np(native_handle, sizeof(cpu_set_t), &cpuset) == 0);
+
+  return success ? RCUTILS_RET_OK : RCUTILS_RET_ERROR;
+}
+
+bool configure_realtime_thread(
+  std::thread & thread, const ThreadPriority priority,
+  const unsigned int cpu_bitmask = (unsigned) -1)
+{
+  rcutils_ret_t return_value = configure_native_realtime_thread(
+    thread.native_handle(),
+    priority, cpu_bitmask);
+  return return_value == RCUTILS_RET_OK ? true : false;
+}
+
 template<class MutexClass>
 void priority_inheritance_test()
 {
@@ -114,7 +201,7 @@ void priority_inheritance_test()
       test_mutex.unlock();
       std::cout << "Low prio thread unlocked and ends.\n" << std::flush;
     });
-  if (rcpputils::configure_realtime_thread(
+  if (configure_realtime_thread(
       low_prio_thread, THREAD_PRIORITY_LOW,
       cpu_bitmask) == false)
   {
@@ -141,7 +228,7 @@ void priority_inheritance_test()
       std::cout << "High prio thread unlocked and ends.\n" << std::flush;
     });
   EXPECT_TRUE(
-    rcpputils::configure_realtime_thread(
+    configure_realtime_thread(
       high_prio_thread,
       THREAD_PRIORITY_HIGH, cpu_bitmask)) << "THREAD_PRIORITY_HIGH could not be set.";
 
@@ -156,7 +243,7 @@ void priority_inheritance_test()
       std::cout << "Medium prio thread ends.\n" << std::flush;
     });
   EXPECT_TRUE(
-    rcpputils::configure_realtime_thread(
+    configure_realtime_thread(
       medium_prio_thread,
       THREAD_PRIORITY_MEDIUM,
       cpu_bitmask)) << "THREAD_PRIORITY_MEDIUM could not be set.";
@@ -197,3 +284,5 @@ TEST(test_mutex, pimutex_priority_inversion) {
 TEST(test_mutex, rpimutex_priority_inversion) {
   priority_inheritance_test<rcpputils::RecursivePIMutex>();
 }
+
+#endif  // __linux__
