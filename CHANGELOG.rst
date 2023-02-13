@@ -2,6 +2,13 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add missing header for strlen (`#169 <https://github.com/ros2/rcpputils/issues/169>`_)
+* issue-167 (`#172 <https://github.com/ros2/rcpputils/issues/172>`_)
+* [rolling] Update maintainers - 2022-11-07 (`#166 <https://github.com/ros2/rcpputils/issues/166>`_)
+* Contributors: Audrow Nash, Sebastian Freitag, bijoua29
+
 2.6.0 (2022-11-02)
 ------------------
 * require C++17 and deprecate the rcppmath namespace (`#165 <https://github.com/ros2/rcpputils/issues/165>`_)
