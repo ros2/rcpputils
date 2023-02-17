@@ -1,4 +1,4 @@
-// Copyright 2020 Open Source Robotics Foundation, Inc.
+// Copyright 2023 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
 
 #include "rcpputils/mutex.hpp"
 
-#ifndef _WIN32
+#ifdef RCPPUTILS_USE_PIMUTEX
+
 #include <pthread.h>
-#endif
 
 namespace rcpputils
 {
 
-#ifndef _WIN32
 PIMutex::PIMutex()
 {
   // Destroy the underlying mutex
@@ -60,15 +59,6 @@ RecursivePIMutex::RecursivePIMutex()
   // The attribute object isn't needed any more
   pthread_mutexattr_destroy(&attr);
 }
-#else
-PIMutex::PIMutex()
-{
-}
-
-RecursivePIMutex::RecursivePIMutex()
-{
-}
-#endif  // _WIN32
 
 PIMutex::~PIMutex()
 {
@@ -77,4 +67,6 @@ PIMutex::~PIMutex()
 RecursivePIMutex::~RecursivePIMutex()
 {
 }
+
 }  // namespace rcpputils
+#endif  // RCPPUTILS_USE_PIMUTEX

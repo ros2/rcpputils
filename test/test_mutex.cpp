@@ -1,4 +1,4 @@
-// Copyright 2019 Open Source Robotics Foundation, Inc.
+// Copyright 2023 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,10 +19,14 @@
 
 #include "rcpputils/mutex.hpp"
 
-#ifdef __linux__
+#ifdef RCPPUTILS_USE_PIMUTEX
 #include <pthread.h>
 #include "rcutils/types/rcutils_ret.h"
-#endif  // __linux__
+#ifdef __QNXNTO__
+  #include <sys/neutrino.h>
+  #include <sys/syspage.h>
+#endif  // __QNXNTO__
+#endif  // RCPPUTILS_USE_PIMUTEX
 
 using namespace std::chrono_literals;
 
@@ -99,7 +103,7 @@ TEST(test_mutex, pimutex_lockthread) {
   test_thread.join();
 }
 
-#ifdef __linux__
+#ifdef RCPPUTILS_USE_PIMUTEX
 //
 // The test cases pimutex_priority_inversion & rpimutex_priority_inversion provoke
 // a thread priority inversion. To do so they need to configure the cpu priority,
@@ -160,6 +164,16 @@ rcutils_ret_t configure_native_realtime_thread(
     RCUTILS_RET_OK ? 1 : 0);
   success &= (pthread_setschedparam(native_handle, SCHED_FIFO, &params) == 0);
 
+#ifdef __QNXNTO__
+  // run_mask is a bit mask to set which cpu a thread runs on
+  // where each bit corresponds to a cpu core
+  int64_t run_mask = cpu_bitmask;
+
+  // change thread affinity of thread associated with native_handle
+  success &= (ThreadCtlExt(
+      0, native_handle, _NTO_TCTL_RUNMASK,
+      reinterpret_cast<void *>(run_mask)) != -1);
+#else  // __QNXNTO__
   cpu_set_t cpuset;
   CPU_ZERO(&cpuset);
   for (unsigned int i = 0; i < sizeof(cpu_bitmask) * 8; i++) {
@@ -167,7 +181,10 @@ rcutils_ret_t configure_native_realtime_thread(
       CPU_SET(i, &cpuset);
     }
   }
+
+  // change thread affinity of thread associated with native_handle
   success &= (pthread_setaffinity_np(native_handle, sizeof(cpu_set_t), &cpuset) == 0);
+#endif  // __QNXNTO__
 
   return success ? RCUTILS_RET_OK : RCUTILS_RET_ERROR;
 }
@@ -285,4 +302,4 @@ TEST(test_mutex, rpimutex_priority_inversion) {
   priority_inheritance_test<rcpputils::RecursivePIMutex>();
 }
 
-#endif  // __linux__
+#endif  // RCPPUTILS_USE_PIMUTEX

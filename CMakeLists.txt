@@ -37,6 +37,16 @@ if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
     PRIVATE "RCPPUTILS_BUILDING_LIBRARY")
 endif()
+
+option(USE_PI_MUTEX "Enables priority inheritance mutexes." ON)
+if(USE_PI_MUTEX)
+  if(WIN32 OR APPLE)
+    message("Mutexes with priority inheritance are not supported on your system. Using std mutexes.")
+  else()
+    target_compile_definitions(${PROJECT_NAME} PUBLIC "RCPPUTILS_USE_PIMUTEX")
+  endif()
+endif()
+
 ament_target_dependencies(${PROJECT_NAME} rcutils)
 
 # Export old-style CMake variables

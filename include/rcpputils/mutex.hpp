@@ -1,4 +1,4 @@
-// Copyright 2020 Open Source Robotics Foundation, Inc.
+// Copyright 2023 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,11 +21,18 @@
 
 namespace rcpputils
 {
+#ifndef RCPPUTILS_USE_PIMUTEX
+
+// Fallback code path
+using PIMutex = std::mutex;
+using RecursivePIMutex = std::recursive_mutex;
+
+#else
 
 /**
  * Mutex with priority inheritance on systems that support it.
  * This class derives from std::mutex to be fully compatible with standard C++.
- * This implementation is a workaround that is needed until the C++ standard library offers the same mutex functionality.
+ * This implementation is needed because the C++ standard library doesn't support priority inheritance.
   **/
 class PIMutex : public std::mutex
 {
@@ -42,7 +49,7 @@ public:
 /**
  * Recursive mutex with priority inheritance on systems that support it.
  * This class derives from std::recursive_mutex to be fully compatible with standard C++.
- * This implementation is a workaround that is needed until the C++ standard library offers the same mutex functionality.
+ * This implementation is needed because the C++ standard library doesn't support priority inheritance.
  **/
 class RecursivePIMutex : public std::recursive_mutex
 {
@@ -56,6 +63,6 @@ public:
   ~RecursivePIMutex();
 };
 
+#endif  // RCPPUTILS_USE_PIMUTEX
 }  // namespace rcpputils
-
 #endif  // RCPPUTILS__MUTEX_HPP_
