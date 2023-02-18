@@ -40,10 +40,12 @@ endif()
 
 option(USE_PI_MUTEX "Enables priority inheritance mutexes." ON)
 if(USE_PI_MUTEX)
-  if(WIN32 OR APPLE)
-    message("Mutexes with priority inheritance are not supported on your system. Using std mutexes.")
-  else()
+  if(CMAKE_SYSTEM_NAME STREQUAL Linux OR
+     CMAKE_SYSTEM_NAME STREQUAL VxWorks OR
+     CMAKE_SYSTEM_NAME STREQUAL QNX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC "RCPPUTILS_USE_PIMUTEX")
+  else()
+    message("Mutexes with priority inheritance are not supported on your system. Using std mutexes.")
   endif()
 endif()
 
