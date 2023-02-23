@@ -30,9 +30,10 @@ using RecursivePIMutex = std::recursive_mutex;
 #else
 
 /**
- * Mutex with priority inheritance on systems that support it.
- * This class derives from std::mutex to be fully compatible with standard C++.
- * This implementation is needed because the C++ standard library doesn't support priority inheritance.
+ * Mutex with enabled thread priority inheritance.
+ * In case your OS does not support thread priority inheritance for mutexes, or
+ * the CMake option USE_PI_MUTEX is turned off, then this class is just an alias for
+ * std::mutex.
   **/
 class PIMutex : public std::mutex
 {
@@ -47,9 +48,10 @@ public:
 };
 
 /**
- * Recursive mutex with priority inheritance on systems that support it.
- * This class derives from std::recursive_mutex to be fully compatible with standard C++.
- * This implementation is needed because the C++ standard library doesn't support priority inheritance.
+ * Recursive mutex with enabled thread priority inheritance.
+ * In case your OS does not support thread priority inheritance for mutexes, or
+ * the CMake option USE_PI_MUTEX is turned off, then this class is just an alias for
+ * std::recursive_mutex.
  **/
 class RecursivePIMutex : public std::recursive_mutex
 {
