@@ -377,6 +377,9 @@ bool create_directories(const path & p)
 #else
       status = mkdir(p_built.string().c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
 #endif
+      if (status == -1 && errno == EEXIST) {
+        status = 0;
+      }
     }
   }
   return status == 0 && p_built.is_directory();
