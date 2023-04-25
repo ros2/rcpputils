@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.4.1 (2023-04-25)
+------------------
+* Fix possible race condition in create_directories() (`#162 <https://github.com/ros2/rcpputils/issues/162>`_) (`#176 <https://github.com/ros2/rcpputils/issues/176>`_)
+* Contributors: mergify[bot]
+
 2.4.0 (2022-03-01)
 ------------------
 * Install includes to include/${PROJECT_NAME} (`#160 <https://github.com/ros2/rcpputils/issues/160>`_)
