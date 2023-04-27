@@ -2,6 +2,9 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.7.0 (2023-04-27)
+------------------
+
 2.6.1 (2023-02-13)
 ------------------
 * Add missing header for strlen (`#169 <https://github.com/ros2/rcpputils/issues/169>`_)
