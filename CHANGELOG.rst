@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.7.1 (2023-05-11)
+------------------
 * Add in a missing cstdint. (`#178 <https://github.com/ros2/rcpputils/issues/178>`_)
 * Contributors: Chris Lalancette
 
