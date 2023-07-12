@@ -17,8 +17,6 @@
 
 #if defined(__linux__)
 #include "rcpputils/threads/posix/thread.hpp"
-#elif defined(_WIN32)
-#include "rcpputils/threads/windows/thread.hpp"
 #else
 #include "rcpputils/threads/std/thread.hpp"
 #endif
