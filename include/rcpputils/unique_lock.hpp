@@ -35,7 +35,7 @@ public:
   : std::unique_lock<MutexT>(mu)
   {}
 
-  ~TSAUniqueLock() RCPPUTILS_TSA_RELEASE() {}
+  ~unique_lock() RCPPUTILS_TSA_RELEASE() {}
 };
 
 }  // namespace rcpputils
