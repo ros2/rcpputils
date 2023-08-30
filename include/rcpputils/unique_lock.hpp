@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef RCPPUTILS__UNIQUE_LOCK_HPP_
+#define RCPPUTILS__UNIQUE_LOCK_HPP_
+
+#include <mutex>
+
 #include "rcpputils/thread_safety_annotations.hpp"
 
 namespace rcpputils
@@ -34,3 +39,5 @@ public:
 };
 
 }  // namespace rcpputils
+
+#endif  // RCPPUTILS__UNIQUE_LOCK_HPP_
