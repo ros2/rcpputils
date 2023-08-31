@@ -31,7 +31,7 @@ template<typename MutexT>
 class RCPPUTILS_TSA_SCOPED_CAPABILITY unique_lock : public std::unique_lock<MutexT>
 {
 public:
-  explicit unique_lock(std::mutex & mu) RCPPUTILS_TSA_ACQUIRE(mu)
+  explicit unique_lock(MutexT & mu) RCPPUTILS_TSA_ACQUIRE(mu)
   : std::unique_lock<MutexT>(mu)
   {}
 
