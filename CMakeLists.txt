@@ -140,6 +140,9 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_accumulator test/test_accumulator.cpp)
   target_link_libraries(test_accumulator ${PROJECT_NAME})
+
+  ament_add_gtest(test_unique_lock test/test_unique_lock.cpp)
+  target_link_libraries(test_unique_lock ${PROJECT_NAME})
 endif()
 
 ament_package()
