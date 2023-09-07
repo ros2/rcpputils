@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.8.0 (2023-09-07)
+------------------
 * Add unique_lock implementation with clang thread safety annotations (`#180 <https://github.com/ros2/rcpputils/issues/180>`_)
 * Contributors: Emerson Knapp
 
