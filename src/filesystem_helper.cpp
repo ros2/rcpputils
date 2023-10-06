@@ -42,6 +42,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <climits>
 #include <string>
 #include <system_error>
 #include <vector>
