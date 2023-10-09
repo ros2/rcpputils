@@ -39,6 +39,7 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
