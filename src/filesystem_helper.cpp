@@ -41,6 +41,7 @@
 #include <sys/stat.h>
 
 #include <algorithm>
+#include <climits>
 #include <cstring>
 #include <string>
 #include <system_error>
