@@ -34,7 +34,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   target_sources(${PROJECT_NAME} PRIVATE
-    src/threads/posix_thread.cpp)
+    src/threads/posix/thread.cpp
+    src/threads/posix/linux/cpu_set.cpp)
 endif()
 if(WIN32)
   target_compile_definitions(${PROJECT_NAME}

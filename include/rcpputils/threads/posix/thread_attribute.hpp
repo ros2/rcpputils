@@ -39,6 +39,14 @@ struct ThreadAttribute
 
   ThreadAttribute(const ThreadAttribute &) = default;
   ThreadAttribute(ThreadAttribute &&) = default;
+
+  explicit ThreadAttribute(rcutils_thread_attr_t const & attr)
+  : cpu_set_(CpuSet(attr.core_affinity)),
+    sched_policy_(convert_sched_policy(attr.scheduling_policy)),
+    priority_(attr.priority),
+    name_(attr.name)
+  {}
+
   ThreadAttribute & operator=(const ThreadAttribute &) = default;
   ThreadAttribute & operator=(ThreadAttribute &&) = default;
 
@@ -105,7 +113,7 @@ struct ThreadAttribute
   }
 
   void
-  set_thread_attribute(
+  set_rcutils_thread_attribute(
     const rcutils_thread_attr_t & attr)
   {
     CpuSet cpu_set(attr.core_affinity);
@@ -136,7 +144,7 @@ private:
   bool detached_flag_;
   std::string name_;
 
-  int convert_sched_policy(
+  static int convert_sched_policy(
     rcutils_thread_scheduling_policy_t sched_policy)
   {
     switch (sched_policy) {

@@ -16,11 +16,10 @@
 #define RCPPUTILS__THREADS__POSIX__LINUX__CPU_SET_HPP_
 
 #include <pthread.h>
-#include <string.h>
-#include <vector>
-#include <utility>
 #include <memory>
+#include <utility>
 
+#include "rcutils/thread_attr.h"
 #include "rcpputils/visibility_control.hpp"
 #include "rcpputils/threads/posix/utilities.hpp"
 
@@ -33,75 +32,21 @@ namespace detail
 struct CpuSet
 {
   using NativeCpuSetType = cpu_set_t;
+
   CpuSet() = default;
-  explicit CpuSet(std::size_t cpu)
-  {
-    init_cpu_set();
-    CPU_ZERO_S(alloc_size(), cpu_set_.get());
-    CPU_SET_S(cpu, alloc_size(), cpu_set_.get());
-  }
-  CpuSet(const CpuSet & other)
-  {
-    if (other.cpu_set_) {
-      init_cpu_set();
-      memcpy(cpu_set_.get(), other.cpu_set_.get(), alloc_size());
-    }
-  }
-  CpuSet & operator=(const CpuSet & other)
-  {
-    if (other.cpu_set_) {
-      init_cpu_set();
-      memcpy(cpu_set_.get(), other.cpu_set_.get(), alloc_size());
-    } else {
-      clear();
-    }
-    return *this;
-  }
-  CpuSet(CpuSet && other)
-  : CpuSet()
-  {
-    swap(other);
-  }
-  CpuSet & operator=(CpuSet && other)
-  {
-    CpuSet tmp;
-    other.swap(tmp);
-    tmp.swap(*this);
-    return *this;
-  }
-  void swap(CpuSet & other)
-  {
-    using std::swap;
-    swap(cpu_set_, other.cpu_set_);
-    swap(num_proc_, other.num_proc_);
-  }
-  void set(std::size_t cpu)
-  {
-    init_cpu_set();
-    valid_cpu(cpu);
-    CPU_SET_S(cpu, alloc_size(), cpu_set_.get());
-  }
-  void unset(std::size_t cpu)
-  {
-    init_cpu_set();
-    valid_cpu(cpu);
-    CPU_CLR_S(cpu, alloc_size(), cpu_set_.get());
-  }
-  void clear()
-  {
-    if (cpu_set_) {
-      CPU_ZERO_S(alloc_size(), cpu_set_.get());
-    }
-  }
-  bool is_set(std::size_t cpu) const
-  {
-    if (cpu_set_) {
-      valid_cpu(cpu);
-      return CPU_ISSET_S(cpu, alloc_size(), cpu_set_.get());
-    } else {
-      return false;
-    }
-  }
+  explicit CpuSet(rcutils_thread_core_affinity_t const & affinity);
+  CpuSet(const CpuSet & other);
+  CpuSet(CpuSet && other);
+
+  CpuSet & operator=(const CpuSet & other);
+  CpuSet & operator=(CpuSet && other);
+  void swap(CpuSet & other);
+  void set(std::size_t cpu);
+  void unset(std::size_t cpu);
+  void clear();
+  bool is_set(std::size_t cpu) const;
+
+  void set_rcutils_thread_core_affinity(rcutils_thread_core_affinity_t const & affinity);
 
   std::size_t max_processors() const
   {
@@ -111,38 +56,17 @@ struct CpuSet
   {
     return CPU_ALLOC_SIZE(num_proc_);
   }
-  NativeCpuSetType * native_cpu_set() const
+  CpuSet::NativeCpuSetType * native_cpu_set() const
   {
     return cpu_set_.get();
   }
 
 private:
-  void init_cpu_set()
-  {
-    if (cpu_set_) {
-      return;
-    }
-    auto num_proc = sysconf(_SC_NPROCESSORS_ONLN);
-    if (num_proc <= 0) {
-      throw_if_error(num_proc, "unrecognized sysconf(_SC_NPROCESSORS_ONLN) is not valid");
-    }
-    auto p = CPU_ALLOC(CPU_ALLOC_SIZE(num_proc));
-    cpu_set_ = std::unique_ptr<NativeCpuSetType, CpuSetDeleter>(p);
-    num_proc_ = num_proc;
-  }
-  void valid_cpu(std::size_t cpu) const
-  {
-    if (num_proc_ <= cpu) {
-      auto ec = std::make_error_code(std::errc::invalid_argument);
-      throw std::system_error{ec, "cpu number is invaild"};
-    }
-  }
+  void init_cpu_set();
+  void valid_cpu(std::size_t cpu) const;
   struct CpuSetDeleter
   {
-    void operator()(NativeCpuSetType * cpu_set) const
-    {
-      CPU_FREE(cpu_set);
-    }
+    void operator()(NativeCpuSetType * cpu_set) const;
   };
   std::unique_ptr<NativeCpuSetType, CpuSetDeleter> cpu_set_;
   std::size_t num_proc_;
