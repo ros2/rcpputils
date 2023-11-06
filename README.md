@@ -17,6 +17,7 @@ This package currently contains:
 * String helpers
 * File system helpers
 * Type traits helpers
+* Mutex classes that support thread priority inheritance
 * Class that dynamically loads, unloads and get symbols from shared libraries at run-time.
 
 Features are described in more detail at [docs/FEATURES.md](docs/FEATURES.md)

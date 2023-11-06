@@ -28,6 +28,7 @@ add_library(${PROJECT_NAME}
   src/filesystem_helper.cpp
   src/find_library.cpp
   src/env.cpp
+  src/mutex.cpp
   src/shared_library.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
@@ -36,6 +37,18 @@ if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
     PRIVATE "RCPPUTILS_BUILDING_LIBRARY")
 endif()
+
+option(USE_PI_MUTEX "Enables priority inheritance mutexes." ON)
+if(USE_PI_MUTEX)
+  if(CMAKE_SYSTEM_NAME STREQUAL Linux OR
+    CMAKE_SYSTEM_NAME STREQUAL VxWorks OR
+    CMAKE_SYSTEM_NAME STREQUAL QNX)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC "RCPPUTILS_USE_PIMUTEX")
+  else()
+    message("Mutexes with priority inheritance are not supported on your system. Using std mutexes.")
+  endif()
+endif()
+
 ament_target_dependencies(${PROJECT_NAME} rcutils)
 
 # Export old-style CMake variables
@@ -72,6 +85,9 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_join test/test_join.cpp)
   target_link_libraries(test_join ${PROJECT_NAME})
+
+  ament_add_gtest(test_mutex test/test_mutex.cpp)
+  target_link_libraries(test_mutex ${PROJECT_NAME})
 
   ament_add_gtest(test_time test/test_time.cpp)
   target_link_libraries(test_time ${PROJECT_NAME})

@@ -23,6 +23,7 @@ EXPAND_ONLY_PREDEF     = YES
 PREDEFINED             += __declspec(x)=
 PREDEFINED             += RCPPUTILS_PUBLIC=
 PREDEFINED             += RCPPUTILS_PUBLIC_TYPE=
+PREDEFINED             += RCPPUTILS_USE_PIMUTEX
 
 # Tag files that do not exist will produce a warning and cross-project linking will not work.
 TAGFILES += "../../../doxygen_tag_files/cppreference-doxygen-web.tag.xml=http://en.cppreference.com/w/"
