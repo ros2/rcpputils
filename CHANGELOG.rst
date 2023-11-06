@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.8.1 (2023-11-06)
+------------------
 * Add a missing header due to missing PATH_MAX variable (`#181 <https://github.com/ros2/rcpputils/issues/181>`_)
 * Contributors: wojciechmadry
 
