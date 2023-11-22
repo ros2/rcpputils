@@ -1,4 +1,4 @@
-// Copyright 2020 Open Source Robotics Foundation, Inc.
+// Copyright 2023 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__PROCESS_HPP_
-#define RCPPUTILS__PROCESS_HPP_
+#include "rcpputils/process.hpp"
 
+#include <stdexcept>
 #include <string>
 
-#include "rcpputils/visibility_control.hpp"
+#include "rcutils/allocator.h"
+#include "rcutils/process.h"
 
 namespace rcpputils
 {
 
-/// Retrieve the current executable name.
-/**
- * This function portably retrieves the current program name and returns
- * a copy of it.
- *
- * This function is thread-safe.
- *
- * \return The program name.
- * \throws std::runtime_error on error
- */
-RCPPUTILS_PUBLIC
-std::string get_executable_name();
+std::string get_executable_name()
+{
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  char * executable_name = rcutils_get_executable_name(allocator);
+  if (nullptr == executable_name) {
+    throw std::runtime_error("Failed to get executable name");
+  }
+  std::string ret(executable_name);
+  allocator.deallocate(executable_name, allocator.state);
+  return ret;
+}
 
 }  // namespace rcpputils
-
-#endif  // RCPPUTILS__PROCESS_HPP_

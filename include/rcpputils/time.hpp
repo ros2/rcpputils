@@ -17,8 +17,6 @@
 
 #include <chrono>
 
-#include "rcutils/time.h"
-
 namespace rcpputils
 {
 
