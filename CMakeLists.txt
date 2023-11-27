@@ -33,6 +33,11 @@ add_library(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  target_sources(${PROJECT_NAME} PRIVATE
+    src/threads/posix/thread.cpp
+    src/threads/posix/linux/cpu_set.cpp)
+endif()
 if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
     PRIVATE "RCPPUTILS_BUILDING_LIBRARY")
