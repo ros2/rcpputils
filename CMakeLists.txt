@@ -34,8 +34,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   target_sources(${PROJECT_NAME} PRIVATE
-    src/threads/posix/thread.cpp
-    src/threads/posix/linux/cpu_set.cpp)
+    src/thread/detail/posix/thread.cpp
+    src/thread/detail/posix/thread_attribute.cpp
+    src/thread/detail/posix/linux/cpu_set.cpp)
 endif()
 if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
@@ -145,6 +146,9 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_accumulator test/test_accumulator.cpp)
   target_link_libraries(test_accumulator ${PROJECT_NAME})
+
+  ament_add_gtest(test_thread test/test_thread.cpp)
+  target_link_libraries(test_thread ${PROJECT_NAME})
 endif()
 
 ament_package()

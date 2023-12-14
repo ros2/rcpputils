@@ -12,13 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREADS_HPP_
-#define RCPPUTILS__THREADS_HPP_
+#ifndef RCPPUTILS__THREAD_HPP_
+#define RCPPUTILS__THREAD_HPP_
 
-#if defined(__linux__)
-#include "rcpputils/threads/posix/thread.hpp"
-#else
-#include "rcpputils/threads/std/thread.hpp"
-#endif
+#include "rcpputils/thread/thread.hpp"
+#include "rcpputils/thread/thread_attribute.hpp"
 
-#endif  // RCPPUTILS__THREADS_HPP_
+#endif  // RCPPUTILS__THREAD_HPP_

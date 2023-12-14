@@ -12,18 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREADS__POSIX__UTILITIES_HPP_
-#define RCPPUTILS__THREADS__POSIX__UTILITIES_HPP_
+#ifndef RCPPUTILS__THREAD__DETAIL__POSIX__UTILITIES_HPP_
+#define RCPPUTILS__THREAD__DETAIL__POSIX__UTILITIES_HPP_
 
 #include <system_error>
 
 namespace rcpputils
 {
-
-namespace detail
+namespace thread
 {
-
-namespace
+namespace detail
 {
 
 inline void throw_if_error(int r, char const * msg)
@@ -33,10 +31,8 @@ inline void throw_if_error(int r, char const * msg)
   }
 }
 
-}  // namespace
-
 }  // namespace detail
-
+}  // namespace thread
 }  // namespace rcpputils
 
-#endif  // RCPPUTILS__THREADS__POSIX__UTILITIES_HPP_
+#endif  // RCPPUTILS__THREAD__DETAIL__POSIX__UTILITIES_HPP_

@@ -12,26 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREADS__POSIX__LINUX__CPU_SET_HPP_
-#define RCPPUTILS__THREADS__POSIX__LINUX__CPU_SET_HPP_
+#ifndef RCPPUTILS__THREAD__DETAIL__POSIX__LINUX__CPU_SET_HPP_
+#define RCPPUTILS__THREAD__DETAIL__POSIX__LINUX__CPU_SET_HPP_
 
 #include <pthread.h>
 #include <memory>
 #include <utility>
 
 #include "rcutils/thread_attr.h"
+#include "rcpputils/thread/detail/posix/utilities.hpp"
+
 #include "rcpputils/visibility_control.hpp"
-#include "rcpputils/threads/posix/utilities.hpp"
 
 namespace rcpputils
 {
 
-namespace detail
-{
-
 struct CpuSet
 {
-  using NativeCpuSetType = cpu_set_t;
+  using NativeCpuSetType = cpu_set_t *;
 
   CpuSet() = default;
   explicit CpuSet(rcutils_thread_core_affinity_t const & affinity);
@@ -45,31 +43,22 @@ struct CpuSet
   void unset(std::size_t cpu);
   void clear();
   bool is_set(std::size_t cpu) const;
+  std::size_t count() const;
 
   void set_rcutils_thread_core_affinity(rcutils_thread_core_affinity_t const & affinity);
 
-  std::size_t max_processors() const
-  {
-    return num_proc_;
-  }
-  std::size_t alloc_size() const
-  {
-    return CPU_ALLOC_SIZE(num_proc_);
-  }
-  CpuSet::NativeCpuSetType * native_cpu_set() const
-  {
-    return cpu_set_.get();
-  }
+  static std::size_t num_processors();
+  CpuSet::NativeCpuSetType native_cpu_set() const;
 
 private:
   void init_cpu_set();
   void valid_cpu(std::size_t cpu) const;
+  static std::size_t alloc_size();
   struct CpuSetDeleter
   {
-    void operator()(NativeCpuSetType * cpu_set) const;
+    void operator()(NativeCpuSetType cpu_set) const;
   };
-  std::unique_ptr<NativeCpuSetType, CpuSetDeleter> cpu_set_;
-  std::size_t num_proc_;
+  std::unique_ptr<cpu_set_t, CpuSetDeleter> cpu_set_;
 };
 
 inline void swap(CpuSet & a, CpuSet & b)
@@ -77,8 +66,6 @@ inline void swap(CpuSet & a, CpuSet & b)
   a.swap(b);
 }
 
-}  // namespace detail
-
 }  // namespace rcpputils
 
-#endif  // RCPPUTILS__THREADS__POSIX__LINUX__CPU_SET_HPP_
+#endif  // RCPPUTILS__THREAD__DETAIL__POSIX__LINUX__CPU_SET_HPP_

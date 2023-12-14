@@ -12,32 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREADS__STD__THREAD_HPP_
-#define RCPPUTILS__THREADS__STD__THREAD_HPP_
+#ifndef RCPPUTILS__THREAD__DETAIL__STD__THREAD_HPP_
+#define RCPPUTILS__THREAD__DETAIL__STD__THREAD_HPP_
 
-#include <unistd.h>
 #include <thread>
-#include <condition_variable>
-#include <cstdio>
-#include <functional>
-#include <memory>
-#include <mutex>
-#include <system_error>
-#include <tuple>
 #include <type_traits>
 #include <utility>
 
-#include "rcpputils/threads/std/thread_attribute.hpp"
-#include "rclcpp/visibility_control.hpp"
+#include "rcpputils/thread/detail/thread_id.hpp"
+#include "rcpputils/thread/detail/std/thread_attribute.hpp"
+
+#include "rcpputils/visibility_control.hpp"
 
 namespace rcpputils
 {
 
+RCPPUTILS_PUBLIC_TYPE
 struct Thread
 {
   using NativeHandleType = std::thread::native_handle_type;
-  using Attribute = detail::ThreadAttribute;
-  using Id = std::thread::id;
+  using Attribute = ThreadAttribute;
+  using Id = ThreadId;
 
   Thread() noexcept
   : thread_{}
@@ -104,7 +99,7 @@ struct Thread
 
   Id get_id() const noexcept
   {
-    return thread_.get_id();
+    return Id{thread_.get_id()};
   }
 
   static int hardware_concurrency() noexcept
@@ -124,22 +119,13 @@ inline void swap(Thread & t1, Thread & t2)
 namespace this_thread
 {
 
-template<typename F, typename ... Args>
-void run_with_thread_attribute(Thread::Attribute & attr, F && f, Args && ... args)
+inline void yield() noexcept
 {
-  static_assert(
-    !std::is_member_object_pointer_v<std::decay_t<F>>,
-    "F is a pointer to member, that is ineffective on thread");
-
-  if (attr.set_unavailable_items_) {
-    throw std::runtime_error("std::thread can't set thread attribute");
-  }
-
-  std::invoke(f, std::forward<Args>(args)...);
+  std::this_thread::yield();
 }
 
 }  // namespace this_thread
 
 }  // namespace rcpputils
 
-#endif  // RCPPUTILS__THREADS__STD__THREAD_HPP_
+#endif  // RCPPUTILS__THREAD__DETAIL__STD__THREAD_HPP_

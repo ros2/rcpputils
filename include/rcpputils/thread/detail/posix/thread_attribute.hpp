@@ -12,26 +12,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREADS__POSIX__THREAD_ATTRIBUTE_HPP_
-#define RCPPUTILS__THREADS__POSIX__THREAD_ATTRIBUTE_HPP_
+#ifndef RCPPUTILS__THREAD__DETAIL__POSIX__THREAD_ATTRIBUTE_HPP_
+#define RCPPUTILS__THREAD__DETAIL__POSIX__THREAD_ATTRIBUTE_HPP_
 
 #include <pthread.h>
-#include <string>
+
 #include <utility>
 
 #include "rcutils/thread_attr.h"
 
+#include "rcpputils/thread/detail/posix/cpu_set.hpp"
 #include "rcpputils/visibility_control.hpp"
-
-#ifdef __linux__
-#include "rcpputils/threads/posix/linux/cpu_set.hpp"
-#endif
 
 namespace rcpputils
 {
 
+namespace thread
+{
 namespace detail
 {
+
+constexpr unsigned int sched_policy_explicit_bit = 0x8000'0000;
+
+}
+}
+
+enum struct SchedPolicy : unsigned int
+{
+  inherit,
+  other = thread::detail::sched_policy_explicit_bit | SCHED_OTHER,
+#ifdef SCHED_FIFO
+  fifo = thread::detail::sched_policy_explicit_bit | SCHED_FIFO,
+#endif
+#ifdef SCHED_RR
+  rr = thread::detail::sched_policy_explicit_bit | SCHED_RR,
+#endif
+#ifdef SCHED_IDLE
+  idle = thread::detail::sched_policy_explicit_bit | SCHED_IDLE,
+#endif
+#ifdef SCHED_BATCH
+  batch = thread::detail::sched_policy_explicit_bit | SCHED_BATCH,
+#endif
+#ifdef SCHED_SPORADIC
+  sporadic = thread::detail::sched_policy_explicit_bit | SCHED_SPORADIC,
+#endif
+// #if __linux__
+// linux deadline scheduler requires more parameter, not supported now
+// #ifdef SCHED_DEADLINE
+//   deadline = SCHED_DEADLINE,
+// #endif
+// #endif
+};
+
+SchedPolicy from_rcutils_thread_scheduling_policy(
+  rcutils_thread_scheduling_policy_t rcutils_sched_policy);
 
 struct ThreadAttribute
 {
@@ -40,17 +74,10 @@ struct ThreadAttribute
   ThreadAttribute(const ThreadAttribute &) = default;
   ThreadAttribute(ThreadAttribute &&) = default;
 
-  explicit ThreadAttribute(rcutils_thread_attr_t const & attr)
-  : cpu_set_(CpuSet(attr.core_affinity)),
-    sched_policy_(convert_sched_policy(attr.scheduling_policy)),
-    priority_(attr.priority),
-    name_(attr.name)
-  {}
+  explicit ThreadAttribute(const rcutils_thread_attr_t & attr);
 
   ThreadAttribute & operator=(const ThreadAttribute &) = default;
   ThreadAttribute & operator=(ThreadAttribute &&) = default;
-
-  using NativeAttributeType = pthread_attr_t;
 
   ThreadAttribute & set_affinity(CpuSet cs)
   {
@@ -62,12 +89,12 @@ struct ThreadAttribute
     return cpu_set_;
   }
 
-  ThreadAttribute & set_sched_policy(rcutils_thread_scheduling_policy_t sp)
+  ThreadAttribute & set_sched_policy(SchedPolicy policy)
   {
-    sched_policy_ = convert_sched_policy(sp);
+    sched_policy_ = policy;
     return *this;
   }
-  int get_sched_policy() const
+  SchedPolicy get_sched_policy() const
   {
     return sched_policy_;
   }
@@ -102,25 +129,14 @@ struct ThreadAttribute
     return detached_flag_;
   }
 
-  ThreadAttribute & set_name(std::string name)
-  {
-    name_ = std::move(name);
-    return *this;
-  }
-  const std::string & get_name() const
-  {
-    return name_;
-  }
-
   void
   set_rcutils_thread_attribute(
     const rcutils_thread_attr_t & attr)
   {
     CpuSet cpu_set(attr.core_affinity);
     set_affinity(std::move(cpu_set));
-    set_sched_policy(attr.scheduling_policy);
+    set_sched_policy(from_rcutils_thread_scheduling_policy(attr.scheduling_policy));
     set_priority(attr.priority);
-    set_name(attr.name);
   }
 
   void
@@ -133,57 +149,14 @@ struct ThreadAttribute
     swap(stack_size_, other.stack_size_);
     swap(priority_, other.priority_);
     swap(detached_flag_, other.detached_flag_);
-    swap(name_, other.name_);
   }
 
 private:
   CpuSet cpu_set_;
-  int sched_policy_;
+  SchedPolicy sched_policy_;
   std::size_t stack_size_;
   int priority_;
   bool detached_flag_;
-  std::string name_;
-
-  static int convert_sched_policy(
-    rcutils_thread_scheduling_policy_t sched_policy)
-  {
-    switch (sched_policy) {
-#ifdef SCHED_FIFO
-      case RCUTILS_THREAD_SCHEDULING_POLICY_FIFO:
-        return SCHED_FIFO;
-#endif
-#ifdef SCHED_RR
-      case RCUTILS_THREAD_SCHEDULING_POLICY_RR:
-        return SCHED_RR;
-#endif
-#ifdef SCHED_OTHER
-      case RCUTILS_THREAD_SCHEDULING_POLICY_OTHER:
-        return SCHED_OTHER;
-#endif
-#ifdef SCHED_IDLE
-      case RCUTILS_THREAD_SCHEDULING_POLICY_IDLE:
-        return SCHED_IDLE;
-#endif
-#ifdef SCHED_BATCH
-      case RCUTILS_THREAD_SCHEDULING_POLICY_BATCH:
-        return SCHED_BATCH;
-#endif
-#ifdef SCHED_SPORADIC
-      case RCUTILS_THREAD_SCHEDULING_POLICY_SPORADIC:
-        return SCHED_SPORADIC;
-#endif
-      /* Todo: Necessity and setting method need to be considered
-      #ifdef SCHED_DEADLINE
-          case RCUTILS_THREAD_SCHEDULING_POLICY_DEADLINE:
-            return SCHED_DEADLINE;
-            break;
-      #endif
-      */
-      default:
-        throw std::runtime_error("Invalid scheduling policy");
-    }
-    return -1;
-  }
 };
 
 inline void swap(ThreadAttribute & a, ThreadAttribute & b)
@@ -191,8 +164,6 @@ inline void swap(ThreadAttribute & a, ThreadAttribute & b)
   a.swap(b);
 }
 
-}  // namespace detail
-
 }  // namespace rcpputils
 
-#endif  // RCPPUTILS__THREADS__POSIX__THREAD_ATTRIBUTE_HPP_
+#endif  // RCPPUTILS__THREAD__DETAIL__POSIX__THREAD_ATTRIBUTE_HPP_

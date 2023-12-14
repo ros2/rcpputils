@@ -12,70 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREADS__STD__THREAD_ATTRIBUTE_HPP_
-#define RCPPUTILS__THREADS__STD__THREAD_ATTRIBUTE_HPP_
+#ifndef RCPPUTILS__THREAD__DETAIL__STD__THREAD_ATTRIBUTE_HPP_
+#define RCPPUTILS__THREAD__DETAIL__STD__THREAD_ATTRIBUTE_HPP_
 
-#include <pthread.h>
-#include <string>
 #include <utility>
 
-#include "rcl_yaml_param_parser/types.h"
-#include "rclcpp/visibility_control.hpp"
+#include "rcutils/thread_attr.h"
+
+#include "rcpputils/thread/detail/std/cpu_set.hpp"
+#include "rcpputils/visibility_control.hpp"
 
 namespace rcpputils
 {
 
 struct Thread;
 
-namespace detail
+enum struct SchedPolicy : unsigned
 {
-struct ThreadAttribute;
-}  // namespace detail
-
-namespace this_thread
-{
-template<typename F, typename ... Args>
-void run_with_thread_attribute(
-  detail::ThreadAttribute & attr, F && f, Args && ... args);
-}  // namespace this_thread
-
-namespace detail
-{
-
-struct CpuSet
-{
-  using NativeCpuSetType = std::size_t;
-  CpuSet() {}
-  explicit CpuSet(std::size_t) {}
-  CpuSet(const CpuSet &) {}
-  CpuSet & operator=(const CpuSet &)
-  {
-    return *this;
-  }
-  CpuSet(CpuSet &&) = delete;
-  CpuSet & operator=(CpuSet &&) = delete;
-  ~CpuSet() {}
-  void set(std::size_t) {}
-  void unset(std::size_t) {}
-  void clear() {}
-  bool is_set(std::size_t)
-  {
-    return false;
-  }
-  std::size_t get_max_processors() const
-  {
-    return 0;
-  }
-  NativeCpuSetType native_cpu_set() const
-  {
-    return 0;
-  }
 };
+
+SchedPolicy from_rcutils_thread_scheduling_policy(
+  rcutils_thread_scheduling_policy_t)
+{
+  return SchedPolicy{};
+}
 
 struct ThreadAttribute
 {
-  using PriorityType = int;
-
   ThreadAttribute()
   : set_unavailable_items_(false), run_as_detached_(false) {}
 
@@ -125,18 +88,8 @@ struct ThreadAttribute
     return run_as_detached_;
   }
 
-  ThreadAttribute & set_name(std::string const &)
-  {
-    set_unavailable_items_ = true;
-    return *this;
-  }
-  const char * get_name() const
-  {
-    return "";
-  }
-
   void
-  set_thread_attribute(
+  set_rcutils_thread_attribute(
     const rcutils_thread_attr_t &)
   {
     set_unavailable_items_ = true;
@@ -149,17 +102,16 @@ struct ThreadAttribute
   }
 
 private:
-  friend struct rcpputils::Thread;
-  template<typename F, typename ... Args>
-  friend void this_thread::run_with_thread_attribute(
-    ThreadAttribute & attr, F && f, Args && ... args);
-
+  friend struct Thread;
   bool set_unavailable_items_;
   bool run_as_detached_;
 };
 
-}  // namespace detail
+inline void swap(ThreadAttribute & a, ThreadAttribute & b)
+{
+  a.swap(b);
+}
 
 }  // namespace rcpputils
 
-#endif  // RCPPUTILS__THREADS__STD__THREAD_ATTRIBUTE_HPP_
+#endif  // RCPPUTILS__THREAD__DETAIL__STD__THREAD_ATTRIBUTE_HPP_

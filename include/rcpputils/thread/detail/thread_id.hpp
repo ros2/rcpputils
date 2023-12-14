@@ -12,32 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREADS__POSIX__THREAD_ID_HPP_
-#define RCPPUTILS__THREADS__POSIX__THREAD_ID_HPP_
+#ifndef RCPPUTILS__THREAD__DETAIL__THREAD_ID_HPP_
+#define RCPPUTILS__THREAD__DETAIL__THREAD_ID_HPP_
 
-#include <pthread.h>
+#include <thread>
 
-#include "rcpputils/visibility_control.hpp"
+#if __linux__
+#include "rcpputils/thread/detail/posix/thread_id.hpp"
+#else
+#include "rcpputils/thread/detail/std/thread_id.hpp"
+#endif
 
 namespace rcpputils
 {
 
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmismatched-tags"
-#endif
-
-struct Thread;
-
-namespace detail
-{
-
-namespace thread_id_ns
-{
-
 struct ThreadId;
 
-inline ThreadId get_id() noexcept;
 inline bool operator==(ThreadId id1, ThreadId id2);
 inline bool operator!=(ThreadId id1, ThreadId id2);
 inline bool operator<(ThreadId id1, ThreadId id2);
@@ -49,6 +39,11 @@ inline std::basic_ostream<CharT, Traits> & operator<<(
   std::basic_ostream<CharT, Traits> &,
   ThreadId);
 
+namespace this_thread
+{
+inline ThreadId get_id() noexcept;
+}
+
 struct ThreadId
 {
   ThreadId() = default;
@@ -59,7 +54,7 @@ struct ThreadId
 
   friend bool operator==(ThreadId id1, ThreadId id2)
   {
-    return pthread_equal(id1.h, id2.h);
+    return thread::detail::id_equal(id1.h, id2.h);
   }
   friend bool operator<(ThreadId id1, ThreadId id2)
   {
@@ -74,18 +69,13 @@ struct ThreadId
   }
 
 private:
-  friend class rcpputils::Thread;
-  friend ThreadId get_id() noexcept;
+  friend class Thread;
+  friend ThreadId this_thread::get_id() noexcept;
   friend struct std::hash<ThreadId>;
-  explicit ThreadId(pthread_t h)
+  explicit ThreadId(thread::detail::NativeIdType h)
   : h(h) {}
-  pthread_t h;
+  thread::detail::NativeIdType h;
 };
-
-ThreadId get_id() noexcept
-{
-  return ThreadId{pthread_self()};
-}
 
 bool operator!=(ThreadId id1, ThreadId id2)
 {
@@ -107,23 +97,13 @@ bool operator>=(ThreadId id1, ThreadId id2)
   return !(id1 < id2);
 }
 
-}  // namespace thread_id_ns
-
-using thread_id_ns::ThreadId;
-using thread_id_ns::operator==;
-using thread_id_ns::operator!=;
-using thread_id_ns::operator<;  // NOLINT
-using thread_id_ns::operator>;  // NOLINT
-using thread_id_ns::operator<=;
-using thread_id_ns::operator>=;
-using thread_id_ns::operator<<;
-
-}  // namespace detail
-
 namespace this_thread
 {
 
-using detail::thread_id_ns::get_id;
+inline ThreadId get_id() noexcept
+{
+  return ThreadId{thread::detail::get_native_thread_id()};
+}
 
 }  // namespace this_thread
 
@@ -133,14 +113,10 @@ namespace std
 {
 
 template<>
-struct hash<rcpputils::detail::thread_id_ns::ThreadId>
-{
-  std::size_t operator()(rcpputils::detail::thread_id_ns::ThreadId id)
-  {
-    return id.h;
-  }
-};
+struct hash<rcpputils::ThreadId>
+  : hash<rcpputils::thread::detail::NativeIdType>
+{};
 
 }  // namespace std
 
-#endif  // RCPPUTILS__THREADS__POSIX__THREAD_ID_HPP_
+#endif  // RCPPUTILS__THREAD__DETAIL__THREAD_ID_HPP_

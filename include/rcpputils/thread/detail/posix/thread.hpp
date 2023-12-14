@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCPPUTILS__THREADS__POSIX__THREAD_HPP_
-#define RCPPUTILS__THREADS__POSIX__THREAD_HPP_
+#ifndef RCPPUTILS__THREAD__DETAIL__POSIX__THREAD_HPP_
+#define RCPPUTILS__THREAD__DETAIL__POSIX__THREAD_HPP_
 
 #include <pthread.h>
 #include <unistd.h>
@@ -24,14 +24,14 @@
 #include <mutex>
 #include <string>
 #include <system_error>
-#include <tuple>
 #include <type_traits>
 #include <utility>
 
-#include "rcpputils/threads/posix/thread_attribute.hpp"
-#include "rcpputils/threads/posix/thread_func.hpp"
-#include "rcpputils/threads/posix/thread_id.hpp"
-#include "rcpputils/threads/posix/utilities.hpp"
+#include "rcpputils/thread/detail/thread_id.hpp"
+#include "rcpputils/thread/detail/posix/thread_attribute.hpp"
+#include "rcpputils/thread/detail/posix/thread_func.hpp"
+#include "rcpputils/thread/detail/posix/utilities.hpp"
+
 #include "rcpputils/visibility_control.hpp"
 
 namespace rcpputils
@@ -41,10 +41,9 @@ RCPPUTILS_PUBLIC_TYPE
 struct Thread
 {
   using NativeHandleType = pthread_t;
-  using Attribute = detail::ThreadAttribute;
-  using Id = detail::ThreadId;
+  using Attribute = ThreadAttribute;
+  using Id = ThreadId;
 
-  // Assume pthread_t is an invalid handle if it's 0
   Thread() noexcept
   : handle_{} {}
   Thread(Thread && other)
@@ -68,6 +67,7 @@ struct Thread
   Thread(Thread const &) = delete;
   ~Thread()
   {
+    // Assume pthread_t is an invalid handle if it's 0
     if (handle_) {
       std::terminate();
     }
@@ -88,14 +88,13 @@ struct Thread
   {
     using std::swap;
     swap(handle_, other.handle_);
-    swap(name_, other.name_);
   }
 
   void join()
   {
     void * p;
     int r = pthread_join(handle_, &p);
-    detail::throw_if_error(r, "Error in pthread_join ");
+    thread::detail::throw_if_error(r, "error in pthread_join");
     handle_ = NativeHandleType{};
   }
 
@@ -107,7 +106,7 @@ struct Thread
   void detach()
   {
     int r = pthread_detach(handle_);
-    detail::throw_if_error(r, "Error in pthread_detach ");
+    thread::detail::throw_if_error(r, "error in pthread_detach");
     handle_ = NativeHandleType{};
   }
 
@@ -132,19 +131,17 @@ struct Thread
   }
 
 private:
-  using ThreadFuncBase = detail::ThreadFuncBase;
+  using ThreadFuncBase = thread::detail::ThreadFuncBase;
   template<typename F, typename ... Args>
   static std::unique_ptr<ThreadFuncBase> make_thread_func(F && f, Args && ... args)
   {
+    using thread::detail::ThreadFunc;
+
     static_assert(
       !std::is_member_object_pointer_v<std::decay_t<F>>,
       "F is a pointer to member, that has no effect on a thread");
 
-    detail::ThreadFuncBase * func = new detail::ThreadFunc(
-      [f = std::forward<F>(f), args = std::tuple(std::forward<Args>(args)...)]() mutable
-      {
-        std::apply(f, args);
-      });
+    ThreadFuncBase * func = new ThreadFunc(std::forward<F>(f), std::forward<Args>(args)...);
     return std::unique_ptr<ThreadFuncBase>(func);
   }
   template<typename F, typename ... Args>
@@ -153,15 +150,18 @@ private:
     F && f,
     Args && ... args)
   {
+    using thread::detail::ThreadFunc;
+
     static_assert(
       !std::is_member_object_pointer_v<std::decay_t<F>>,
       "F is a pointer to member, that has no effect on a thread");
 
-    detail::ThreadFuncBase * func = new detail::ThreadFunc(
-      [attr, f = std::forward<F>(f), args = std::tuple(std::forward<Args>(args)...)]() mutable
+    ThreadFuncBase * func = new ThreadFunc(
+      [](F & f, Attribute & attr, Args & ... args)
       {
-        std::apply(f, args);
-      });
+        apply_attr(attr);
+        std::invoke(f, args ...);
+      }, std::forward<F>(f), attr, std::forward<Args>(args)...);
     return std::unique_ptr<ThreadFuncBase>(func);
   }
 
@@ -170,7 +170,6 @@ private:
   static void apply_attr(Attribute const & attr);
 
   NativeHandleType handle_;
-  std::string name_;
 };
 
 inline void swap(Thread & t1, Thread & t2)
@@ -178,25 +177,8 @@ inline void swap(Thread & t1, Thread & t2)
   t1.swap(t2);
 }
 
-namespace detail
-{
-void apply_attr_to_current_thread(ThreadAttribute const & attr);
-}
-
 namespace this_thread
 {
-
-template<typename F, typename ... Args>
-void run_with_thread_attribute(
-  detail::ThreadAttribute const & attr, F && f, Args && ... args)
-{
-  static_assert(
-    !std::is_member_object_pointer_v<std::decay_t<F>>,
-    "F is a pointer to member, that has no effect on a thread");
-
-  detail::apply_attr_to_current_thread(attr);
-  std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
-}
 
 inline void yield() noexcept
 {
@@ -207,4 +189,4 @@ inline void yield() noexcept
 
 }  // namespace rcpputils
 
-#endif  // RCPPUTILS__THREADS__POSIX__THREAD_HPP_
+#endif  // RCPPUTILS__THREAD__DETAIL__POSIX__THREAD_HPP_
