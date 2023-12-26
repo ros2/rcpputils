@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Switch to using target_link_libraries. (`#183 <https://github.com/ros2/rcpputils/issues/183>`_)
+* Contributors: Chris Lalancette
+
 2.8.1 (2023-11-06)
 ------------------
 * Add a missing header due to missing PATH_MAX variable (`#181 <https://github.com/ros2/rcpputils/issues/181>`_)
