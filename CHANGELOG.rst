@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.9.0 (2023-12-26)
+------------------
 * Switch to using target_link_libraries. (`#183 <https://github.com/ros2/rcpputils/issues/183>`_)
 * Contributors: Chris Lalancette
 
