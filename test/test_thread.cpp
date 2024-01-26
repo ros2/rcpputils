@@ -104,7 +104,7 @@ TEST(thread, attribute) {
     rcutils_attr.core_affinity = rcutils_get_zero_initialized_thread_core_affinity();
     rcutils_attr.scheduling_policy = RCUTILS_THREAD_SCHEDULING_POLICY_FIFO;
     rcutils_attr.priority = 42;
-    rcutils_attr.name = NULL;
+    rcutils_attr.tag = NULL;
 
     attr.set_rcutils_thread_attribute(rcutils_attr);
 
