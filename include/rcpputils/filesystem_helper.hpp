@@ -43,6 +43,7 @@
 #include <vector>
 
 #include "rcpputils/visibility_control.hpp"
+#include <cstdint>
 
 namespace rcpputils
 {
