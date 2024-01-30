@@ -42,6 +42,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <ostream>
 
 #include "rcpputils/visibility_control.hpp"
 
