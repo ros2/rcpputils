@@ -10,6 +10,7 @@ find_package(rcutils REQUIRED)
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 11)
 endif()
+# TODO (ahcorde): Remove tl_expected when CXX 20 standard is available
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
@@ -38,13 +39,6 @@ if(WIN32)
     PRIVATE "RCPPUTILS_BUILDING_LIBRARY")
 endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC rcutils::rcutils)
-
-# TODO (ahcorde): Remove when CXX 20 standard is available
-add_library(tl_expected INTERFACE)
-target_include_directories(tl_expected INTERFACE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/tl_expected>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-target_compile_features(tl_expected INTERFACE cxx_std_17)
 
 # Export old-style CMake variables
 ament_export_include_directories("include/${PROJECT_NAME}")
@@ -183,7 +177,7 @@ install(
   DIRECTORY include/
   DESTINATION include/${PROJECT_NAME})
 install(
-  TARGETS ${PROJECT_NAME} tl_expected EXPORT ${PROJECT_NAME}
+  TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
