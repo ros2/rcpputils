@@ -39,6 +39,13 @@ if(WIN32)
 endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC rcutils::rcutils)
 
+# TODO (ahcorde): Remove when CXX 20 standard is available
+add_library(tl_expected INTERFACE)
+target_include_directories(tl_expected INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/tl_expected>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+target_compile_features(tl_expected INTERFACE cxx_std_17)
+
 # Export old-style CMake variables
 ament_export_include_directories("include/${PROJECT_NAME}")
 ament_export_libraries(${PROJECT_NAME})
@@ -50,13 +57,40 @@ ament_export_dependencies(rcutils)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
-  find_package(ament_lint_auto REQUIRED)
+  # find_package(ament_lint_auto REQUIRED)
+
+  find_package(ament_cmake_copyright REQUIRED)
+  find_package(ament_cmake_cppcheck REQUIRED)
+  find_package(ament_cmake_cpplint REQUIRED)
+  find_package(ament_cmake_flake8 REQUIRED)
+  find_package(ament_cmake_lint_cmake REQUIRED)
+  find_package(ament_cmake_pep257 REQUIRED)
+  find_package(ament_cmake_uncrustify REQUIRED)
+  find_package(ament_cmake_xmllint REQUIRED)
+
+  set(
+    _linter_excludes
+    include/rcpputils/tl_expected/expected.hpp
+  )
+
+  ament_copyright(EXCLUDE ${_linter_excludes})
+  ament_cppcheck(
+    EXCLUDE ${_linter_excludes}
+    LANGUAGE c++
+  )
+  ament_cpplint(EXCLUDE ${_linter_excludes})
+  ament_flake8(EXCLUDE ${_linter_excludes})
+  ament_lint_cmake()
+  ament_pep257(EXCLUDE ${_linter_excludes})
+  ament_uncrustify(
+    EXCLUDE ${_linter_excludes}
+    LANGUAGE c++
+  )
+  ament_xmllint()
 
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wthread-safety -Werror)
   endif()
-
-  ament_lint_auto_find_test_dependencies()
 
   ament_add_gtest(test_asserts_ndebug test/test_asserts.cpp)
   target_link_libraries(test_asserts_ndebug ${PROJECT_NAME})
@@ -149,7 +183,7 @@ install(
   DIRECTORY include/
   DESTINATION include/${PROJECT_NAME})
 install(
-  TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+  TARGETS ${PROJECT_NAME} tl_expected EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
