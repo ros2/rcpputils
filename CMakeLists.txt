@@ -10,6 +10,7 @@ find_package(rcutils REQUIRED)
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 11)
 endif()
+# TODO (ahcorde): Remove tl_expected when CXX 20 standard is available
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
@@ -50,13 +51,39 @@ ament_export_dependencies(rcutils)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
-  find_package(ament_lint_auto REQUIRED)
+
+  find_package(ament_cmake_copyright REQUIRED)
+  find_package(ament_cmake_cppcheck REQUIRED)
+  find_package(ament_cmake_cpplint REQUIRED)
+  find_package(ament_cmake_flake8 REQUIRED)
+  find_package(ament_cmake_lint_cmake REQUIRED)
+  find_package(ament_cmake_pep257 REQUIRED)
+  find_package(ament_cmake_uncrustify REQUIRED)
+  find_package(ament_cmake_xmllint REQUIRED)
+
+  set(
+    _linter_excludes
+    include/rcpputils/tl_expected/expected.hpp
+  )
+
+  ament_copyright(EXCLUDE ${_linter_excludes})
+  ament_cppcheck(
+    EXCLUDE ${_linter_excludes}
+    LANGUAGE c++
+  )
+  ament_cpplint(EXCLUDE ${_linter_excludes})
+  ament_flake8(EXCLUDE ${_linter_excludes})
+  ament_lint_cmake()
+  ament_pep257(EXCLUDE ${_linter_excludes})
+  ament_uncrustify(
+    EXCLUDE ${_linter_excludes}
+    LANGUAGE c++
+  )
+  ament_xmllint()
 
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wthread-safety -Werror)
   endif()
-
-  ament_lint_auto_find_test_dependencies()
 
   ament_add_gtest(test_asserts_ndebug test/test_asserts.cpp)
   target_link_libraries(test_asserts_ndebug ${PROJECT_NAME})
