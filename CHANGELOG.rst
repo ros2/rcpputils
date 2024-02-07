@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Included tl_expected (`#185 <https://github.com/ros2/rcpputils/issues/185>`_)
+* Contributors: Alejandro Hernández Cordero
+
 2.9.0 (2023-12-26)
 ------------------
 * Switch to using target_link_libraries. (`#183 <https://github.com/ros2/rcpputils/issues/183>`_)
