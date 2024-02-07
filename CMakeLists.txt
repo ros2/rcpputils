@@ -10,12 +10,8 @@ find_package(rcutils REQUIRED)
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 11)
 endif()
-<<<<<<< HEAD
-# Default to C++14
-=======
 # TODO (ahcorde): Remove tl_expected when CXX 20 standard is available
-# Default to C++17
->>>>>>> 2a5bfd5 (Included tl_expected (#185))
+# Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
