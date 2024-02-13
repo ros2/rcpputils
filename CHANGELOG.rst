@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.6.3 (2024-02-13)
+------------------
 * Included tl_expected (`#187 <https://github.com/ros2/rcpputils/issues/187>`_)
 * Contributors: Alejandro Hernández Cordero
 
