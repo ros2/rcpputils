@@ -23,20 +23,21 @@
 
 #include "rcpputils/thread/detail/posix/thread.hpp"
 #include "rcpputils/thread/detail/posix/utilities.hpp"
+#if __linux__
+#include "./linux/thread_impl.hpp"
+#endif
 
 namespace rcpputils
 {
 
 using thread::detail::ThreadFuncBase, thread::detail::throw_if_error;
-using thread::detail::sched_policy_explicit_bit;
+using thread::detail::to_native_sched_policy;
 
 namespace
 {
 
 void set_pthread_attr(pthread_attr_t & native_attr, ThreadAttribute const & attr);
 void * thread_main(void * p);
-inline bool is_explicit_sched_policy(int native_policy);
-inline int to_native_sched_policy(SchedPolicy policy);
 
 }  // namespace
 
@@ -106,12 +107,10 @@ void set_pthread_attr(pthread_attr_t & native_attr, ThreadAttribute const & attr
 #if __linux__
   CpuSet cpu_set = attr.get_affinity();
   if (cpu_set.count()) {
+    namespace impl = thread::detail;
+    impl::UniqueNativeCpuSet native_cpu_set = impl::make_unique_native_cpu_set(cpu_set);
     std::size_t alloc_size = CPU_ALLOC_SIZE(cpu_set.num_processors());
-    CpuSet::NativeCpuSetType native_cpu_set = cpu_set.native_cpu_set();
-    if (CPU_COUNT(native_cpu_set) > 0) {
-      r = pthread_attr_setaffinity_np(&native_attr, alloc_size, native_cpu_set);
-    }
-    CPU_FREE(native_cpu_set);
+    r = pthread_attr_setaffinity_np(&native_attr, alloc_size, native_cpu_set.get());
     throw_if_error(r, "error in pthread_attr_setaffinity_np");
   }
 #endif
@@ -149,16 +148,6 @@ void set_pthread_attr(pthread_attr_t & native_attr, ThreadAttribute const & attr
       throw_if_error(r, "error in pthread_attr_setschedparam");
     }
   }
-}
-
-bool is_explicit_sched_policy(int native_policy)
-{
-  return (static_cast<unsigned>(native_policy) & sched_policy_explicit_bit) != 0;
-}
-
-int to_native_sched_policy(rcpputils::SchedPolicy policy)
-{
-  return static_cast<unsigned>(policy) & ~sched_policy_explicit_bit;
 }
 
 }  // namespace

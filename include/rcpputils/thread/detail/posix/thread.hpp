@@ -28,6 +28,7 @@
 #include <utility>
 
 #include "rcpputils/thread/detail/thread_id.hpp"
+#include "rcpputils/thread/detail/posix/sched_options.hpp"
 #include "rcpputils/thread/detail/posix/thread_attribute.hpp"
 #include "rcpputils/thread/detail/posix/thread_func.hpp"
 #include "rcpputils/thread/detail/posix/utilities.hpp"
@@ -184,6 +185,8 @@ inline void yield() noexcept
 {
   sched_yield();
 }
+
+void apply_sched_options(SchedOptions const & options);
 
 }  // namespace this_thread
 

@@ -15,7 +15,10 @@
 #ifndef RCPPUTILS__THREAD__DETAIL__POSIX__UTILITIES_HPP_
 #define RCPPUTILS__THREAD__DETAIL__POSIX__UTILITIES_HPP_
 
+#include <memory>
 #include <system_error>
+
+#include "rcpputils/thread/detail/posix/sched_policy.hpp"
 
 namespace rcpputils
 {
@@ -29,6 +32,18 @@ inline void throw_if_error(int r, char const * msg)
   if (r != 0) {
     throw std::system_error(r, std::system_category(), msg);
   }
+}
+
+using thread::detail::sched_policy_explicit_bit;
+
+inline bool is_explicit_sched_policy(int native_policy)
+{
+  return (static_cast<unsigned>(native_policy) & sched_policy_explicit_bit) != 0;
+}
+
+inline int to_native_sched_policy(rcpputils::SchedPolicy policy)
+{
+  return static_cast<unsigned>(policy) & ~sched_policy_explicit_bit;
 }
 
 }  // namespace detail

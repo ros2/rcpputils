@@ -175,7 +175,7 @@ void CpuSet::init_cpu_set()
   }
   auto p = CPU_ALLOC(num_processors());
   CPU_ZERO_S(alloc_size(), p);
-  cpu_set_ = std::unique_ptr<cpu_set_t, CpuSetDeleter>(p);
+  cpu_set_ = thread::detail::UniqueNativeCpuSet(p);
 }
 
 void CpuSet::valid_cpu(std::size_t cpu) const
@@ -191,9 +191,17 @@ std::size_t CpuSet::alloc_size()
   return CPU_ALLOC_SIZE(num_processors());
 }
 
-void CpuSet::CpuSetDeleter::operator()(NativeCpuSetType cpu_set) const
+
+namespace thread
+{
+namespace detail
+{
+
+void CpuSetDeleter::operator()(cpu_set_t * cpu_set) const
 {
   CPU_FREE(cpu_set);
 }
 
+}  // namespace detail
+}  // namespace thread
 }  // namespace rcpputils

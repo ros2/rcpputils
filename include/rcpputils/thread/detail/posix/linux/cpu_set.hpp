@@ -27,6 +27,20 @@
 namespace rcpputils
 {
 
+namespace thread
+{
+namespace detail
+{
+
+struct CpuSetDeleter
+{
+  void operator()(cpu_set_t * p) const;
+};
+using UniqueNativeCpuSet = std::unique_ptr<cpu_set_t, CpuSetDeleter>;
+
+}  // namespace detail
+}  // namespace thread
+
 struct CpuSet
 {
   using NativeCpuSetType = cpu_set_t *;
@@ -54,11 +68,7 @@ private:
   void init_cpu_set();
   void valid_cpu(std::size_t cpu) const;
   static std::size_t alloc_size();
-  struct CpuSetDeleter
-  {
-    void operator()(NativeCpuSetType cpu_set) const;
-  };
-  std::unique_ptr<cpu_set_t, CpuSetDeleter> cpu_set_;
+  thread::detail::UniqueNativeCpuSet cpu_set_;
 };
 
 inline void swap(CpuSet & a, CpuSet & b)

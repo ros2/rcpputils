@@ -22,50 +22,11 @@
 #include "rcutils/thread_attr.h"
 
 #include "rcpputils/thread/detail/posix/cpu_set.hpp"
+#include "rcpputils/thread/detail/posix/sched_policy.hpp"
 #include "rcpputils/visibility_control.hpp"
 
 namespace rcpputils
 {
-
-namespace thread
-{
-namespace detail
-{
-
-constexpr unsigned int sched_policy_explicit_bit = 0x8000'0000;
-
-}
-}
-
-enum struct SchedPolicy : unsigned int
-{
-  inherit,
-  other = thread::detail::sched_policy_explicit_bit | SCHED_OTHER,
-#ifdef SCHED_FIFO
-  fifo = thread::detail::sched_policy_explicit_bit | SCHED_FIFO,
-#endif
-#ifdef SCHED_RR
-  rr = thread::detail::sched_policy_explicit_bit | SCHED_RR,
-#endif
-#ifdef SCHED_IDLE
-  idle = thread::detail::sched_policy_explicit_bit | SCHED_IDLE,
-#endif
-#ifdef SCHED_BATCH
-  batch = thread::detail::sched_policy_explicit_bit | SCHED_BATCH,
-#endif
-#ifdef SCHED_SPORADIC
-  sporadic = thread::detail::sched_policy_explicit_bit | SCHED_SPORADIC,
-#endif
-// #if __linux__
-// linux deadline scheduler requires more parameter, not supported now
-// #ifdef SCHED_DEADLINE
-//   deadline = SCHED_DEADLINE,
-// #endif
-// #endif
-};
-
-SchedPolicy from_rcutils_thread_scheduling_policy(
-  rcutils_thread_scheduling_policy_t rcutils_sched_policy);
 
 struct ThreadAttribute
 {

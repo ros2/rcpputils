@@ -36,7 +36,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   target_sources(${PROJECT_NAME} PRIVATE
     src/thread/detail/posix/thread.cpp
     src/thread/detail/posix/thread_attribute.cpp
-    src/thread/detail/posix/linux/cpu_set.cpp)
+    src/thread/detail/posix/linux/cpu_set.cpp
+    src/thread/detail/posix/linux/thread.cpp)
 endif()
 if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
