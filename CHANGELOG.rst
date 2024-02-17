@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.4.2 (2024-02-16)
+------------------
+* Included tl_expected (backport `#185 <https://github.com/ros2/rcpputils/issues/185>`_) (`#186 <https://github.com/ros2/rcpputils/issues/186>`_)
+* humble: fix <cstdint> error (`#184 <https://github.com/ros2/rcpputils/issues/184>`_)
+* Contributors: Bernd Müller, mergify[bot]
+
 2.4.1 (2023-04-25)
 ------------------
 * Fix possible race condition in create_directories() (`#162 <https://github.com/ros2/rcpputils/issues/162>`_) (`#176 <https://github.com/ros2/rcpputils/issues/176>`_)
