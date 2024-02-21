@@ -47,12 +47,10 @@ namespace rcpputils
 /// @cond
 /// Split a specified input into tokens using a delimiter and a type erased insert iterator.
 /**
- * The returned vector will contain the tokens split from the input
- *
  * \param[in] input the input string to be split
  * \param[in] delim the delimiter used to split the input string
- * \param[in] it iterator pointing to a storage container
- * \param[in] skip_empty remove empty strings from the return vector
+ * \param[in] it an insert iterator pointing to a storage container
+ * \param[in] skip_empty skip empty strings when inserting tokens
  */
 template<
   class InsertIterator,
@@ -82,7 +80,7 @@ split(const std::string & input, char delim, InsertIterator & it, bool skip_empt
  *
  * \param[in] input the input string to be split
  * \param[in] delim the delimiter used to split the input string
- * \param[in] skip_empty remove empty strings from the return vector
+ * \param[in] skip_empty remove empty strings from the returned vector
  * \return A vector of tokens.
  */
 inline std::vector<std::string>
