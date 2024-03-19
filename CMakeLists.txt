@@ -181,3 +181,4 @@ install(
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
+ament_generate_version_header(${PROJECT_NAME})
