@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.11.0 (2024-04-16)
+-------------------
+* Generate version header with ament_generate_version_header function (`#190 <https://github.com/ros2/rcpputils/issues/190>`_)
+* Update docs for rcpputils::split functions (`#188 <https://github.com/ros2/rcpputils/issues/188>`_)
+* Contributors: Christophe Bedard, Sai Kishor Kothakota
+
 2.10.0 (2024-02-07)
 -------------------
 * Included tl_expected (`#185 <https://github.com/ros2/rcpputils/issues/185>`_)
