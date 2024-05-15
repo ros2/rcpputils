@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.4.3 (2024-05-15)
+------------------
+* Generate version header with ament_generate_version_header function (`#190 <https://github.com/ros2/rcpputils/issues/190>`_) (`#191 <https://github.com/ros2/rcpputils/issues/191>`_)
+* Contributors: mergify[bot]
+
 2.4.2 (2024-02-16)
 ------------------
 * Included tl_expected (backport `#185 <https://github.com/ros2/rcpputils/issues/185>`_) (`#186 <https://github.com/ros2/rcpputils/issues/186>`_)
