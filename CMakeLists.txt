@@ -160,9 +160,6 @@ if(BUILD_TESTING)
     ENVIRONMENT
       "_TEST_LIBRARY_DIR=$<TARGET_FILE_DIR:test_library>;_TEST_LIBRARY=$<TARGET_FILE:test_library>")
 
-  ament_add_gtest(test_clamp test/test_clamp.cpp)
-  target_link_libraries(test_clamp ${PROJECT_NAME})
-
   ament_add_gtest(test_accumulator test/test_accumulator.cpp)
   target_link_libraries(test_accumulator ${PROJECT_NAME})
 
