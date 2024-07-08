@@ -69,6 +69,14 @@ namespace rcpputils
 namespace fs
 {
 
+#if !defined(_WIN32)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#else  // !defined(_WIN32)
+# pragma warning(push)
+# pragma warning(disable: 4996)
+#endif
+
 /// \internal Returns true if the path is an absolute path with a drive letter on Windows.
 static bool is_absolute_with_drive_letter(const std::string & path);
 
@@ -483,6 +491,73 @@ std::ostream & operator<<(std::ostream & os, const path & p)
 {
   os << p.string();
   return os;
+}
+
+// remove warning suppression
+#if !defined(_WIN32)
+# pragma GCC diagnostic pop
+#else  // !defined(_WIN32)
+# pragma warning(pop)
+#endif
+
+std::filesystem::path temporal_directory_path()
+{
+#ifdef _WIN32
+#ifdef UNICODE
+#error "rcpputils::fs does not support Unicode paths"
+#endif
+  TCHAR temp_path[MAX_PATH];
+  DWORD size = GetTempPathA(MAX_PATH, temp_path);
+  if (size > MAX_PATH || size == 0) {
+    std::error_code ec(static_cast<int>(GetLastError()), std::system_category());
+    throw std::system_error(ec, "cannot get temporary directory path");
+  }
+  temp_path[size] = '\0';
+#else
+  const char * temp_path = NULL;
+  const char * ret_str = rcutils_get_env("TMPDIR", &temp_path);
+  if (NULL != ret_str || *temp_path == '\0') {
+    temp_path = "/tmp";
+  }
+#endif
+  return std::filesystem::path(temp_path);
+}
+
+
+std::filesystem::path create_temporal_directory(
+  const std::string & base_name,
+  const std::filesystem::path & parent_path)
+{
+  const auto template_path = base_name + "XXXXXX";
+  std::string full_template_str = (parent_path / template_path).string();
+  std::error_code ec;
+  std::filesystem::create_directories(parent_path, ec);
+  if (ec) {
+    throw std::system_error(ec, "could not create the parent directory");
+  }
+
+#ifdef _WIN32
+  errno_t errcode = _mktemp_s(&full_template_str[0], full_template_str.size() + 1);
+  if (errcode) {
+    std::error_code ec(static_cast<int>(errcode), std::system_category());
+    throw std::system_error(ec, "could not format the temp directory name template");
+  }
+  const path final_path{full_template_str};
+  if (!create_directories(final_path)) {
+    std::error_code ec(static_cast<int>(GetLastError()), std::system_category());
+    throw std::system_error(ec, "could not create the temp directory");
+  }
+#else
+  const char * dir_name = mkdtemp(&full_template_str[0]);
+  if (dir_name == nullptr) {
+    std::error_code ec{errno, std::system_category()};
+    errno = 0;
+    throw std::system_error(ec, "could not format or create the temp directory");
+  }
+  const std::filesystem::path final_path{dir_name};
+#endif
+
+  return final_path;
 }
 
 }  // namespace fs

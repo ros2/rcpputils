@@ -40,6 +40,7 @@
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
 #include <cstdint>
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -65,14 +66,21 @@ static constexpr const char kPreferredSeparator = RCPPUTILS_IMPL_OS_DIRSEP;
 
 #undef RCPPUTILS_IMPL_OS_DIRSEP
 
-
+// TODO(ahcorde): Remove deprecated class on the next release.
+#if !defined(_WIN32)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#else  // !defined(_WIN32)
+# pragma warning(push)
+# pragma warning(disable: 4996)
+#endif
 /**
  * \brief Drop-in replacement for [std::filesystem::path](https://en.cppreference.com/w/cpp/filesystem/path).
  *
  * It must conform to the same standard described and cannot include methods that are not
  * incorporated there.
  */
-class path
+class [[deprecated("use std::filesystem instead of rcpputils::path")]] path
 {
 public:
   /**
@@ -351,6 +359,58 @@ RCPPUTILS_PUBLIC bool operator!=(const path & a, const path & b);
 * \return The ostream, for chaining
 */
 RCPPUTILS_PUBLIC std::ostream & operator<<(std::ostream & os, const path & p);
+
+// remove warning suppression
+#if !defined(_WIN32)
+# pragma GCC diagnostic pop
+#else  // !defined(_WIN32)
+# pragma warning(pop)
+#endif
+
+/**
+ * \brief Get a path to a location in the temporary directory, if it's available.
+ *
+ * This does not create any directories.
+ * On Windows, this uses "GetTempPathA"
+ * On non-Windows, this prefers the environment variable TMPDIR, falling back to /tmp
+ *
+ * \return A path to a directory for storing temporary files and directories.
+ */
+RCPPUTILS_PUBLIC std::filesystem::path temporal_directory_path();
+
+/**
+ * \brief Construct a uniquely named temporary directory, in "parent", with format base_nameXXXXXX
+ *
+ * The output, if successful, is guaranteed to be a newly-created directory.
+ * The underlying implementation keeps generating paths until one that does not exist is found.
+ * This guarantees that there will be no existing files in the returned directory.
+ *
+ * \param[in] base_name User-specified portion of the created directory
+ * \param[in] parent_path The parent path of the directory that will be created
+ * \return A path to a newly-created directory with base_name and a 6-character unique suffix
+ *
+ * \throws std::system_error If any OS APIs do not succeed.
+ */
+RCPPUTILS_PUBLIC std::filesystem::path create_temporal_directory(
+  const std::string & base_name,
+  const std::filesystem::path & parent_path = temporal_directory_path());
+
+// /**
+//  * \brief Compare two paths for equality.
+//  *
+//  * \return True if both paths are equal as strings.
+//  */
+// RCPPUTILS_PUBLIC bool operator==(const path & a, const path & b);
+// RCPPUTILS_PUBLIC bool operator!=(const path & a, const path & b);
+
+/**
+* \brief Convert the path to a string for ostream usage, such as in logging or string formatting.
+*
+* \param[in] os The stream to send the path string to
+* \param[in] p The path to stringify
+* \return The ostream, for chaining
+*/
+RCPPUTILS_PUBLIC std::ostream & operator<<(std::ostream & os, const std::filesystem::path & p);
 
 }  // namespace fs
 }  // namespace rcpputils
