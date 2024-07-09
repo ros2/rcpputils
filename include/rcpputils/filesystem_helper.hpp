@@ -376,7 +376,7 @@ RCPPUTILS_PUBLIC std::ostream & operator<<(std::ostream & os, const path & p);
  *
  * \return A path to a directory for storing temporary files and directories.
  */
-RCPPUTILS_PUBLIC std::filesystem::path temporal_directory_path();
+RCPPUTILS_PUBLIC std::filesystem::path temporary_directory_path();
 
 /**
  * \brief Construct a uniquely named temporary directory, in "parent", with format base_nameXXXXXX
@@ -391,27 +391,9 @@ RCPPUTILS_PUBLIC std::filesystem::path temporal_directory_path();
  *
  * \throws std::system_error If any OS APIs do not succeed.
  */
-RCPPUTILS_PUBLIC std::filesystem::path create_temporal_directory(
+RCPPUTILS_PUBLIC std::filesystem::path create_temporary_directory(
   const std::string & base_name,
-  const std::filesystem::path & parent_path = temporal_directory_path());
-
-// /**
-//  * \brief Compare two paths for equality.
-//  *
-//  * \return True if both paths are equal as strings.
-//  */
-// RCPPUTILS_PUBLIC bool operator==(const path & a, const path & b);
-// RCPPUTILS_PUBLIC bool operator!=(const path & a, const path & b);
-
-/**
-* \brief Convert the path to a string for ostream usage, such as in logging or string formatting.
-*
-* \param[in] os The stream to send the path string to
-* \param[in] p The path to stringify
-* \return The ostream, for chaining
-*/
-RCPPUTILS_PUBLIC std::ostream & operator<<(std::ostream & os, const std::filesystem::path & p);
-
+  const std::filesystem::path & parent_path = temporary_directory_path());
 }  // namespace fs
 }  // namespace rcpputils
 

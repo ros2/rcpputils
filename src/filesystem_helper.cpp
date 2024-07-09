@@ -500,7 +500,7 @@ std::ostream & operator<<(std::ostream & os, const path & p)
 # pragma warning(pop)
 #endif
 
-std::filesystem::path temporal_directory_path()
+std::filesystem::path temporary_directory_path()
 {
 #ifdef _WIN32
 #ifdef UNICODE
@@ -523,8 +523,7 @@ std::filesystem::path temporal_directory_path()
   return std::filesystem::path(temp_path);
 }
 
-
-std::filesystem::path create_temporal_directory(
+std::filesystem::path create_temporary_directory(
   const std::string & base_name,
   const std::filesystem::path & parent_path)
 {

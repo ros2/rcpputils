@@ -309,7 +309,7 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   EXPECT_TRUE(std::filesystem::remove(dir));
   EXPECT_FALSE(std::filesystem::exists(file));
   EXPECT_FALSE(std::filesystem::exists(dir));
-  auto temp_dir = rcpputils::fs::temporal_directory_path();
+  auto temp_dir = rcpputils::fs::temporary_directory_path();
   temp_dir = temp_dir / "rcpputils" / "test_folder";
   EXPECT_FALSE(std::filesystem::exists(temp_dir));
   EXPECT_TRUE(std::filesystem::create_directories(temp_dir));
@@ -439,21 +439,13 @@ TEST(TestFilesystemHelper, parent_absolute_path)
   }
 }
 
-// TEST(TestFilesystemHelper, stream_operator)
-// {
-//   path p{"foo"};
-//   std::stringstream s;
-//   s << "bar" << p;
-//   ASSERT_EQ(s.str(), "barfoo");
-// }
-
-TEST(TestFilesystemHelper, create_temporal_directory)
+TEST(TestFilesystemHelper, create_temporary_directory)
 {
   // basic usage
   {
     const std::string basename = "test_base_name";
 
-    const auto tmpdir1 = rcpputils::fs::create_temporal_directory(basename);
+    const auto tmpdir1 = rcpputils::fs::create_temporary_directory(basename);
     EXPECT_TRUE(std::filesystem::exists(tmpdir1));
     EXPECT_TRUE(std::filesystem::is_directory(tmpdir1));
 
@@ -465,7 +457,7 @@ TEST(TestFilesystemHelper, create_temporal_directory)
     EXPECT_TRUE(std::filesystem::exists(tmp_file));
     EXPECT_TRUE(std::filesystem::is_regular_file(tmp_file));
 
-    const auto tmpdir2 = rcpputils::fs::create_temporal_directory(basename);
+    const auto tmpdir2 = rcpputils::fs::create_temporary_directory(basename);
     EXPECT_TRUE(std::filesystem::exists(tmpdir2));
     EXPECT_TRUE(std::filesystem::is_directory(tmpdir2));
 
@@ -478,16 +470,16 @@ TEST(TestFilesystemHelper, create_temporal_directory)
   // bad names
   {
     if (is_win32) {
-      EXPECT_THROW(rcpputils::fs::create_temporal_directory("illegalchar?"), std::system_error);
+      EXPECT_THROW(rcpputils::fs::create_temporary_directory("illegalchar?"), std::system_error);
     } else {
-      EXPECT_THROW(rcpputils::fs::create_temporal_directory("base/name"), std::system_error);
+      EXPECT_THROW(rcpputils::fs::create_temporary_directory("base/name"), std::system_error);
     }
   }
 
   // newly created paths
   {
     const auto new_relative = std::filesystem::current_path() / "child1" / "child2";
-    const auto tmpdir = rcpputils::fs::create_temporal_directory("base_name", new_relative);
+    const auto tmpdir = rcpputils::fs::create_temporary_directory("base_name", new_relative);
     EXPECT_TRUE(std::filesystem::exists(tmpdir));
     EXPECT_TRUE(std::filesystem::is_directory(tmpdir));
     EXPECT_TRUE(std::filesystem::remove_all(tmpdir));
@@ -496,15 +488,15 @@ TEST(TestFilesystemHelper, create_temporal_directory)
   // edge case inputs
   {
     // Provided no base name we should still get a path with the 6 unique template chars
-    const auto tmpdir_emptybase = rcpputils::fs::create_temporal_directory("");
+    const auto tmpdir_emptybase = rcpputils::fs::create_temporary_directory("");
     EXPECT_EQ(tmpdir_emptybase.filename().string().size(), 6u);
 
     // Empty path doesn't exist and cannot be created
-    EXPECT_THROW(rcpputils::fs::create_temporal_directory("basename", path()), std::system_error);
+    EXPECT_THROW(rcpputils::fs::create_temporary_directory("basename", path()), std::system_error);
 
     // With the template string XXXXXX already in the name, it will still be there, the unique
     // portion is appended to the end.
-    const auto tmpdir_template_in_name = rcpputils::fs::create_temporal_directory("base_XXXXXX");
+    const auto tmpdir_template_in_name = rcpputils::fs::create_temporary_directory("base_XXXXXX");
     EXPECT_TRUE(std::filesystem::exists(tmpdir_template_in_name));
     EXPECT_TRUE(std::filesystem::is_directory(tmpdir_template_in_name));
     // On Linux, it will not replace the base_name Xs, only the final 6 that the function appends.
