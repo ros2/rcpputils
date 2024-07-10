@@ -284,7 +284,7 @@ bool exists(const path & path_to_check)
   return path_to_check.exists();
 }
 
-path temp_directory_path()
+std::filesystem::path temp_directory_path()
 {
 #ifdef _WIN32
 #ifdef UNICODE
@@ -304,16 +304,18 @@ path temp_directory_path()
     temp_path = "/tmp";
   }
 #endif
-  return path(temp_path);
+  return std::filesystem::path(temp_path);
 }
 
-path create_temp_directory(const std::string & base_name, const path & parent_path)
+std::filesystem::path create_temp_directory(
+  const std::string & base_name,
+  const std::filesystem::path & parent_path)
 {
   const auto template_path = base_name + "XXXXXX";
   std::string full_template_str = (parent_path / template_path).string();
-  if (!create_directories(parent_path)) {
-    std::error_code ec{errno, std::system_category()};
-    errno = 0;
+  std::error_code ec;
+  std::filesystem::create_directories(parent_path, ec);
+  if (ec) {
     throw std::system_error(ec, "could not create the parent directory");
   }
 
@@ -335,7 +337,7 @@ path create_temp_directory(const std::string & base_name, const path & parent_pa
     errno = 0;
     throw std::system_error(ec, "could not format or create the temp directory");
   }
-  const path final_path{dir_name};
+  const std::filesystem::path final_path{dir_name};
 #endif
 
   return final_path;

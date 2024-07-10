@@ -40,6 +40,7 @@
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
 #include <cstdint>
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -269,7 +270,7 @@ RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
  *
  * \return A path to a directory for storing temporary files and directories.
  */
-RCPPUTILS_PUBLIC path temp_directory_path();
+RCPPUTILS_PUBLIC std::filesystem::path temp_directory_path();
 
 /**
  * \brief Construct a uniquely named temporary directory, in "parent", with format base_nameXXXXXX
@@ -284,9 +285,9 @@ RCPPUTILS_PUBLIC path temp_directory_path();
  *
  * \throws std::system_error If any OS APIs do not succeed.
  */
-RCPPUTILS_PUBLIC path create_temp_directory(
+RCPPUTILS_PUBLIC std::filesystem::path create_temp_directory(
   const std::string & base_name,
-  const path & parent_path = temp_directory_path());
+  const std::filesystem::path & parent_path = temp_directory_path());
 
 /**
  * \brief Return current working directory.
