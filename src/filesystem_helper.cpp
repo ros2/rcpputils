@@ -284,6 +284,42 @@ bool exists(const path & path_to_check)
   return path_to_check.exists();
 }
 
+std::filesystem::path create_temp_directory(
+  const std::string & base_name,
+  const std::filesystem::path & parent_path)
+{
+  const auto template_path = base_name + "XXXXXX";
+  std::string full_template_str = (parent_path / template_path).string();
+  std::error_code ec;
+  std::filesystem::create_directories(parent_path, ec);
+  if (ec) {
+    throw std::system_error(ec, "could not create the parent directory");
+  }
+
+#ifdef _WIN32
+  errno_t errcode = _mktemp_s(&full_template_str[0], full_template_str.size() + 1);
+  if (errcode) {
+    std::error_code ec(static_cast<int>(errcode), std::system_category());
+    throw std::system_error(ec, "could not format the temp directory name template");
+  }
+  const path final_path{full_template_str};
+  if (!create_directories(final_path)) {
+    std::error_code ec(static_cast<int>(GetLastError()), std::system_category());
+    throw std::system_error(ec, "could not create the temp directory");
+  }
+#else
+  const char * dir_name = mkdtemp(&full_template_str[0]);
+  if (dir_name == nullptr) {
+    std::error_code ec{errno, std::system_category()};
+    errno = 0;
+    throw std::system_error(ec, "could not format or create the temp directory");
+  }
+  const std::filesystem::path final_path{dir_name};
+#endif
+
+  return final_path;
+}
+
 path current_path()
 {
 #ifdef _WIN32

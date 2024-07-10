@@ -261,6 +261,23 @@ RCPPUTILS_PUBLIC uint64_t file_size(const path & p);
 RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
 
 /**
+ * \brief Construct a uniquely named temporary directory, in "parent", with format base_nameXXXXXX
+ *
+ * The output, if successful, is guaranteed to be a newly-created directory.
+ * The underlying implementation keeps generating paths until one that does not exist is found.
+ * This guarantees that there will be no existing files in the returned directory.
+ *
+ * \param[in] base_name User-specified portion of the created directory
+ * \param[in] parent_path The parent path of the directory that will be created
+ * \return A path to a newly-created directory with base_name and a 6-character unique suffix
+ *
+ * \throws std::system_error If any OS APIs do not succeed.
+ */
+RCPPUTILS_PUBLIC std::filesystem::path create_temp_directory(
+  const std::string & base_name,
+  const std::filesystem::path & parent_path = std::filesystem::temp_directory_path());
+
+/**
  * \brief Return current working directory.
  *
  * \return The current working directory.
