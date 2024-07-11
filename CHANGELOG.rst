@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.6.4 (2024-07-10)
+------------------
 * Generate version header with ament_generate_version_header function (`#192 <https://github.com/ros2/rcpputils/issues/192>`_)
 * Contributors: Sai Kishor Kothakota
 
