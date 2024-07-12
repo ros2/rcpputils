@@ -346,14 +346,12 @@ path create_temp_directory(const std::string & base_name, const path & parent_pa
 std::filesystem::path create_temporary_directory(
   const std::string & base_name, const std::filesystem::path & parent_path, size_t max_tries)
 {
-  auto it =
-    std::find(base_name.begin(), base_name.end(), std::filesystem::path::preferred_separator);
-  if (it != base_name.end()) {
+  if (base_name.find(std::filesystem::path::preferred_separator) != std::string::npos) {
     throw std::invalid_argument("The base_name contain directory-separator");
   }
   // mersenne twister random generator engine seeded with the std::random_device
   std::mt19937 random_generator(std::random_device{}());
-  std::uniform_int_distribution<> distribution(0, 999999);
+  std::uniform_int_distribution<> distribution(0, 0xFFFFFF);
   std::filesystem::path path_to_temp_dir;
   constexpr size_t kSuffixLength = 7;  // 6 chars + 1 null terminator
   char random_suffix_str[kSuffixLength];
