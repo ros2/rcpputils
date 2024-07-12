@@ -299,7 +299,9 @@ RCPPUTILS_PUBLIC path create_temp_directory(
 /// \param[in] base_name User-specified portion of the created directory.
 /// \param[in] parent_path The parent path of the directory that will be created.
 /// \param[in] max_tries The maximum number of tries to find a unique directory (default 1000)
-/// \return A path to a newly-created directory with base_name and a 6-character unique suffix.
+/// \return A path to a newly created directory with base_name and a 6-character unique suffix.
+/// \throws std::invalid_argument If base_name contain directory-separator defined as
+/// std::filesystem::path::preferred_separator.
 /// \throws std::system_error If any OS APIs do not succeed.
 /// \throws std::runtime_error If the number of the iterations exceeds the maximum tries and
 /// a unique directory is not found.

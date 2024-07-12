@@ -481,11 +481,9 @@ TEST(TestFilesystemHelper, create_temporary_directory)
   {
     if (is_win32) {
       EXPECT_THROW(rcpputils::fs::create_temporary_directory("illegalchar?"), std::system_error);
+      EXPECT_THROW(rcpputils::fs::create_temporary_directory("base\\name"), std::invalid_argument);
     } else {
-      std::filesystem::path tmpdir_with_slash_in_base;
-      EXPECT_NO_THROW(
-        tmpdir_with_slash_in_base = rcpputils::fs::create_temporary_directory("base/name"));
-      EXPECT_NO_THROW(std::filesystem::remove_all(tmpdir_with_slash_in_base));
+      EXPECT_THROW(rcpputils::fs::create_temporary_directory("base/name"), std::invalid_argument);
     }
   }
 
