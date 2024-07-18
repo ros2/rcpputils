@@ -309,7 +309,7 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   EXPECT_FALSE(rcpputils::fs::exists(file));
   EXPECT_FALSE(rcpputils::fs::exists(dir));
   auto temp_dir_std = std::filesystem::temp_directory_path();
-  rcpputils::fs::path temp_dir = rcpputils::fs::path(temp_dir_std.c_str());
+  rcpputils::fs::path temp_dir = rcpputils::fs::path(temp_dir_std.generic_string());
   temp_dir = temp_dir / "rcpputils" / "test_folder";
   EXPECT_FALSE(rcpputils::fs::exists(temp_dir));
   EXPECT_TRUE(rcpputils::fs::create_directories(temp_dir));
@@ -454,7 +454,7 @@ TEST(TestFilesystemHelper, create_temporary_directory)
     const std::string basename = "test_base_name";
 
     const auto tmpdir1_std = rcpputils::fs::create_temporary_directory(basename);
-    rcpputils::fs::path tmpdir1(tmpdir1_std.c_str());
+    rcpputils::fs::path tmpdir1(tmpdir1_std.generic_string());
     EXPECT_TRUE(tmpdir1.exists());
     EXPECT_TRUE(tmpdir1.is_directory());
 
@@ -467,7 +467,7 @@ TEST(TestFilesystemHelper, create_temporary_directory)
     EXPECT_TRUE(rcpputils::fs::is_regular_file(tmp_file));
 
     const auto tmpdir2_std = rcpputils::fs::create_temporary_directory(basename);
-    rcpputils::fs::path tmpdir2(tmpdir2_std.c_str());
+    rcpputils::fs::path tmpdir2(tmpdir2_std.generic_string());
     EXPECT_TRUE(tmpdir2.exists());
     EXPECT_TRUE(tmpdir2.is_directory());
 
@@ -493,7 +493,7 @@ TEST(TestFilesystemHelper, create_temporary_directory)
     const auto tmpdir_std = rcpputils::fs::create_temporary_directory(
       "base_name",
       std::filesystem::path(new_relative.string()));
-    rcpputils::fs::path tmpdir(tmpdir_std.c_str());
+    rcpputils::fs::path tmpdir(tmpdir_std.generic_string());
 
     EXPECT_TRUE(tmpdir.exists());
     EXPECT_TRUE(tmpdir.is_directory());
@@ -510,7 +510,7 @@ TEST(TestFilesystemHelper, create_temporary_directory)
     // portion is appended to the end.
     const auto tmpdir_template_in_name_std =
       rcpputils::fs::create_temporary_directory("base_XXXXXX");
-    rcpputils::fs::path tmpdir_template_in_name(tmpdir_template_in_name_std.c_str());
+    rcpputils::fs::path tmpdir_template_in_name(tmpdir_template_in_name_std.generic_string());
     EXPECT_TRUE(tmpdir_template_in_name.exists());
     EXPECT_TRUE(tmpdir_template_in_name.is_directory());
     // On Linux, it will not replace the base_name Xs, only the final 6 that the function appends.

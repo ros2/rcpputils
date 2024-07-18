@@ -289,7 +289,7 @@ RCPPUTILS_PUBLIC path temp_directory_path();
 [[deprecated("Please use rcpputils::fs::create_temporary_directory(..) instead")]]
 RCPPUTILS_PUBLIC path create_temp_directory(
   const std::string & base_name,
-  const path & parent_path = path(std::filesystem::temp_directory_path().c_str()));
+  const path & parent_path = path(std::filesystem::temp_directory_path().generic_string()));
 
 /// \brief Construct a uniquely named temporary directory, in "parent", with format base_nameXXXXXX
 /// The output, if successful, is guaranteed to be a newly-created directory.
