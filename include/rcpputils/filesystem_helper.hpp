@@ -277,6 +277,7 @@ RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
  *
  * \return A path to a directory for storing temporary files and directories.
  */
+[[deprecated("Please use std::filesystem::temp_directory_path() instead")]]
 RCPPUTILS_PUBLIC path temp_directory_path();
 
 /**
@@ -292,9 +293,29 @@ RCPPUTILS_PUBLIC path temp_directory_path();
  *
  * \throws std::system_error If any OS APIs do not succeed.
  */
+[[deprecated("Please use rcpputils::fs::create_temporary_directory(..) instead")]]
 RCPPUTILS_PUBLIC path create_temp_directory(
   const std::string & base_name,
-  const path & parent_path = temp_directory_path());
+  const path & parent_path = path(std::filesystem::temp_directory_path().generic_string()));
+
+/// \brief Construct a uniquely named temporary directory, in "parent", with format base_nameXXXXXX
+/// The output, if successful, is guaranteed to be a newly-created directory.
+/// The underlying implementation keeps generating paths until one that does not exist is found or
+/// until the number of iterations exceeded the maximum tries.
+/// This guarantees that there will be no existing files in the returned directory.
+/// \param[in] base_name User-specified portion of the created directory.
+/// \param[in] parent_path The parent path of the directory that will be created.
+/// \param[in] max_tries The maximum number of tries to find a unique directory (default 1000)
+/// \return A path to a newly created directory with base_name and a 6-character unique suffix.
+/// \throws std::invalid_argument If base_name contain directory-separator defined as
+/// std::filesystem::path::preferred_separator.
+/// \throws std::system_error If any OS APIs do not succeed.
+/// \throws std::runtime_error If the number of the iterations exceeds the maximum tries and
+/// a unique directory is not found.
+RCPPUTILS_PUBLIC std::filesystem::path create_temporary_directory(
+  const std::string & base_name,
+  const std::filesystem::path & parent_path = std::filesystem::temp_directory_path(),
+  size_t max_tries = 1000);
 
 /**
  * \brief Return current working directory.
