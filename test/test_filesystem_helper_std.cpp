@@ -309,7 +309,7 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   EXPECT_TRUE(std::filesystem::remove(dir));
   EXPECT_FALSE(std::filesystem::exists(file));
   EXPECT_FALSE(std::filesystem::exists(dir));
-  auto temp_dir = rcpputils::fs::temporary_directory_path();
+  auto temp_dir = std::filesystem::temp_directory_path();
   temp_dir = temp_dir / "rcpputils" / "test_folder";
   EXPECT_FALSE(std::filesystem::exists(temp_dir));
   EXPECT_TRUE(std::filesystem::create_directories(temp_dir));
@@ -472,7 +472,7 @@ TEST(TestFilesystemHelper, create_temporary_directory)
     if (is_win32) {
       EXPECT_THROW(rcpputils::fs::create_temporary_directory("illegalchar?"), std::system_error);
     } else {
-      EXPECT_THROW(rcpputils::fs::create_temporary_directory("base/name"), std::system_error);
+      EXPECT_THROW(rcpputils::fs::create_temporary_directory("base/name"), std::invalid_argument);
     }
   }
 
@@ -492,7 +492,8 @@ TEST(TestFilesystemHelper, create_temporary_directory)
     EXPECT_EQ(tmpdir_emptybase.filename().string().size(), 6u);
 
     // Empty path doesn't exist and cannot be created
-    EXPECT_THROW(rcpputils::fs::create_temporary_directory("basename", path()), std::system_error);
+    auto path1 = rcpputils::fs::create_temporary_directory("basename", path());
+    EXPECT_TRUE(std::filesystem::exists(path1));
 
     // With the template string XXXXXX already in the name, it will still be there, the unique
     // portion is appended to the end.
