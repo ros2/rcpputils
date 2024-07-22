@@ -28,22 +28,22 @@ static constexpr const bool is_win32 = false;
 
 using path = std::filesystem::path;
 
-std::string build_extension_path()
+static const std::string build_extension_path()
 {
   return is_win32 ? R"(C:\foo\bar\baz.yml)" : "/bar/foo/baz.yml";
 }
 
-std::string build_double_extension_path()
+static const std::string build_double_extension_path()
 {
   return is_win32 ? R"(C:\bar\baz.bar.yml)" : "/foo/baz.bar.yml";
 }
 
-std::string build_no_extension_path()
+static const std::string build_no_extension_path()
 {
   return is_win32 ? R"(.\test_folder)" : R"(./test_folder)";
 }
 
-std::string build_directory_path()
+static const std::string build_directory_path()
 {
   return is_win32 ? R"(.\test_folder)" : R"(./test_folder)";
 }
@@ -280,7 +280,7 @@ TEST(TestFilesystemHelper, exists)
 TEST(TestFilesystemHelper, filesystem_manipulation)
 {
   auto dir = path(build_directory_path());
-  (void)std::filesystem::remove_all(dir);
+  std::filesystem::remove_all(dir);
   EXPECT_FALSE(std::filesystem::exists(dir));
   EXPECT_TRUE(std::filesystem::create_directories(dir));
   EXPECT_TRUE(std::filesystem::exists(dir));
