@@ -87,32 +87,29 @@ TEST(TestFilesystemHelper, parent_path)
     auto p = path("foo");
     EXPECT_EQ(p.parent_path().string(), "");
   }
-  {
-    if (is_win32) {
-      {
-        auto p = path("C:\\foo");
-        EXPECT_EQ(p.parent_path().string(), "C:\\");
-      }
-      {
-        auto p = path("\\foo");
-        EXPECT_EQ(p.parent_path().string(), "\\");
-      }
-    } else {
+  if (is_win32) {
+    {
+      auto p = path("C:\\foo");
+      EXPECT_EQ(p.parent_path().string(), "C:\\");
+    }
+    {
+      auto p = path("\\foo");
+      EXPECT_EQ(p.parent_path().string(), "\\");
+    }
+    {
+      auto p = path("C:\\");
+      EXPECT_EQ(p.parent_path().string(), "C:\\");
+    }
+    {
+      auto p = path("\\");
+      EXPECT_EQ(p.parent_path().string(), "\\");
+    }
+  } else {
+    {
       auto p = path("/foo");
       EXPECT_EQ(p.parent_path().string(), "/");
     }
-  }
-  {
-    if (is_win32) {
-      {
-        auto p = path("C:\\");
-        EXPECT_EQ(p.parent_path().string(), "C:\\");
-      }
-      {
-        auto p = path("\\");
-        EXPECT_EQ(p.parent_path().string(), "\\");
-      }
-    } else {
+    {
       auto p = path("/");
       EXPECT_EQ(p.parent_path().string(), "/");
     }
