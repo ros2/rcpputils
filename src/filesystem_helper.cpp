@@ -43,8 +43,10 @@
 #include <algorithm>
 #include <climits>
 #include <cstring>
+#include <random>
 #include <string>
 #include <system_error>
+#include <stdexcept>
 #include <vector>
 
 #ifdef _WIN32
@@ -339,6 +341,36 @@ path create_temp_directory(const std::string & base_name, const path & parent_pa
 #endif
 
   return final_path;
+}
+
+std::filesystem::path create_temporary_directory(
+  const std::string & base_name, const std::filesystem::path & parent_path, size_t max_tries)
+{
+  if (base_name.find(std::filesystem::path::preferred_separator) != std::string::npos) {
+    throw std::invalid_argument("The base_name contain directory-separator");
+  }
+  // mersenne twister random generator engine seeded with the std::random_device
+  std::mt19937 random_generator(std::random_device{}());
+  std::uniform_int_distribution<> distribution(0, 0xFFFFFF);
+  std::filesystem::path path_to_temp_dir;
+  constexpr size_t kSuffixLength = 7;  // 6 chars + 1 null terminator
+  char random_suffix_str[kSuffixLength];
+  size_t current_iteration = 0;
+  while (true) {
+    snprintf(random_suffix_str, kSuffixLength, "%06x", distribution(random_generator));
+    const std::string random_dir_name = base_name + random_suffix_str;
+    path_to_temp_dir = parent_path / random_dir_name;
+    // true if the directory was newly created.
+    if (std::filesystem::create_directories(path_to_temp_dir)) {
+      break;
+    }
+    if (current_iteration == max_tries) {
+      throw std::runtime_error(
+        "Exceeded maximum allowed iterations to find non-existing directory");
+    }
+    current_iteration++;
+  }
+  return path_to_temp_dir;
 }
 
 path current_path()
