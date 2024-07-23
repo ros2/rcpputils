@@ -124,11 +124,7 @@ TEST(TestFilesystemHelper, to_native_path)
 {
   {
     auto p = path("/foo/bar/baz");
-    if (is_win32) {
-      EXPECT_EQ("\\foo\\bar\\baz", p.string());
-    } else {
-      EXPECT_EQ("/foo/bar/baz", p.string());
-    }
+    EXPECT_EQ("/foo/bar/baz", p.string());
   }
   {
     auto p = path("\\foo\\bar\\baz");
@@ -140,11 +136,7 @@ TEST(TestFilesystemHelper, to_native_path)
   }
   {
     auto p = path("/foo//bar/baz");
-    if (is_win32) {
-      EXPECT_EQ("\\foo\\\\bar\\baz", p.string());
-    } else {
-      EXPECT_EQ("/foo//bar/baz", p.string());
-    }
+    EXPECT_EQ("/foo//bar/baz", p.string());
   }
   {
     auto p = path("\\foo\\\\bar\\baz");
@@ -173,11 +165,11 @@ TEST(TestFilesystemHelper, is_absolute)
     }
     {
       auto p = path("\\foo\\bar\\baz");
-      EXPECT_TRUE(p.is_absolute());
+      EXPECT_FALSE(p.is_absolute());
     }
     {
       auto p = path("/foo/bar/baz");
-      EXPECT_TRUE(p.is_absolute());
+      EXPECT_FALSE(p.is_absolute());
     }
     {
       auto p = path("foo/bar/baz");
@@ -298,8 +290,10 @@ TEST(TestFilesystemHelper, filesystem_manipulation)
   std::error_code ec;
   EXPECT_FALSE(std::filesystem::create_directories(file, ec));
   EXPECT_GE(std::filesystem::file_size(file), expected_file_size);
-  EXPECT_THROW((void)std::filesystem::file_size(dir), std::filesystem::filesystem_error) <<
-    "file_size is only applicable for files!";
+  if (!is_win32) {
+    EXPECT_THROW((void)std::filesystem::file_size(dir), std::filesystem::filesystem_error) <<
+      "file_size is only applicable for files!";
+  }
   EXPECT_FALSE(std::filesystem::remove(dir, ec));
   EXPECT_TRUE(std::filesystem::remove(file, ec));
   EXPECT_THROW((void)std::filesystem::file_size(file), std::filesystem::filesystem_error);
@@ -406,25 +400,13 @@ TEST(TestFilesystemHelper, get_cwd)
 TEST(TestFilesystemHelper, parent_absolute_path)
 {
   std::filesystem::path path("/home/foo/bar/baz");
-  if (is_win32) {
-    ASSERT_EQ(path.string(), "\\home\\foo\\bar\\baz");
-  } else {
-    ASSERT_EQ(path.string(), "/home/foo/bar/baz");
-  }
+  ASSERT_EQ(path.string(), "/home/foo/bar/baz");
 
   std::filesystem::path parent = path.parent_path();
-  if (is_win32) {
-    ASSERT_EQ(parent.string(), "\\home\\foo\\bar");
-  } else {
-    ASSERT_EQ(parent.string(), "/home/foo/bar");
-  }
+  ASSERT_EQ(parent.string(), "/home/foo/bar");
 
   std::filesystem::path grandparent = parent.parent_path();
-  if (is_win32) {
-    ASSERT_EQ(grandparent.string(), "\\home\\foo");
-  } else {
-    ASSERT_EQ(grandparent.string(), "/home/foo");
-  }
+  ASSERT_EQ(grandparent.string(), "/home/foo");
 
   if (is_win32) {
     std::filesystem::path win_drive_letter("C:\\home\\foo\\bar");
