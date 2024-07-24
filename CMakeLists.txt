@@ -123,6 +123,12 @@ if(BUILD_TESTING)
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
   target_link_libraries(test_filesystem_helper ${PROJECT_NAME})
 
+  ament_add_gtest(test_filesystem_helper_std test/test_filesystem_helper_std.cpp
+    ENV
+      EXPECTED_WORKING_DIRECTORY=$<SHELL_PATH:${CMAKE_CURRENT_BINARY_DIR}>
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  target_link_libraries(test_filesystem_helper_std ${PROJECT_NAME})
+
   ament_add_gtest(test_find_and_replace test/test_find_and_replace.cpp)
   target_link_libraries(test_find_and_replace ${PROJECT_NAME})
 

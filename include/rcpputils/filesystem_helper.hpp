@@ -66,14 +66,21 @@ static constexpr const char kPreferredSeparator = RCPPUTILS_IMPL_OS_DIRSEP;
 
 #undef RCPPUTILS_IMPL_OS_DIRSEP
 
-
+// TODO(ahcorde): Remove deprecated class on the next release.
+#if !defined(_WIN32)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#else  // !defined(_WIN32)
+# pragma warning(push)
+# pragma warning(disable: 4996)
+#endif
 /**
  * \brief Drop-in replacement for [std::filesystem::path](https://en.cppreference.com/w/cpp/filesystem/path).
  *
  * It must conform to the same standard described and cannot include methods that are not
  * incorporated there.
  */
-class path
+class [[deprecated("use std::filesystem instead of rcpputils::path")]] path
 {
 public:
   /**
@@ -232,6 +239,7 @@ private:
  * \param[in] p The path to check
  * \return True if the path exists, false otherwise.
  */
+[[deprecated("Please use std::filesystem::is_regular_file(..) instead")]]
 RCPPUTILS_PUBLIC bool is_regular_file(const path & p) noexcept;
 
 /**
@@ -240,6 +248,7 @@ RCPPUTILS_PUBLIC bool is_regular_file(const path & p) noexcept;
  * \param[in] p The path to check
  * \return True if the path is an existing directory, false otherwise.
  */
+[[deprecated("Please use std::filesystem::is_directory(..) instead")]]
 RCPPUTILS_PUBLIC bool is_directory(const path & p) noexcept;
 
 /**
@@ -250,6 +259,7 @@ RCPPUTILS_PUBLIC bool is_directory(const path & p) noexcept;
  *
  * \throws std::sytem_error
  */
+[[deprecated("Please use std::filesystem::file_size(..) instead")]]
 RCPPUTILS_PUBLIC uint64_t file_size(const path & p);
 
 /**
@@ -258,6 +268,7 @@ RCPPUTILS_PUBLIC uint64_t file_size(const path & p);
  * \param[in] path_to_check The path to check.
  * \return True if the path exists, false otherwise.
  */
+[[deprecated("Please use std::filesystem::exists(..) instead")]]
 RCPPUTILS_PUBLIC bool exists(const path & path_to_check);
 
 
@@ -317,6 +328,7 @@ RCPPUTILS_PUBLIC std::filesystem::path create_temporary_directory(
  *
  * \throws std::system_error
  */
+[[deprecated("Please use std::filesystem::current_path(..) instead")]]
 RCPPUTILS_PUBLIC path current_path();
 
 /**
@@ -326,6 +338,7 @@ RCPPUTILS_PUBLIC path current_path();
  * \param[in] p The path at which to create the directory.
  * \return Return true if the directory already exists or is created, false otherwise.
  */
+[[deprecated("Please use std::filesystem::create_directories(..) instead")]]
 RCPPUTILS_PUBLIC bool create_directories(const path & p);
 
 /**
@@ -334,6 +347,7 @@ RCPPUTILS_PUBLIC bool create_directories(const path & p);
  * \param[in] p The path of the object to remove.
  * \return true if the file exists and it was successfully removed, false otherwise.
  */
+[[deprecated("Please use std::filesystem::remove(..) instead")]]
 RCPPUTILS_PUBLIC bool remove(const path & p);
 
 /**
@@ -344,6 +358,7 @@ RCPPUTILS_PUBLIC bool remove(const path & p);
  * \param[in] p The path of the directory to remove.
  * \return true if the directory exists and it was successfully removed, false otherwise.
  */
+[[deprecated("Please use std::filesystem::remove_all(..) instead")]]
 RCPPUTILS_PUBLIC bool remove_all(const path & p);
 
 /**
@@ -362,7 +377,9 @@ RCPPUTILS_PUBLIC path remove_extension(const path & file_path, int n_times = 1);
  *
  * \return True if both paths are equal as strings.
  */
+[[deprecated("This operator will be remove with the deprecated path class")]]
 RCPPUTILS_PUBLIC bool operator==(const path & a, const path & b);
+[[deprecated("This operator will be remove with the deprecated path class")]]
 RCPPUTILS_PUBLIC bool operator!=(const path & a, const path & b);
 
 /**
@@ -372,8 +389,15 @@ RCPPUTILS_PUBLIC bool operator!=(const path & a, const path & b);
 * \param[in] p The path to stringify
 * \return The ostream, for chaining
 */
+[[deprecated("This operator will be remove with the deprecated path class")]]
 RCPPUTILS_PUBLIC std::ostream & operator<<(std::ostream & os, const path & p);
 
+// remove warning suppression
+#if !defined(_WIN32)
+# pragma GCC diagnostic pop
+#else  // !defined(_WIN32)
+# pragma warning(pop)
+#endif
 }  // namespace fs
 }  // namespace rcpputils
 

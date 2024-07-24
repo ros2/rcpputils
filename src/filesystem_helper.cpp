@@ -71,6 +71,14 @@ namespace rcpputils
 namespace fs
 {
 
+#if !defined(_WIN32)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#else  // !defined(_WIN32)
+# pragma warning(push)
+# pragma warning(disable: 4996)
+#endif
+
 /// \internal Returns true if the path is an absolute path with a drive letter on Windows.
 static bool is_absolute_with_drive_letter(const std::string & path);
 
@@ -517,5 +525,11 @@ std::ostream & operator<<(std::ostream & os, const path & p)
   return os;
 }
 
+// remove warning suppression
+#if !defined(_WIN32)
+# pragma GCC diagnostic pop
+#else  // !defined(_WIN32)
+# pragma warning(pop)
+#endif
 }  // namespace fs
 }  // namespace rcpputils
