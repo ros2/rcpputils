@@ -2,6 +2,19 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.13.0 (2024-07-24)
+-------------------
+* Deprecated path class (`#196 <https://github.com/ros2/rcpputils/issues/196>`_)
+* Replace create_temp_directory with the new create_temporary_directory (`#198 <https://github.com/ros2/rcpputils/issues/198>`_)
+  * Replace create_temp_directory with the new create_temporary_directory
+  - The newly added `create_temporary_directory(..)` uses
+  std::filesystem::path and doesn't have platform-specific code.
+  - Also deprecated `create_temp_directory(..)` and `temp_directory_path`
+* Removed deprecated header get_env.hpp (`#195 <https://github.com/ros2/rcpputils/issues/195>`_)
+* Removed rolling mean accumulator deprecated header (`#194 <https://github.com/ros2/rcpputils/issues/194>`_)
+* Removed deprecated clamp methods (`#193 <https://github.com/ros2/rcpputils/issues/193>`_)
+* Contributors: Alejandro Hernández Cordero, Michael Orlov
+
 2.12.0 (2024-04-26)
 -------------------
 
