@@ -28,6 +28,10 @@ static constexpr const bool is_win32 = false;
 #if !defined(_WIN32)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+# ifdef __clang__
+#  pragma clang diagnostic push
+#  pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 #else  // !defined(_WIN32)
 # pragma warning(push)
 # pragma warning(disable: 4996)
