@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.13.1 (2024-07-29)
+-------------------
 * Suppress clang error because of deprecation (`#199 <https://github.com/ros2/rcpputils/issues/199>`_)
 * Contributors: Alejandro Hernández Cordero
 
