@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Suppress clang error because of deprecation (`#199 <https://github.com/ros2/rcpputils/issues/199>`_)
+* Contributors: Alejandro Hernández Cordero
+
 2.13.0 (2024-07-24)
 -------------------
 * Deprecated path class (`#196 <https://github.com/ros2/rcpputils/issues/196>`_)
