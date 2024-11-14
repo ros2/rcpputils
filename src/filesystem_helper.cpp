@@ -478,7 +478,7 @@ bool remove_all(const path & p)
   if (dir == nullptr) {
     return false;
   }
-  RCPPUTILS_SCOPE_EXIT(closedir(dir); );
+  RCPPUTILS_SCOPE_EXIT(closedir(dir));
   struct dirent * directory_entry;
   while ((directory_entry = readdir(dir)) != nullptr) {
     // Make sure to not call ".." or "." entries in directory (might delete everything)
