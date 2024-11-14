@@ -64,6 +64,7 @@
 #endif
 
 #include "rcutils/env.h"
+#include "rcpputils/scope_exit.hpp"
 #include "rcpputils/split.hpp"
 
 namespace rcpputils
@@ -474,6 +475,10 @@ bool remove_all(const path & p)
   return 0 == ret && false == file_options.fAnyOperationsAborted;
 #else
   DIR * dir = opendir(p.string().c_str());
+  if (dir == nullptr) {
+    return false;
+  }
+  RCPPUTILS_SCOPE_EXIT(closedir(dir); );
   struct dirent * directory_entry;
   while ((directory_entry = readdir(dir)) != nullptr) {
     // Make sure to not call ".." or "." entries in directory (might delete everything)
@@ -488,7 +493,6 @@ bool remove_all(const path & p)
       }
     }
   }
-  closedir(dir);
   // directory is empty now, call remove
   rcpputils::fs::remove(p);
   return !rcpputils::fs::exists(p);
