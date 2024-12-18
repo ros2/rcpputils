@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.11.1 (2024-12-18)
+-------------------
 * Remove CODEOWNERS and mirror-rolling-to-master workflow. (`#204 <https://github.com/ros2/rcpputils/issues/204>`_) (`#205 <https://github.com/ros2/rcpputils/issues/205>`_)
   They are both out-of-date and no longer serving their
   intended purpose.
