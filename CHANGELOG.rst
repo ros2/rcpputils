@@ -2,6 +2,19 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Remove CODEOWNERS and mirror-rolling-to-master workflow. (`#204 <https://github.com/ros2/rcpputils/issues/204>`_) (`#205 <https://github.com/ros2/rcpputils/issues/205>`_)
+  They are both out-of-date and no longer serving their
+  intended purpose.
+  (cherry picked from commit d1abed6f53a443849cd45cd22c4255e630a8b5b9)
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* fix memory leak for remove_all(). (`#201 <https://github.com/ros2/rcpputils/issues/201>`_) (`#203 <https://github.com/ros2/rcpputils/issues/203>`_)
+  * fix memory leak for remove_all().
+  (cherry picked from commit ac4ee13bd59f552a823d78590279ee49443c7c2b)
+  Co-authored-by: Tomoya Fujita <Tomoya.Fujita@sony.com>
+* Contributors: mergify[bot]
+
 2.11.0 (2024-04-16)
 -------------------
 * Generate version header with ament_generate_version_header function (`#190 <https://github.com/ros2/rcpputils/issues/190>`_)
