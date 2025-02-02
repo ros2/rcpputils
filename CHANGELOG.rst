@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Clear the rcutils error when throwing an exception. (`#206 <https://github.com/ros2/rcpputils/issues/206>`_)
+* Remove CODEOWNERS and mirror-rolling-to-master workflow. (`#204 <https://github.com/ros2/rcpputils/issues/204>`_)
+* Contributors: Chris Lalancette
+
 2.13.2 (2024-11-20)
 -------------------
 * fix memory leak for remove_all(). (`#201 <https://github.com/ros2/rcpputils/issues/201>`_)
