@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.13.3 (2025-02-02)
+-------------------
 * Clear the rcutils error when throwing an exception. (`#206 <https://github.com/ros2/rcpputils/issues/206>`_)
 * Remove CODEOWNERS and mirror-rolling-to-master workflow. (`#204 <https://github.com/ros2/rcpputils/issues/204>`_)
 * Contributors: Chris Lalancette
