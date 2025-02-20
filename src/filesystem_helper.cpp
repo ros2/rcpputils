@@ -41,6 +41,11 @@
 #include <sys/stat.h>
 
 #include <algorithm>
+<<<<<<< HEAD
+=======
+#include <cstdint>
+#include <climits>
+>>>>>>> c0295f3 (Added missing include (#207))
 #include <cstring>
 #include <string>
 #include <system_error>
