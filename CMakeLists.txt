@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 project(rcpputils)
 
 find_package(ament_cmake REQUIRED)
-find_package(ament_cmake_ros REQUIRED)
+find_package(ament_cmake_ros_core REQUIRED)
 find_package(rcutils REQUIRED)
 
 # Default to C11
