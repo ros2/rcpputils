@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.4.5 (2025-03-25)
+------------------
+* Added missing include (backport `#207 <https://github.com/ros2/rcpputils/issues/207>`_) (`#209 <https://github.com/ros2/rcpputils/issues/209>`_)
+* Contributors: mergify[bot]
+
 2.4.4 (2024-11-25)
 ------------------
 * fix memory leak for remove_all(). (`#201 <https://github.com/ros2/rcpputils/issues/201>`_) (`#202 <https://github.com/ros2/rcpputils/issues/202>`_)
