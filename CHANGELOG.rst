@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.11.2 (2025-04-02)
+-------------------
 * Added missing include (`#207 <https://github.com/ros2/rcpputils/issues/207>`_) (`#208 <https://github.com/ros2/rcpputils/issues/208>`_)
   (cherry picked from commit c0295f312a245b3e69a75f667ba7addeaa58cec0)
   Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
