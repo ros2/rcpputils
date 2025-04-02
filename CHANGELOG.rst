@@ -2,6 +2,13 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Added missing include (`#207 <https://github.com/ros2/rcpputils/issues/207>`_) (`#208 <https://github.com/ros2/rcpputils/issues/208>`_)
+  (cherry picked from commit c0295f312a245b3e69a75f667ba7addeaa58cec0)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Contributors: mergify[bot]
+
 2.11.1 (2024-12-18)
 -------------------
 * Remove CODEOWNERS and mirror-rolling-to-master workflow. (`#204 <https://github.com/ros2/rcpputils/issues/204>`_) (`#205 <https://github.com/ros2/rcpputils/issues/205>`_)
