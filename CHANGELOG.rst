@@ -2,6 +2,9 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.14.0 (2025-04-24)
+-------------------
+
 2.13.4 (2025-04-18)
 -------------------
 * Switch to ament_cmake_ros_core package (`#211 <https://github.com/ros2/rcpputils/issues/211>`_)
