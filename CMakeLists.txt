@@ -30,7 +30,8 @@ add_library(${PROJECT_NAME}
   src/filesystem_helper.cpp
   src/find_library.cpp
   src/process.cpp
-  src/shared_library.cpp)
+  src/shared_library.cpp
+  src/thread_name.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
@@ -94,6 +95,9 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_asserts_debug test/test_asserts.cpp)
   target_link_libraries(test_asserts_debug ${PROJECT_NAME})
+
+  ament_add_gtest(test_thread_name test/test_thread_name.cpp)
+  target_link_libraries(test_thread_name ${PROJECT_NAME})
 
   ament_add_gtest(test_thread_safety_annotations test/test_thread_safety_annotations.cpp)
   target_link_libraries(test_thread_safety_annotations ${PROJECT_NAME})
