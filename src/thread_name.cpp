@@ -16,7 +16,6 @@
 
 #if defined(_WIN32)
 #include <windows.h>
-#include <sstream>
 #include <vector>
 #else  // posix and apple
 #include <pthread.h>
@@ -32,23 +31,24 @@ namespace rcpputils
 #if defined(_WIN32)
 void set_thread_name_windows(const std::string & name)
 {
-  int wchars_num = MultiByteToWideChar(CP_UTF8, 0, thread_name, -1, nullptr, 0);
-  if (wchars_num == 0) {
-    DWORD error_code = GetLastError();
-    std::error_code error_code_obj(error_code, std::system_category());
+  int wchars_num = MultiByteToWideChar(CP_UTF8, 0, name.c_str(), -1, nullptr, 0);
+  bool conversion_failed = wchars_num == 0;
+  if (!conversion_failed) {
+      std::vector<wchar_t> wstr(wchars_num);
+      auto ret = MultiByteToWideChar(CP_UTF8, 0, name.c_str(), -1, wstr.data(), wchars_num);
+      bool conversion_failed = ret == 0;
+      if (!conversion_failed) {
+          // This will only work on Windows 10 and above.
+          auto result = SetThreadDescription(GetCurrentThread(), wstr.data());
+          if (FAILED(result)) {
+              std::error_code error_code(result, std::system_category());
+              throw std::system_error(error_code, "Failed to set thread description");
+          }
+      }
+   }
+  if (conversion_failed) {
+    std::error_code error_code_obj(GetLastError(), std::system_category());
     throw std::system_error(error_code_obj, "Failed to convert thread name to wide characters");
-  }
-  std::vector<wchar_t> wstr(wchars_num);
-  if (!MultiByteToWideChar(CP_UTF8, 0, thread_name, -1, wstr.data(), wchars_num)) {
-    DWORD error_code = GetLastError();
-    std::error_code error_code_obj(error_code, std::system_category());
-    throw std::system_error(error_code_obj, "Failed to convert thread name to wide characters");
-  }
-  // This will only work on Windows 10 and above.
-  auto result = SetThreadDescription(GetCurrentThread(), wstr.data());
-  if (FAILED(result)) {
-    std::error_code error_code(result, std::system_category());
-    throw std::system_error(error_code, "Failed to set thread description");
   }
 }
 #else
@@ -106,10 +106,19 @@ std::string get_thread_name()
     std::error_code error_code(result, std::system_category());
     throw std::system_error(error_code, "Failed to get thread name");
   }
-  std::wstringstream wss;
-  wss << thread_description;
-  name = wss.str();
+  int size_needed = WideCharToMultiByte(CP_UTF8, 0, thread_description, -1, nullptr, 0, nullptr, nullptr);
+  bool conversion_failed = size_needed == 0;
+  if (!conversion_failed) {
+      name = std::string(size_needed - 1, 0);
+      auto ret = WideCharToMultiByte(CP_UTF8, 0, thread_description, -1, &name[0], size_needed, nullptr, nullptr);
+      conversion_failed = ret == 0;
+  }
   LocalFree(thread_description);
+  if (conversion_failed) {
+      DWORD error_code = GetLastError();
+      std::error_code error_code_obj(error_code, std::system_category());
+      throw std::system_error(error_code_obj, "Failed to convert thread name from wide characters");
+  }
 #else  // posix and apple
   char thread_name[MAXTHREADNAMESIZE];  // This includes the null terminator
   int rc = pthread_getname_np(pthread_self(), thread_name, sizeof(thread_name));
