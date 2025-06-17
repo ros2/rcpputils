@@ -22,6 +22,8 @@
 #include <pthread.h>
 #endif  // defined(_WIN32)
 
+#include <cstddef>
+#include <string>
 #include <system_error>
 
 namespace rcpputils
@@ -53,9 +55,9 @@ void set_thread_name_windows(const std::string & name)
 
 // This includes the null terminator
 #if defined(__APPLE__)
-constexpr size_t MAXTHREADNAMESIZE = 64;
+constexpr std::size_t MAXTHREADNAMESIZE = 64;
 #else  // posix
-constexpr size_t MAXTHREADNAMESIZE = 16;
+constexpr std::size_t MAXTHREADNAMESIZE = 16;
 #endif  // defined(__APPLE__)
 
 void set_thread_name_posix(const std::string & name)
