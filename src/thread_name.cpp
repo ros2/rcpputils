@@ -62,19 +62,21 @@ constexpr std::size_t MAXTHREADNAMESIZE = 16;
 
 void set_thread_name_posix(const std::string & name)
 {
-  std::string thread_name;
+  std::string truncated_name; // At this scope to keep lifetime long enough
+  const char * thread_name_ptr;
   // Truncate name to maximum length supported by pthread_setname_np
   // leaving one character for the null terminator
   // otherwise pthread_setname_np will return an ERANGE error
   if (name.size() > MAXTHREADNAMESIZE - 1) {
-    thread_name = name.substr(0, MAXTHREADNAMESIZE - 1);
+    truncated_name = name.substr(0, MAXTHREADNAMESIZE - 1);
+    thread_name_ptr = truncated_name.c_str();
   } else {
-    thread_name = name;
+    thread_name_ptr = name.c_str();
   }
 #if defined(__APPLE__)
-  int rc = pthread_setname_np(thread_name.c_str());
+  int rc = pthread_setname_np(thread_name_ptr);
 #else  // posix
-  int rc = pthread_setname_np(pthread_self(), thread_name.c_str());
+  int rc = pthread_setname_np(pthread_self(), thread_name_ptr);
 #endif  // defined(__APPLE__)
   if (rc != 0) {
     std::error_code error_code(rc, std::system_category());
