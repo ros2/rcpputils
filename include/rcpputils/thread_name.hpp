@@ -17,6 +17,8 @@
 
 #include <string>
 
+#include "rcpputils/visibility_control.hpp"
+
 namespace rcpputils
 {
 
@@ -25,14 +27,14 @@ namespace rcpputils
  * \param[in] name the name to set for the current thread. May be truncated depending on platform.
  * \throws std::system_error if the thread name cannot be set.
  */
-void set_thread_name(const std::string & name);
+RCPPUTILS_PUBLIC void set_thread_name(const std::string & name);
 
 /// Get the current thread name
 /**
  * \return the name of the current thread.
  * \throws std::system_error if the thread name cannot be retrieved.
  */
-std::string get_thread_name();
+RCPPUTILS_PUBLIC std::string get_thread_name();
 
 }  // namespace rcpputils
 
