@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.14.1 (2025-06-19)
+-------------------
+* add thread naming utilities (`#213 <https://github.com/ros2/rcpputils/issues/213>`_)
+* Removed deprecated path (`#212 <https://github.com/ros2/rcpputils/issues/212>`_)
+* Contributors: Adam Aposhian, Alejandro Hernández Cordero
+
 2.14.0 (2025-04-24)
 -------------------
 
