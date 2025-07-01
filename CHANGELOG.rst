@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.14.2 (2025-07-01)
+-------------------
 * fix cmake deprecation (`#214 <https://github.com/ros2/rcpputils/issues/214>`_)
 * Contributors: mosfet80
 
