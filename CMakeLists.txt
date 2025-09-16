@@ -68,10 +68,6 @@ if(BUILD_TESTING)
     LANGUAGE c++
   )
   ament_cpplint(EXCLUDE ${_linter_excludes})
-<<<<<<< HEAD
-  ament_flake8()
-=======
->>>>>>> 0e78962 (Remove unnecessary dependencies from rcpputils. (#216))
   ament_lint_cmake()
   ament_uncrustify(
     EXCLUDE ${_linter_excludes}
