@@ -49,14 +49,11 @@ ament_export_targets(${PROJECT_NAME})
 ament_export_dependencies(rcutils)
 
 if(BUILD_TESTING)
-  find_package(ament_cmake_gtest REQUIRED)
-
   find_package(ament_cmake_copyright REQUIRED)
   find_package(ament_cmake_cppcheck REQUIRED)
   find_package(ament_cmake_cpplint REQUIRED)
-  find_package(ament_cmake_flake8 REQUIRED)
+  find_package(ament_cmake_gtest REQUIRED)
   find_package(ament_cmake_lint_cmake REQUIRED)
-  find_package(ament_cmake_pep257 REQUIRED)
   find_package(ament_cmake_uncrustify REQUIRED)
   find_package(ament_cmake_xmllint REQUIRED)
 
@@ -71,9 +68,7 @@ if(BUILD_TESTING)
     LANGUAGE c++
   )
   ament_cpplint(EXCLUDE ${_linter_excludes})
-  ament_flake8()
   ament_lint_cmake()
-  ament_pep257(EXCLUDE ${_linter_excludes})
   ament_uncrustify(
     EXCLUDE ${_linter_excludes}
     LANGUAGE c++
