@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.13.5 (2025-09-17)
+-------------------
+* Remove unnecessary dependencies from rcpputils. (`#216 <https://github.com/ros2/rcpputils/issues/216>`_) (`#217 <https://github.com/ros2/rcpputils/issues/217>`_)
+* fix cmake deprecation (`#214 <https://github.com/ros2/rcpputils/issues/214>`_) (`#215 <https://github.com/ros2/rcpputils/issues/215>`_)
+* Contributors: mergify[bot]
+
 2.13.4 (2025-04-18)
 -------------------
 * Switch to ament_cmake_ros_core package (`#211 <https://github.com/ros2/rcpputils/issues/211>`_)
