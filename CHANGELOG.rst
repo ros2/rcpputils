@@ -2,6 +2,14 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.11.3 (2025-09-17)
+-------------------
+* Remove unnecessary dependencies from rcpputils. (`#216 <https://github.com/ros2/rcpputils/issues/216>`_) (`#218 <https://github.com/ros2/rcpputils/issues/218>`_)
+  It doesn't need to have dependencies on python tests.
+  (cherry picked from commit 0e78962a52e0d09d7b1214e5e055fe23883e7b72)
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* Contributors: mergify[bot]
+
 2.11.2 (2025-04-02)
 -------------------
 * Added missing include (`#207 <https://github.com/ros2/rcpputils/issues/207>`_) (`#208 <https://github.com/ros2/rcpputils/issues/208>`_)
