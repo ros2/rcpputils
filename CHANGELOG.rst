@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.14.3 (2025-09-17)
+-------------------
+* Remove unnecessary dependencies from rcpputils. (`#216 <https://github.com/ros2/rcpputils/issues/216>`_)
+  It doesn't need to have dependencies on python tests.
+* Contributors: Chris Lalancette
+
 2.14.2 (2025-07-01)
 -------------------
 * fix cmake deprecation (`#214 <https://github.com/ros2/rcpputils/issues/214>`_)
