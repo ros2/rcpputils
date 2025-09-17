@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.4.6 (2025-09-17)
+------------------
+* Remove unnecessary dependencies from rcpputils. (backport `#216 <https://github.com/ros2/rcpputils/issues/216>`_) (`#219 <https://github.com/ros2/rcpputils/issues/219>`_)
+* Contributors: mergify[bot]
+
 2.4.5 (2025-03-25)
 ------------------
 * Added missing include (backport `#207 <https://github.com/ros2/rcpputils/issues/207>`_) (`#209 <https://github.com/ros2/rcpputils/issues/209>`_)
