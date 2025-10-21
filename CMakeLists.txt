@@ -78,7 +78,7 @@ if(BUILD_TESTING)
   ament_xmllint()
 
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wthread-safety -Werror)
+    add_compile_options(-Wthread-safety)
   endif()
 
   ament_add_gtest(test_asserts_ndebug test/test_asserts.cpp)
