@@ -22,12 +22,32 @@ TEST(TestOsThread, set_thread_name) {
   EXPECT_STREQ("test_thread", rcpputils::get_thread_name().c_str());
 }
 
+TEST(TestOsThread, set_thread_name_empty) {
+  // Setting an empty name must not throw and get_thread_name must return empty string.
+  EXPECT_NO_THROW(rcpputils::set_thread_name(""));
+  EXPECT_STREQ("", rcpputils::get_thread_name().c_str());
+}
+
+TEST(TestOsThread, get_thread_name_returns_string) {
+  rcpputils::set_thread_name("abc");
+  const std::string name = rcpputils::get_thread_name();
+  EXPECT_FALSE(name.empty());
+  EXPECT_STREQ("abc", name.c_str());
+}
+
 #if defined(_WIN32)
 TEST(TestOsThread, no_truncation_on_windows) {
   rcpputils::set_thread_name("0123456789abcdef");
 
   // Should be unaffected by truncation
   EXPECT_STREQ("0123456789abcdef", rcpputils::get_thread_name().c_str());
+}
+
+TEST(TestOsThread, exact_max_length_no_truncation_windows) {
+  // 15 chars is well within the Windows limit; no truncation expected.
+  const std::string name_15(15, 'x');
+  rcpputils::set_thread_name(name_15);
+  EXPECT_EQ(rcpputils::get_thread_name(), name_15);
 }
 #elif defined(__APPLE__)
 TEST(TestOsThread, truncation_on_apple) {
@@ -38,11 +58,32 @@ TEST(TestOsThread, truncation_on_apple) {
   EXPECT_STREQ("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcde",
     rcpputils::get_thread_name().c_str());
 }
+
+TEST(TestOsThread, exact_max_length_no_truncation_apple) {
+  // Exactly 63 chars (MAXTHREADNAMESIZE - 1): must not be truncated.
+  const std::string name_63(63, 'y');
+  rcpputils::set_thread_name(name_63);
+  EXPECT_EQ(rcpputils::get_thread_name(), name_63);
+}
 #else  // posix
 TEST(TestOsThread, truncation_on_posix) {
   rcpputils::set_thread_name("0123456789abcdef");
 
   // Should be 15 characters and then the null terminator
   EXPECT_STREQ("0123456789abcde", rcpputils::get_thread_name().c_str());
+}
+
+TEST(TestOsThread, exact_max_length_no_truncation_posix) {
+  // Exactly 15 chars (MAXTHREADNAMESIZE - 1): must not be truncated.
+  const std::string name_15(15, 'z');
+  rcpputils::set_thread_name(name_15);
+  EXPECT_EQ(rcpputils::get_thread_name(), name_15);
+}
+
+TEST(TestOsThread, one_less_than_max_no_truncation_posix) {
+  // 14 chars is under the limit; returned name must be identical.
+  const std::string name_14(14, 'w');
+  rcpputils::set_thread_name(name_14);
+  EXPECT_EQ(rcpputils::get_thread_name(), name_14);
 }
 #endif

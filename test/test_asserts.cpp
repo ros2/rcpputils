@@ -69,6 +69,26 @@ TEST(test_asserts, check_does_not_throw_if_condition_is_true) {
   EXPECT_NO_THROW(rcpputils::check_true(true));
 }
 
+TEST(test_asserts, assertion_exception_what_message) {
+  const rcpputils::AssertionException ex("assertion failed");
+  EXPECT_STREQ("assertion failed", ex.what());
+}
+
+TEST(test_asserts, illegal_state_exception_what_message) {
+  const rcpputils::IllegalStateException ex("illegal state");
+  EXPECT_STREQ("illegal state", ex.what());
+}
+
+TEST(test_asserts, assertion_exception_empty_message) {
+  const rcpputils::AssertionException ex("");
+  EXPECT_STREQ("", ex.what());
+}
+
+TEST(test_asserts, illegal_state_exception_empty_message) {
+  const rcpputils::IllegalStateException ex("");
+  EXPECT_STREQ("", ex.what());
+}
+
 #ifndef NDEBUG
 TEST(test_asserts, assert_true_throws_if_condition_is_false_and_ndebug_not_set) {
   EXPECT_THROW(rcpputils::assert_true(false), rcpputils::AssertionException);

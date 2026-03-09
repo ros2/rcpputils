@@ -82,6 +82,47 @@ TEST(test_shared_library, failed_test) {
   }
 }
 
+TEST(test_shared_library, has_symbol_string_overload) {
+  const std::string library_name = rcpputils::get_platform_library_name("dummy_shared_library");
+  auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+
+  // Positive: string overload delegates to const char* overload.
+  EXPECT_TRUE(library->has_symbol(std::string("print_name")));
+
+  // Negative: missing symbol via string overload.
+  EXPECT_FALSE(library->has_symbol(std::string("nonexistent_symbol_xyz")));
+}
+
+TEST(test_shared_library, get_symbol_string_overload_throws_on_missing) {
+  const std::string library_name = rcpputils::get_platform_library_name("dummy_shared_library");
+  auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+
+  EXPECT_THROW(
+    library->get_symbol(std::string("nonexistent_symbol_xyz")),
+    std::runtime_error);
+}
+
+TEST(test_shared_library, get_library_path_non_empty) {
+  const std::string library_name = rcpputils::get_platform_library_name("dummy_shared_library");
+  auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+  EXPECT_FALSE(library->get_library_path().empty());
+}
+
+TEST(test_get_platform_library_name, release_name_contains_library_name) {
+  const std::string name = rcpputils::get_platform_library_name("mylib", false);
+  EXPECT_NE(name.find("mylib"), std::string::npos);
+  EXPECT_FALSE(name.empty());
+}
+
+TEST(test_get_platform_library_name, debug_and_release_differ_or_equal) {
+  // On some platforms (e.g. Windows) debug builds append a 'd' suffix.
+  // We only verify both calls succeed and return non-empty strings.
+  const std::string release_name = rcpputils::get_platform_library_name("mylib", false);
+  const std::string debug_name = rcpputils::get_platform_library_name("mylib", true);
+  EXPECT_FALSE(release_name.empty());
+  EXPECT_FALSE(debug_name.empty());
+}
+
 TEST(test_get_platform_library_name, failed_test) {
   // create a string bigger than the internal buffer
   std::string str(2000, 'A');
