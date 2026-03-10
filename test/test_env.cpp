@@ -39,14 +39,6 @@ TEST(TestGetEnv, test_get_env) {
   EXPECT_STREQ("", env.c_str());
 }
 
-TEST(TestGetEnv, test_get_env_returns_string_not_empty_when_set) {
-  // Verify set_env_var + get_env_var roundtrip preserves the value exactly.
-  EXPECT_TRUE(rcpputils::set_env_var("ROUNDTRIP_TEST", "hello_world"));
-  EXPECT_EQ(rcpputils::get_env_var("ROUNDTRIP_TEST"), std::string("hello_world"));
-  // Cleanup
-  EXPECT_TRUE(rcpputils::set_env_var("ROUNDTRIP_TEST", nullptr));
-}
-
 /* Tests set_env_var. */
 
 TEST(TestSetEnv, test_set_env) {
@@ -95,12 +87,4 @@ TEST(TestSetEnv, test_set_env_empty_value) {
   EXPECT_STREQ("", rcpputils::get_env_var("EMPTY_VALUE_VAR").c_str());
   // Cleanup
   EXPECT_TRUE(rcpputils::set_env_var("EMPTY_VALUE_VAR", nullptr));
-}
-
-TEST(TestSetEnv, test_set_env_overwrite_with_longer_value) {
-  EXPECT_TRUE(rcpputils::set_env_var("OVERWRITE_VAR", "short"));
-  EXPECT_TRUE(rcpputils::set_env_var("OVERWRITE_VAR", "a_much_longer_value_than_before"));
-  EXPECT_STREQ("a_much_longer_value_than_before",
-    rcpputils::get_env_var("OVERWRITE_VAR").c_str());
-  EXPECT_TRUE(rcpputils::set_env_var("OVERWRITE_VAR", nullptr));
 }

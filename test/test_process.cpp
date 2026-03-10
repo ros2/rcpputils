@@ -19,9 +19,7 @@
 #include "rcpputils/process.hpp"
 
 TEST(TestProcess, test_get_executable_name) {
-  const std::string name = rcpputils::get_executable_name();
-  EXPECT_FALSE(name.empty());
-  EXPECT_EQ("test_process", name);
+  EXPECT_EQ("test_process", rcpputils::get_executable_name());
 }
 
 TEST(TestProcess, test_get_executable_name_consistent) {
