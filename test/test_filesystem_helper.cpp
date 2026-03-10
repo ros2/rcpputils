@@ -108,7 +108,14 @@ TEST(TestFilesystemHelper, create_temporary_directory_default_parent)
   EXPECT_TRUE(std::filesystem::exists(tmpdir));
   EXPECT_TRUE(std::filesystem::is_directory(tmpdir));
   // The parent must be the system temp directory.
-  EXPECT_EQ(tmpdir.parent_path(), std::filesystem::temp_directory_path());
+  // Normalize both sides to remove any trailing separator before comparing
+  // (std::filesystem::temp_directory_path() appends a trailing slash on Windows
+  // while path::parent_path() does not).
+  const std::filesystem::path expected_parent =
+    std::filesystem::path(std::filesystem::temp_directory_path().generic_string());
+  const std::filesystem::path actual_parent =
+    std::filesystem::path(tmpdir.parent_path().generic_string());
+  EXPECT_EQ(actual_parent, expected_parent);
   EXPECT_TRUE(std::filesystem::remove_all(tmpdir));
 }
 
