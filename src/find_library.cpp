@@ -60,7 +60,7 @@ std::string find_library_path(const std::string & library_name)
   for (const auto & search_dir : search_paths) {
     const std::filesystem::path path = std::filesystem::path(search_dir) / filename;
     if (std::filesystem::is_regular_file(path)) {
-      return path.string();
+      return path.generic_string();
     }
   }
   return {};
@@ -71,7 +71,7 @@ std::string path_for_library(const std::string & directory, const std::string & 
   const std::filesystem::path path =
     std::filesystem::path(directory) / filename_for_library(library_name);
   if (std::filesystem::is_regular_file(path)) {
-    return path.string();
+    return path.generic_string();
   }
   return {};
 }

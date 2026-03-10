@@ -14,6 +14,7 @@
 
 #include <stdlib.h>
 
+#include <filesystem>
 #include <string>
 #include <utility>
 
@@ -25,7 +26,7 @@
 namespace
 {
 
-std::pair<const char *, const char *> test_lib_path_and_dir()
+std::pair<std::string, std::string> test_lib_path_and_dir()
 {
   const char * test_lib_path{};
   EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY", &test_lib_path), nullptr);
@@ -35,7 +36,12 @@ std::pair<const char *, const char *> test_lib_path_and_dir()
   EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY_DIR", &test_lib_dir), nullptr);
   EXPECT_NE(test_lib_dir, nullptr);
 
-  return {test_lib_path, test_lib_dir};
+  // Normalize both paths to forward slashes so comparisons are consistent
+  // across platforms (e.g. Windows CMake may provide either separator).
+  return {
+    std::filesystem::path(test_lib_path).generic_string(),
+    std::filesystem::path(test_lib_dir).generic_string()
+  };
 }
 
 #ifdef _WIN32
@@ -69,7 +75,7 @@ TEST(test_find_library, find_library)
   // Get ground-truth values from CTest properties.
   const auto pair = test_lib_path_and_dir();
   const std::string expected_library_path = pair.first;
-  const char * test_lib_dir = pair.second;
+  const std::string test_lib_dir = pair.second;
 
   // Set our relevant path variable.
   const char * env_var{};
@@ -82,10 +88,10 @@ TEST(test_find_library, find_library)
 #endif
 
 #ifdef _WIN32
-  EXPECT_EQ(_putenv_s(env_var, test_lib_dir), 0);
+  EXPECT_EQ(_putenv_s(env_var, test_lib_dir.c_str()), 0);
 #else
   const int override = 1;
-  EXPECT_EQ(setenv(env_var, test_lib_dir, override), 0);
+  EXPECT_EQ(setenv(env_var, test_lib_dir.c_str(), override), 0);
 #endif
 
   // Positive test.
@@ -115,8 +121,9 @@ TEST(test_find_library, find_library_multiple_dirs_in_path)
   const std::string test_lib_dir = pair.second;
 
   // Prepend a nonexistent directory so the code must iterate past it.
-  const std::string multi_path =
-    std::string("/tmp/nonexistent_rcpputils_dir") + kPathSep + test_lib_dir;
+  const std::string nonexistent =
+    (std::filesystem::temp_directory_path() / "nonexistent_rcpputils_dir").generic_string();
+  const std::string multi_path = nonexistent + kPathSep + test_lib_dir;
   set_path_var(multi_path.c_str());
 
   const std::string result = rcpputils::find_library_path("test_library");
