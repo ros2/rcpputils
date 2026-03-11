@@ -18,12 +18,8 @@
 #include <cstddef>
 
 #include <filesystem>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
-
-#include "rcutils/filesystem.h"
 
 #include "rcpputils/filesystem_helper.hpp"
 #include "rcpputils/split.hpp"
@@ -59,24 +55,25 @@ std::string find_library_path(const std::string & library_name)
   std::string search_path = get_env_var(kPathVar);
   std::vector<std::string> search_paths = rcpputils::split(search_path, kPathSeparator);
 
-  std::string filename = filename_for_library(library_name);
+  const std::string filename = filename_for_library(library_name);
 
-  for (const auto & search_path : search_paths) {
-    std::string path = search_path + "/" + filename;
-    if (rcutils_is_file(path.c_str())) {
-      return path;
+  for (const auto & search_dir : search_paths) {
+    const std::filesystem::path path = std::filesystem::path(search_dir) / filename;
+    if (std::filesystem::is_regular_file(path)) {
+      return path.generic_string();
     }
   }
-  return "";
+  return {};
 }
 
 std::string path_for_library(const std::string & directory, const std::string & library_name)
 {
-  auto path = std::filesystem::path(directory) / filename_for_library(library_name);
+  const std::filesystem::path path =
+    std::filesystem::path(directory) / filename_for_library(library_name);
   if (std::filesystem::is_regular_file(path)) {
-    return path.string();
+    return path.generic_string();
   }
-  return "";
+  return {};
 }
 
 std::string filename_for_library(const std::string & library_name)

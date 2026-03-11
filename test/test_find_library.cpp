@@ -14,6 +14,7 @@
 
 #include <stdlib.h>
 
+#include <filesystem>
 #include <string>
 #include <utility>
 
@@ -25,7 +26,7 @@
 namespace
 {
 
-std::pair<const char *, const char *> test_lib_path_and_dir()
+std::pair<std::string, std::string> test_lib_path_and_dir()
 {
   const char * test_lib_path{};
   EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY", &test_lib_path), nullptr);
@@ -35,7 +36,36 @@ std::pair<const char *, const char *> test_lib_path_and_dir()
   EXPECT_EQ(rcutils_get_env("_TEST_LIBRARY_DIR", &test_lib_dir), nullptr);
   EXPECT_NE(test_lib_dir, nullptr);
 
-  return {test_lib_path, test_lib_dir};
+  // Normalize both paths to forward slashes so comparisons are consistent
+  // across platforms (e.g. Windows CMake may provide either separator).
+  return {
+    std::filesystem::path(test_lib_path).generic_string(),
+    std::filesystem::path(test_lib_dir).generic_string()
+  };
+}
+
+#ifdef _WIN32
+constexpr const char * kPathVar = "PATH";
+constexpr char kPathSep = ';';
+#elif __APPLE__
+constexpr const char * kPathVar = "DYLD_LIBRARY_PATH";
+constexpr char kPathSep = ':';
+#else
+constexpr const char * kPathVar = "LD_LIBRARY_PATH";
+constexpr char kPathSep = ':';
+#endif
+
+void set_path_var(const char * value)
+{
+#ifdef _WIN32
+  _putenv_s(kPathVar, value ? value : "");
+#else
+  if (value) {
+    setenv(kPathVar, value, 1);
+  } else {
+    unsetenv(kPathVar);
+  }
+#endif
 }
 
 }  // anonymous namespace
@@ -45,7 +75,7 @@ TEST(test_find_library, find_library)
   // Get ground-truth values from CTest properties.
   const auto pair = test_lib_path_and_dir();
   const std::string expected_library_path = pair.first;
-  const char * test_lib_dir = pair.second;
+  const std::string test_lib_dir = pair.second;
 
   // Set our relevant path variable.
   const char * env_var{};
@@ -58,10 +88,10 @@ TEST(test_find_library, find_library)
 #endif
 
 #ifdef _WIN32
-  EXPECT_EQ(_putenv_s(env_var, test_lib_dir), 0);
+  EXPECT_EQ(_putenv_s(env_var, test_lib_dir.c_str()), 0);
 #else
   const int override = 1;
-  EXPECT_EQ(setenv(env_var, test_lib_dir, override), 0);
+  EXPECT_EQ(setenv(env_var, test_lib_dir.c_str(), override), 0);
 #endif
 
   // Positive test.
@@ -75,6 +105,31 @@ TEST(test_find_library, find_library)
   EXPECT_EQ(bad_path, "");
 }
 
+TEST(test_find_library, find_library_empty_path)
+{
+  // Empty search path should return empty string and not crash.
+  set_path_var("");
+  const std::string result = rcpputils::find_library_path("test_library");
+  EXPECT_EQ(result, "");
+}
+
+TEST(test_find_library, find_library_multiple_dirs_in_path)
+{
+  // Build a PATH with a dummy leading directory followed by the real one.
+  const auto pair = test_lib_path_and_dir();
+  const std::string expected_library_path = pair.first;
+  const std::string test_lib_dir = pair.second;
+
+  // Prepend a nonexistent directory so the code must iterate past it.
+  const std::string nonexistent =
+    (std::filesystem::temp_directory_path() / "nonexistent_rcpputils_dir").generic_string();
+  const std::string multi_path = nonexistent + kPathSep + test_lib_dir;
+  set_path_var(multi_path.c_str());
+
+  const std::string result = rcpputils::find_library_path("test_library");
+  EXPECT_EQ(result, expected_library_path);
+}
+
 TEST(test_find_library, library_path)
 {
   // Get ground-truth values from CTest properties.
@@ -83,8 +138,49 @@ TEST(test_find_library, library_path)
   const std::string test_lib_dir = pair.second;
 
   const std::string test_lib_actual = rcpputils::path_for_library(test_lib_dir, "test_library");
+  // The returned path must point to the same file as the expected path.
+  EXPECT_EQ(test_lib_actual, expected_library_path);
+
   const std::string bad_path = rcpputils::path_for_library(
     test_lib_dir,
     "highly_unlikely_12_library_34567_name_890.txt.exe");
   EXPECT_EQ(bad_path, "");
+}
+
+TEST(test_find_library, path_for_library_nonexistent_dir)
+{
+  // A directory that does not exist should return empty string.
+  const std::string result =
+    rcpputils::path_for_library("/no/such/directory", "test_library");
+  EXPECT_EQ(result, "");
+}
+
+TEST(test_find_library, filename_for_library)
+{
+  const std::string name = rcpputils::filename_for_library("mylib");
+  EXPECT_FALSE(name.empty());
+  // The name must contain the library base name.
+  EXPECT_NE(name.find("mylib"), std::string::npos);
+
+#ifdef _WIN32
+  EXPECT_EQ(name, "mylib.dll");
+#elif __APPLE__
+  EXPECT_EQ(name, "libmylib.dylib");
+#else
+  EXPECT_EQ(name, "libmylib.so");
+#endif
+}
+
+TEST(test_find_library, filename_for_library_empty_name)
+{
+  // An empty library name should still produce a valid filename (prefix + extension only).
+  const std::string name = rcpputils::filename_for_library("");
+  EXPECT_FALSE(name.empty());
+#ifdef _WIN32
+  EXPECT_EQ(name, ".dll");
+#elif __APPLE__
+  EXPECT_EQ(name, "lib.dylib");
+#else
+  EXPECT_EQ(name, "lib.so");
+#endif
 }
