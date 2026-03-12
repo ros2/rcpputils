@@ -111,7 +111,8 @@ TEST(TestFilesystemHelper, create_temporary_directory_default_parent)
   // Use std::filesystem::equivalent() to compare the actual filesystem entries,
   // avoiding spurious mismatches caused by trailing separators that
   // temp_directory_path() appends on Windows but parent_path() does not.
-  EXPECT_TRUE(std::filesystem::equivalent(tmpdir.parent_path(), std::filesystem::temp_directory_path()));
+  EXPECT_TRUE(std::filesystem::equivalent(tmpdir.parent_path(),
+    std::filesystem::temp_directory_path()));
   EXPECT_TRUE(std::filesystem::remove_all(tmpdir));
 }
 
