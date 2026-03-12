@@ -80,3 +80,11 @@ TEST(TestSetEnv, test_set_env) {
     "",
     rcpputils::get_env_var("NEW_ENV_VAR").c_str());
 }
+
+TEST(TestSetEnv, test_set_env_empty_value) {
+  // Setting to empty string is distinct from unsetting.
+  EXPECT_TRUE(rcpputils::set_env_var("EMPTY_VALUE_VAR", ""));
+  EXPECT_STREQ("", rcpputils::get_env_var("EMPTY_VALUE_VAR").c_str());
+  // Cleanup
+  EXPECT_TRUE(rcpputils::set_env_var("EMPTY_VALUE_VAR", nullptr));
+}

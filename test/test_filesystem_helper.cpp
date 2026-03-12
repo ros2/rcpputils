@@ -16,6 +16,7 @@
 
 #include <fstream>
 #include <string>
+#include <vector>
 
 #include "rcpputils/filesystem_helper.hpp"
 #include "rcpputils/env.hpp"
@@ -97,5 +98,40 @@ TEST(TestFilesystemHelper, create_temporary_directory)
     // On OSX, it will replace _all_ trailing Xs.
     // Either way, the result is unique, the exact value doesn't matter.
     EXPECT_EQ(tmpdir_template_in_name.filename().string().rfind("base_", 0), 0u);
+  }
+}
+
+TEST(TestFilesystemHelper, create_temporary_directory_default_parent)
+{
+  // When no parent_path is provided the function should use std::filesystem::temp_directory_path.
+  const auto tmpdir = rcpputils::fs::create_temporary_directory("default_parent_test");
+  EXPECT_TRUE(std::filesystem::exists(tmpdir));
+  EXPECT_TRUE(std::filesystem::is_directory(tmpdir));
+  // The parent must be the system temp directory.
+  // Use std::filesystem::equivalent() to compare the actual filesystem entries,
+  // avoiding spurious mismatches caused by trailing separators that
+  // temp_directory_path() appends on Windows but parent_path() does not.
+  EXPECT_TRUE(std::filesystem::equivalent(tmpdir.parent_path(),
+    std::filesystem::temp_directory_path()));
+  EXPECT_TRUE(std::filesystem::remove_all(tmpdir));
+}
+
+TEST(TestFilesystemHelper, create_temporary_directory_unique_per_call)
+{
+  // Multiple calls with the same base_name must produce different paths.
+  constexpr int kNumDirs = 5;
+  std::vector<std::filesystem::path> dirs;
+  dirs.reserve(kNumDirs);
+  for (int i = 0; i < kNumDirs; ++i) {
+    dirs.push_back(rcpputils::fs::create_temporary_directory("unique_test"));
+  }
+  // All paths must be distinct.
+  for (int i = 0; i < kNumDirs; ++i) {
+    for (int j = i + 1; j < kNumDirs; ++j) {
+      EXPECT_NE(dirs[i], dirs[j]);
+    }
+  }
+  for (const auto & d : dirs) {
+    std::filesystem::remove_all(d);
   }
 }
