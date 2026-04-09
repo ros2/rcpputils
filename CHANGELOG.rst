@@ -2,6 +2,14 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.14.4 (2026-04-09)
+-------------------
+* Increase test coverage (`#222 <https://github.com/ros2/rcpputils/issues/222>`_)
+* Append copies of BSD and CC0 licenses from the works (`#223 <https://github.com/ros2/rcpputils/issues/223>`_)
+* Use std::filesystem in find_library and add more test (`#221 <https://github.com/ros2/rcpputils/issues/221>`_)
+* Remove -Werror from Clang compile options (`#220 <https://github.com/ros2/rcpputils/issues/220>`_)
+* Contributors: Alejandro Hernández Cordero, Tully Foote, William Woodall
+
 2.14.3 (2025-09-17)
 -------------------
 * Remove unnecessary dependencies from rcpputils. (`#216 <https://github.com/ros2/rcpputils/issues/216>`_)
