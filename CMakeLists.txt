@@ -6,16 +6,7 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros_core REQUIRED)
 find_package(rcutils REQUIRED)
 
-# Default to C11
-if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 11)
-endif()
-# TODO (ahcorde): Remove tl_expected when CXX 20 standard is available
-# Default to C++17
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
-endif()
-
+# TODO (ahcorde): Remove tl_expected when CXX 23 standard is available
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   # enables building a static library but later link it into a dynamic library
   add_compile_options(-fPIC)
@@ -39,7 +30,7 @@ if(WIN32)
   target_compile_definitions(${PROJECT_NAME}
     PRIVATE "RCPPUTILS_BUILDING_LIBRARY")
 endif()
-target_link_libraries(${PROJECT_NAME} PUBLIC rcutils::rcutils)
+target_link_libraries(${PROJECT_NAME} PUBLIC rcutils::rcutils ament_cmake_ros_core::ament_ros_defaults)
 
 # Export old-style CMake variables
 ament_export_include_directories("include/${PROJECT_NAME}")
