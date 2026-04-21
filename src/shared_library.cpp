@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 
@@ -21,12 +22,13 @@
 
 namespace rcpputils
 {
-SharedLibrary::SharedLibrary(const std::string & library_path)
+SharedLibrary::SharedLibrary(const std::filesystem::path & library_path)
 {
   lib = rcutils_get_zero_initialized_shared_library();
+  const std::string path_str = library_path.string();
   rcutils_ret_t ret = rcutils_load_shared_library(
     &lib,
-    library_path.c_str(),
+    path_str.c_str(),
     rcutils_get_default_allocator());
   if (ret != RCUTILS_RET_OK) {
     if (ret == RCUTILS_RET_BAD_ALLOC) {
@@ -39,6 +41,12 @@ SharedLibrary::SharedLibrary(const std::string & library_path)
     }
   }
 }
+
+SharedLibrary::SharedLibrary(const char * library_path)
+: SharedLibrary(std::filesystem::path{library_path}) {}
+
+SharedLibrary::SharedLibrary(const std::string & library_path)
+: SharedLibrary(std::filesystem::path{library_path}) {}
 
 SharedLibrary::~SharedLibrary()
 {

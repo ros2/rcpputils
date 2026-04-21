@@ -14,6 +14,7 @@
 
 #include <gtest/gtest.h>
 
+#include <filesystem>
 #include <memory>
 #include <string>
 
@@ -34,7 +35,7 @@ TEST(test_shared_library, valid_load) {
   const std::string library_name = rcpputils::get_platform_library_name("dummy_shared_library");
 
   try {
-    auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+    auto library = std::make_shared<rcpputils::SharedLibrary>(std::filesystem::path{library_name});
 
     EXPECT_TRUE(endswith(library->get_library_path(), library_name)) <<
       "Expected .../" << library_name << ", got " << library->get_library_path();
@@ -55,7 +56,7 @@ TEST(test_shared_library, failed_test) {
   // loading a library that doesn't exists
   std::string library_name = rcpputils::get_platform_library_name("error_library");
   try {
-    auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+    auto library = std::make_shared<rcpputils::SharedLibrary>(std::filesystem::path{library_name});
     FAIL();
   } catch (...) {
   }
@@ -63,7 +64,7 @@ TEST(test_shared_library, failed_test) {
   // Loading a valid library
   library_name = rcpputils::get_platform_library_name("dummy_shared_library");
   try {
-    auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+    auto library = std::make_shared<rcpputils::SharedLibrary>(std::filesystem::path{library_name});
 
     // getting and asking for an unvalid symbol
     EXPECT_THROW(library->get_symbol("symbol"), std::runtime_error);
@@ -73,7 +74,7 @@ TEST(test_shared_library, failed_test) {
   }
 
   try {
-    auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+    auto library = std::make_shared<rcpputils::SharedLibrary>(std::filesystem::path{library_name});
 
     EXPECT_NO_THROW(library->unload_library());
     EXPECT_THROW(library->unload_library(), std::runtime_error);
@@ -84,7 +85,7 @@ TEST(test_shared_library, failed_test) {
 
 TEST(test_shared_library, has_symbol_string_overload) {
   const std::string library_name = rcpputils::get_platform_library_name("dummy_shared_library");
-  auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+  auto library = std::make_shared<rcpputils::SharedLibrary>(std::filesystem::path{library_name});
 
   // Positive: string overload delegates to const char* overload.
   EXPECT_TRUE(library->has_symbol(std::string("print_name")));
@@ -95,7 +96,7 @@ TEST(test_shared_library, has_symbol_string_overload) {
 
 TEST(test_shared_library, get_symbol_string_overload_throws_on_missing) {
   const std::string library_name = rcpputils::get_platform_library_name("dummy_shared_library");
-  auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+  auto library = std::make_shared<rcpputils::SharedLibrary>(std::filesystem::path{library_name});
 
   EXPECT_THROW(
     library->get_symbol(std::string("nonexistent_symbol_xyz")),
@@ -104,7 +105,7 @@ TEST(test_shared_library, get_symbol_string_overload_throws_on_missing) {
 
 TEST(test_shared_library, get_library_path_non_empty) {
   const std::string library_name = rcpputils::get_platform_library_name("dummy_shared_library");
-  auto library = std::make_shared<rcpputils::SharedLibrary>(library_name);
+  auto library = std::make_shared<rcpputils::SharedLibrary>(std::filesystem::path{library_name});
   EXPECT_FALSE(library->get_library_path().empty());
 }
 

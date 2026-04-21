@@ -15,6 +15,7 @@
 #ifndef RCPPUTILS__SHARED_LIBRARY_HPP_
 #define RCPPUTILS__SHARED_LIBRARY_HPP_
 
+#include <filesystem>
 #include <string>
 #include <stdexcept>
 
@@ -33,11 +34,36 @@ class SharedLibrary
 public:
   /// The library is loaded in the constructor.
   /**
-   * \param[in] library_path The library string path.
+   * \param[in] library_path The library filesystem path.
    * \throws std::bad_alloc if allocating storage for the callback fails
    * \throws std::runtime_error if there are some invalid arguments or the library
    * was not load properly
    */
+  RCPPUTILS_PUBLIC
+  explicit SharedLibrary(const std::filesystem::path & library_path);
+
+  /// The library is loaded in the constructor.
+  /**
+   * This overload exists to disambiguate string-literal calls between the
+   * std::filesystem::path and the (deprecated) std::string constructors.
+   *
+   * \param[in] library_path The library path as a C-string.
+   * \throws std::bad_alloc if allocating storage for the callback fails
+   * \throws std::runtime_error if there are some invalid arguments or the library
+   * was not load properly
+   */
+  RCPPUTILS_PUBLIC
+  explicit SharedLibrary(const char * library_path);
+
+  /// The library is loaded in the constructor.
+  /**
+   * \param[in] library_path The library string path.
+   * \throws std::bad_alloc if allocating storage for the callback fails
+   * \throws std::runtime_error if there are some invalid arguments or the library
+   * was not load properly
+   * \deprecated Use the std::filesystem::path overload instead.
+   */
+  [[deprecated("Use SharedLibrary(const std::filesystem::path &) instead.")]]
   RCPPUTILS_PUBLIC
   explicit SharedLibrary(const std::string & library_path);
 
