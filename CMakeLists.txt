@@ -10,7 +10,8 @@ find_package(rcutils REQUIRED)
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 11)
 endif()
-# TODO (ahcorde): Remove tl_expected when CXX 20 standard is available
+# Note: std::expected is C++23, not C++20. Keep the vendored tl_expected
+# until this package can be bumped to CMAKE_CXX_STANDARD 23.
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
