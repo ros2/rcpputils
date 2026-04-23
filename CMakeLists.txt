@@ -6,7 +6,8 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros_core REQUIRED)
 find_package(rcutils REQUIRED)
 
-# TODO (ahcorde): Remove tl_expected when CXX 23 standard is available
+# Note: std::expected is C++23, not C++20. Keep the vendored tl_expected
+# until this package can be bumped to CMAKE_CXX_STANDARD 23.
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   # enables building a static library but later link it into a dynamic library
   add_compile_options(-fPIC)
