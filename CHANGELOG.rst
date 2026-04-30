@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Updated note related with tl_expected (`#229 <https://github.com/ros2/rcpputils/issues/229>`_)
+* Contributors: Alejandro Hernández Cordero
+
 2.14.4 (2026-04-09)
 -------------------
 * Increase test coverage (`#222 <https://github.com/ros2/rcpputils/issues/222>`_)
