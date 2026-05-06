@@ -2,6 +2,9 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 2.14.5 (2026-04-30)
 -------------------
 * Updated note related with tl_expected (`#229 <https://github.com/ros2/rcpputils/issues/229>`_)
