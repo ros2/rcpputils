@@ -2,8 +2,8 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.11.4 (2026-06-02)
+-------------------
 * Append copies of BSD and CC0 licenses from the works (`#223 <https://github.com/ros2/rcpputils/issues/223>`_) (`#225 <https://github.com/ros2/rcpputils/issues/225>`_)
   (cherry picked from commit b5cdd861619e6ac724ba0667f9818fb8186d6617)
   Co-authored-by: Tully Foote <tullyfoote@intrinsic.ai>
