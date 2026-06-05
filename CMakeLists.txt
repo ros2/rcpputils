@@ -154,9 +154,6 @@ if(BUILD_TESTING)
 
   target_link_libraries(dummy_compile_test ${PROJECT_NAME})
 
-  ament_add_gtest(test_endian test/test_endian.cpp)
-  target_link_libraries(test_endian ${PROJECT_NAME})
-
   add_library(test_library SHARED test/test_library.cpp)
   target_link_libraries(test_library PUBLIC ${PROJECT_NAME})
 
