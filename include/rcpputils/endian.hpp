@@ -24,6 +24,13 @@
 #ifndef RCPPUTILS__ENDIAN_HPP_
 #define RCPPUTILS__ENDIAN_HPP_
 
+#if defined(_MSC_VER)
+    #pragma \
+  message("WARNING: rcpputils/endian.hpp is deprecated. Use std::endian from <bit> header instead.")
+#else
+    #warning WARNING: rcpputils/endian.hpp is deprecated. Use std::endian from <bit> header instead.
+#endif
+
 // TODO(anyone) replace this macro when the appropriate C++20 value lands.
 #if !defined(RCPPUTILS_NO_STD_ENDIAN) && (__cplusplus <= 201703L)
 #define RCPPUTILS_NO_STD_ENDIAN
