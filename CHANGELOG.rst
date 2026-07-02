@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.15.1 (2026-07-02)
+-------------------
+* Deprecate rcpputils::endian (`#227 <https://github.com/ros2/rcpputils/issues/227>`_)
+* Contributors: Maurice Alexander Purnawan
+
 2.15.0 (2026-05-06)
 -------------------
 
