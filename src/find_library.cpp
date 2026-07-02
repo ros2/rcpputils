@@ -66,14 +66,24 @@ std::string find_library_path(const std::string & library_name)
   return {};
 }
 
-std::string path_for_library(const std::string & directory, const std::string & library_name)
+std::string path_for_library(
+  const std::filesystem::path & directory, const std::string & library_name)
 {
-  const std::filesystem::path path =
-    std::filesystem::path(directory) / filename_for_library(library_name);
+  const std::filesystem::path path = directory / filename_for_library(library_name);
   if (std::filesystem::is_regular_file(path)) {
     return path.generic_string();
   }
   return {};
+}
+
+std::string path_for_library(const char * directory, const std::string & library_name)
+{
+  return path_for_library(std::filesystem::path{directory}, library_name);
+}
+
+std::string path_for_library(const std::string & directory, const std::string & library_name)
+{
+  return path_for_library(std::filesystem::path{directory}, library_name);
 }
 
 std::string filename_for_library(const std::string & library_name)

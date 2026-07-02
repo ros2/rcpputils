@@ -137,12 +137,13 @@ TEST(test_find_library, library_path)
   const std::string expected_library_path = pair.first;
   const std::string test_lib_dir = pair.second;
 
-  const std::string test_lib_actual = rcpputils::path_for_library(test_lib_dir, "test_library");
+  const std::string test_lib_actual =
+    rcpputils::path_for_library(std::filesystem::path{test_lib_dir}, "test_library");
   // The returned path must point to the same file as the expected path.
   EXPECT_EQ(test_lib_actual, expected_library_path);
 
   const std::string bad_path = rcpputils::path_for_library(
-    test_lib_dir,
+    std::filesystem::path{test_lib_dir},
     "highly_unlikely_12_library_34567_name_890.txt.exe");
   EXPECT_EQ(bad_path, "");
 }

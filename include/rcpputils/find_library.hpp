@@ -19,6 +19,7 @@
 #ifndef RCPPUTILS__FIND_LIBRARY_HPP_
 #define RCPPUTILS__FIND_LIBRARY_HPP_
 
+#include <filesystem>
 #include <string>
 
 #include "rcpputils/visibility_control.hpp"
@@ -49,6 +50,17 @@ std::string find_library_path(const std::string & library_name);
  * \return The absolute filesystem path, including the appropriate prefix and extension, or the
  * empty string when the library does not exist.
  */
+RCPPUTILS_PUBLIC
+std::string path_for_library(
+  const std::filesystem::path & directory, const std::string & library_name);
+
+/// Overload to disambiguate string-literal calls between the std::filesystem::path
+/// and the (deprecated) std::string overloads.
+RCPPUTILS_PUBLIC
+std::string path_for_library(const char * directory, const std::string & library_name);
+
+/// \deprecated Use the std::filesystem::path overload instead.
+[[deprecated("Use path_for_library(const std::filesystem::path &, ...) instead.")]]
 RCPPUTILS_PUBLIC
 std::string path_for_library(const std::string & directory, const std::string & library_name);
 
