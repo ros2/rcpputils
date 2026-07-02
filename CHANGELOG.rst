@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.13.6 (2026-07-02)
+-------------------
+* Append copies of BSD and CC0 licenses from the works (`#223 <https://github.com/ros2/rcpputils/issues/223>`_) (`#224 <https://github.com/ros2/rcpputils/issues/224>`_)
+* Contributors: mergify[bot]
+
 2.13.5 (2025-09-17)
 -------------------
 * Remove unnecessary dependencies from rcpputils. (`#216 <https://github.com/ros2/rcpputils/issues/216>`_) (`#217 <https://github.com/ros2/rcpputils/issues/217>`_)
