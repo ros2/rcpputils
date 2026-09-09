@@ -14,6 +14,8 @@
 
 #include "rcpputils/asserts.hpp"
 
+#include <string>
+
 namespace rcpputils
 {
 AssertionException::AssertionException(const char * msg)

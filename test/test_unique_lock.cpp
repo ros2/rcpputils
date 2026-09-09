@@ -14,6 +14,8 @@
 
 #include <gtest/gtest.h>
 
+#include <mutex>
+
 #include <rcpputils/unique_lock.hpp>
 
 TEST(test_time, test_compile_multiple_mutex_types) {

@@ -14,9 +14,10 @@
 
 #include <gtest/gtest.h>
 
-#include <exception>
+#include <iterator>
 #include <list>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <vector>

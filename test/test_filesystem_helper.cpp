@@ -14,8 +14,11 @@
 
 #include <gtest/gtest.h>
 
+#include <filesystem>
 #include <fstream>
+#include <stdexcept>
 #include <string>
+#include <system_error>
 #include <vector>
 
 #include "rcpputils/filesystem_helper.hpp"

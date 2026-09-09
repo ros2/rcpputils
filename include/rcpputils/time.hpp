@@ -16,6 +16,7 @@
 #define RCPPUTILS__TIME_HPP_
 
 #include <chrono>
+#include <stdexcept>
 
 namespace rcpputils
 {

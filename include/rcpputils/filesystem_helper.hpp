@@ -39,10 +39,9 @@
 #ifndef RCPPUTILS__FILESYSTEM_HELPER_HPP_
 #define RCPPUTILS__FILESYSTEM_HELPER_HPP_
 
-#include <cstdint>
+#include <cstddef>
 #include <filesystem>
 #include <string>
-#include <vector>
 
 #include "rcpputils/visibility_control.hpp"
 
