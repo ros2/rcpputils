@@ -12,12 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "rcpputils/shared_library.hpp"
+
 #include <iostream>
+#include <new>
+#include <stdexcept>
 #include <string>
 
+#include "rcutils/allocator.h"
 #include "rcutils/error_handling.h"
-
-#include "rcpputils/shared_library.hpp"
 
 namespace rcpputils
 {

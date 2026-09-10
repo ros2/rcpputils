@@ -37,7 +37,7 @@
 #endif
 
 #if !defined(RCPPUTILS_NO_STD_ENDIAN)
-#include <type_traits>
+#include <bit>
 namespace rcpputils
 {
 using std::endian;

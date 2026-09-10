@@ -19,6 +19,7 @@
 #ifndef RCPPUTILS__FIND_AND_REPLACE_HPP_
 #define RCPPUTILS__FIND_AND_REPLACE_HPP_
 
+#include <cstddef>
 #include <memory>
 #include <string>
 

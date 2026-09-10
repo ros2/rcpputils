@@ -38,35 +38,12 @@
 
 #include "rcpputils/filesystem_helper.hpp"
 
-#include <sys/stat.h>
-
-#include <algorithm>
-#include <cstdint>
-#include <climits>
-#include <cstring>
+#include <cstddef>
+#include <cstdio>
+#include <filesystem>
 #include <random>
-#include <string>
-#include <system_error>
 #include <stdexcept>
-#include <vector>
-
-#ifdef _WIN32
-#  define NOMINMAX
-#  define NOGDI
-#  include <windows.h>
-#  include <direct.h>
-#  include <fileapi.h>
-#  include <io.h>
-#  define access _access_s
-#else
-#  include <dirent.h>
-#  include <sys/types.h>
-#  include <unistd.h>
-#endif
-
-#include "rcutils/env.h"
-#include "rcpputils/scope_exit.hpp"
-#include "rcpputils/split.hpp"
+#include <string>
 
 namespace rcpputils
 {
@@ -86,7 +63,7 @@ std::filesystem::path create_temporary_directory(
   char random_suffix_str[kSuffixLength];
   size_t current_iteration = 0;
   while (true) {
-    snprintf(random_suffix_str, kSuffixLength, "%06x", distribution(random_generator));
+    std::snprintf(random_suffix_str, kSuffixLength, "%06x", distribution(random_generator));
     const std::string random_dir_name = base_name + random_suffix_str;
     path_to_temp_dir = parent_path / random_dir_name;
     // true if the directory was newly created.

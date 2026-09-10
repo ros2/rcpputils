@@ -16,7 +16,6 @@
 #define RCPPUTILS__SHARED_LIBRARY_HPP_
 
 #include <string>
-#include <stdexcept>
 
 #include "rcutils/shared_library.h"
 #include "rcpputils/visibility_control.hpp"

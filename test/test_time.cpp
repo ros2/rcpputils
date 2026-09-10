@@ -14,6 +14,9 @@
 
 #include <gtest/gtest.h>
 
+#include <chrono>
+#include <stdexcept>
+
 #include <rcpputils/time.hpp>
 
 #include "rcutils/time.h"

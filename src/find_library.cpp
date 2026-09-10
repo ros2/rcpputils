@@ -14,16 +14,12 @@
 
 #include "rcpputils/find_library.hpp"
 
-#include <cassert>
-#include <cstddef>
-
 #include <filesystem>
 #include <string>
 #include <vector>
 
-#include "rcpputils/filesystem_helper.hpp"
-#include "rcpputils/split.hpp"
 #include "rcpputils/env.hpp"
+#include "rcpputils/split.hpp"
 
 namespace rcpputils
 {

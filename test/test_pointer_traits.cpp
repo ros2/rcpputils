@@ -14,8 +14,9 @@
 
 #include <gtest/gtest.h>
 
-#include <string>
 #include <memory>
+#include <string>
+#include <type_traits>
 
 #include "rcpputils/pointer_traits.hpp"
 
