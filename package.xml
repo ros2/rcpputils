@@ -8,7 +8,7 @@
   <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
   <maintainer email="william@openrobotics.org">William Woodall</maintainer>
 
-  <license>Apache License 2.0</license>
+  <license>Apache-2.0</license>
   <license>BSD-3-Clause</license>
 
   <author email="clalancette@openrobotics.org">Chris Lalancette</author>
