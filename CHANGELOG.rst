@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.15.2 (2026-09-15)
+-------------------
+* Include what you use (`#230 <https://github.com/ros2/rcpputils/issues/230>`_)
+* Contributors: Alejandro Hernández Cordero
+
 2.15.1 (2026-07-02)
 -------------------
 * Deprecate rcpputils::endian (`#227 <https://github.com/ros2/rcpputils/issues/227>`_)
