@@ -2,6 +2,12 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.15.3 (2026-10-23)
+-------------------
+* Remove ament_export_include_directories and ament_export_libraries calls (`#233 <https://github.com/ros2/rcpputils//issues/233>`_)
+* Use the SPDX identifier Apache-2.0 in package.xml license tags (`#231 <https://github.com/ros2/rcpputils//issues/231>`_)
+* Contributors: Michael Carroll, Tomoya Fujita
+
 2.15.2 (2026-09-15)
 -------------------
 * Include what you use (`#230 <https://github.com/ros2/rcpputils/issues/230>`_)
