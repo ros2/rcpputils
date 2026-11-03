@@ -2,6 +2,11 @@
 Changelog for package rcpputils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.15.4 (2026-11-03)
+-------------------
+* Remove custom ament_cppcheck usage. (`#234 <https://github.com/ros2/rcpputils//issues/234>`_)
+* Contributors: Chris Lalancette
+
 2.15.3 (2026-10-23)
 -------------------
 * Remove ament_export_include_directories and ament_export_libraries calls (`#233 <https://github.com/ros2/rcpputils//issues/233>`_)
